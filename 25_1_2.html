@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>День Рождения 25 лет — Приглашение 🎄</title>
+
+  <!-- Винтажные кириллические шрифты Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            serif: ['"PT Serif"', 'Georgia', 'serif'],
+            mono: ['"PT Mono"', 'monospace'],
+          },
+          colors: {
+            nightBlue: '#0F2433',
+            creamPaper: '#FDF6E3',
+            creamDark: '#F2E5C4',
+            crimson: '#B71C1C',
+            crimsonDark: '#8E1313',
+            pine: '#1B5E20',
+            pineDark: '#124116',
+            gold: '#D4AF37',
+            goldSoft: '#E9CE78',
+            ink: '#2B1F16',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Face-API.js (нейросетевое распознавание лиц прямо в браузере) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+
+  <style>
+    /* === БАЗОВЫЕ СТИЛИ И ЗИМНЯЯ АТМОСФЕРА === */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #091722;
+      color: #2B1F16;
+      font-family: 'PT Serif', Georgia, serif;
+      overflow-x: hidden;
+      min-height: 100dvh;
+    }
+
+    /* Контейнер мобильного приложения (360px–430px) */
+    .app-shell {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      margin: 0 auto;
+      background:
+        radial-gradient(circle at 20% 8%, rgba(212, 175, 55, 0.15), transparent 42%),
+        radial-gradient(circle at 82% 88%, rgba(27, 94, 32, 0.30), transparent 48%),
+        linear-gradient(180deg, #0F2433 0%, #132D3F 50%, #0C1E2B 100%);
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.85);
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    @media (min-width: 460px) {
+      body {
+        padding: 16px 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .app-shell {
+        min-height: calc(100dvh - 32px);
+        border-radius: 28px;
+        border: 2px solid rgba(212, 175, 55, 0.38);
+      }
+    }
+
+    /* === ВИНТАЖНАЯ БУМАГА И ОТКРЫТОЧНЫЕ РАМКИ === */
+    .postcard {
+      position: relative;
+      background-color: #FDF6E3;
+      background-image:
+        radial-gradient(rgba(139, 98, 48, 0.06) 1px, transparent 0),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(212, 175, 55, 0.08) 100%);
+      background-size: 14px 14px, 100% 100%;
+      border: 2px solid #D4AF37;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.38),
+        inset 0 0 0 4px #FDF6E3,
+        inset 0 0 0 5.5px rgba(183, 28, 28, 0.45);
+      color: #2B1F16;
+    }
+
+    .postcard-scalloped {
+      position: relative;
+      background-color: #FDF6E3;
+      background-image: radial-gradient(rgba(139, 98, 48, 0.06) 1px, transparent 0);
+      background-size: 12px 12px;
+      border: 2px dashed rgba(212, 175, 55, 0.85);
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 3px #FDF6E3,
+        inset 0 0 0 4.5px rgba(27, 94, 32, 0.35);
+      color: #2B1F16;
+    }
+
+    .winter-card {
+      background: linear-gradient(165deg, rgba(22, 49, 68, 0.92), rgba(13, 31, 45, 0.96));
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      color: #FDF6E3;
+    }
+
+    .vintage-stamp {
+      border: 2px solid #B71C1C;
+      color: #B71C1C;
+      background: rgba(183, 28, 28, 0.06);
+      box-shadow: inset 0 0 0 2px rgba(183, 28, 28, 0.2);
+      transform: rotate(-5deg);
+    }
+
+    /* Нижняя панель навигации */
+    .retro-nav {
+      background: linear-gradient(180deg, #163246 0%, #0D202E 100%);
+      border-top: 2px solid #D4AF37;
+      box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    .retro-nav-btn {
+      background: rgba(253, 246, 227, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: rgba(253, 246, 227, 0.72);
+      transition: all 0.2s ease;
+    }
+    .retro-nav-btn.active {
+      background: linear-gradient(180deg, #FDF6E3 0%, #EFE0BC 100%);
+      border: 1.5px solid #D4AF37;
+      color: #B71C1C;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.35), inset 0 1px 0 #ffffff;
+    }
+
+    .vintage-photo-grain {
+      background-image: radial-gradient(rgba(43, 31, 22, 0.14) 1px, transparent 0);
+      background-size: 5px 5px;
+    }
+
+    /* === АНИМАЦИИ === */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-8px) rotate(-1deg); }
+      30% { transform: translateX(8px) rotate(1deg); }
+      45% { transform: translateX(-6px); }
+      60% { transform: translateX(6px); }
+      75% { transform: translateX(-3px); }
+    }
+    .animate-shake {
+      animation: shake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .screen-enter {
+      animation: fadeSlideUp 0.38s ease-out forwards;
+    }
+
+    @keyframes stampPop {
+      0% { transform: scale(2.4) rotate(-16deg); opacity: 0; }
+      70% { transform: scale(0.92) rotate(-6deg); opacity: 1; }
+      100% { transform: scale(1) rotate(-8deg); opacity: 1; }
+    }
+    .animate-stamp {
+      animation: stampPop 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes pulseGold {
+      0%, 100% {
+        box-shadow: 0 6px 22px rgba(27, 94, 32, 0.55), 0 0 0 0 rgba(212, 175, 55, 0.55);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 10px 30px rgba(27, 94, 32, 0.75), 0 0 0 8px rgba(212, 175, 55, 0);
+        transform: scale(1.03);
+      }
+    }
+    .btn-yes-giant {
+      animation: pulseGold 1.6s infinite ease-in-out;
+    }
+
+    @keyframes gravityDrop {
+      0% { transform: translateY(0) rotate(12deg); opacity: 1; }
+      20% { transform: translateY(-14px) rotate(18deg); opacity: 1; }
+      100% { transform: translateY(520px) rotate(72deg); opacity: 0; }
+    }
+    .btn-broken-fall {
+      animation: gravityDrop 0.9s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+      pointer-events: none;
+    }
+
+    /* Мерцание гирлянды */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.45; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    .garland-bulb {
+      animation: twinkle 2.2s infinite ease-in-out;
+    }
+
+    /* Пульсация кольца входящего звонка */
+    @keyframes ringPulse {
+      0% { transform: scale(1); opacity: 0.75; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .call-ring-wave {
+      animation: ringPulse 1.8s infinite cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Анимация говорящего портрета в симуляции звонка */
+    @keyframes talkingBob {
+      0%, 100% { transform: translateY(0) rotate(-1deg) scale(1); }
+      50% { transform: translateY(-4px) rotate(1.5deg) scale(1.03); }
+    }
+    .animate-talk {
+      animation: talkingBob 0.55s infinite ease-in-out;
+    }
+
+    /* Пламя свечей на торте */
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1, 1) rotate(-3deg); opacity: 0.95; }
+      25% { transform: scale(0.9, 1.15) rotate(3deg); opacity: 1; }
+      50% { transform: scale(1.08, 0.92) rotate(-2deg); opacity: 0.88; }
+      75% { transform: scale(0.95, 1.08) rotate(2deg); opacity: 1; }
+    }
+    .candle-flame {
+      animation: flameFlicker 0.6s infinite ease-in-out;
+      transform-origin: bottom center;
+    }
+
+    /* Дымок при задувании свечи */
+    @keyframes smokeRise {
+      0% { transform: translateY(0) scale(0.6); opacity: 0.9; }
+      100% { transform: translateY(-28px) scale(1.8); opacity: 0; }
+    }
+    .candle-smoke {
+      animation: smokeRise 0.85s ease-out forwards;
+    }
+
+    /* Ретро-линии кинопленки на экране звонка */
+    .retro-scanlines {
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.14) 0px,
+        rgba(0, 0, 0, 0.14) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    }
+
+    #btn-decline, #btn-accept {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  font-size 0.35s ease,
+                  padding 0.35s ease,
+                  width 0.35s ease,
+                  opacity 0.3s ease;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Фоновый канвас для падающего снега -->
+  <canvas id="snow-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Канвас для праздничного конфетти -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- Основная оболочка мобильного приложения -->
+  <div class="app-shell" id="app-shell">
+
+    <!-- Декоративная новогодняя гирлянда -->
+    <div class="w-full h-6 overflow-hidden pointer-events-none shrink-0 relative z-10">
+      <svg class="w-full h-full" viewBox="0 0 430 26" preserveAspectRatio="none">
+        <path d="M0 4 Q54 18 108 5 T216 5 T324 5 T430 4" stroke="#D4AF37" stroke-width="1.5" fill="none" opacity="0.75"/>
+        <circle cx="36" cy="11" r="3.5" fill="#B71C1C" class="garland-bulb" style="animation-delay: 0s"/>
+        <circle cx="78" cy="11" r="3.5" fill="#E9CE78" class="garland-bulb" style="animation-delay: 0.5s"/>
+        <circle cx="132" cy="10" r="3.5" fill="#2E7D32" class="garland-bulb" style="animation-delay: 1s"/>
+        <circle cx="182" cy="12" r="3.5" fill="#B71C1C" class="garland-bulb" style="animation-delay: 0.3s"/>
+        <circle cx="240" cy="11" r="3.5" fill="#E9CE78" class="garland-bulb" style="animation-delay: 1.2s"/>
+        <circle cx="294" cy="12" r="3.5" fill="#2E7D32" class="garland-bulb" style="animation-delay: 0.7s"/>
+        <circle cx="348" cy="10" r="3.5" fill="#B71C1C" class="garland-bulb" style="animation-delay: 1.5s"/>
+        <circle cx="398" cy="10" r="3.5" fill="#E9CE78" class="garland-bulb" style="animation-delay: 0.2s"/>
+      </svg>
+    </div>
+
+    <!-- Верхнее уведомление (Тост) -->
+    <div id="top-toast" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-[390px] z-50 pointer-events-none transition-all duration-300 opacity-0 -translate-y-6">
+      <div id="top-toast-inner" class="rounded-xl px-4 py-3 shadow-2xl border-2 flex items-center gap-3">
+        <span id="top-toast-icon" class="text-xl shrink-0">❄️</span>
+        <p id="top-toast-text" class="text-sm font-bold leading-snug font-serif"></p>
+      </div>
+    </div>
+
+    <!-- Нижнее уведомление -->
+    <div id="bottom-toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-[390px] z-40 pointer-events-none transition-all duration-300 opacity-0 translate-y-6">
+      <div class="bg-[#FDF6E3] border-2 border-[#D4AF37] text-[#2B1F16] rounded-xl px-4 py-3 shadow-2xl flex items-center justify-center gap-2 text-center">
+        <span class="text-base">🎄</span>
+        <span id="bottom-toast-text" class="text-sm font-bold font-serif"></span>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         ШАГ 1: ОБЯЗАТЕЛЬНАЯ КАПЧА («Докажи, что ты мой друг»)
+         ========================================================= -->
+    <section id="screen-captcha" class="flex-1 flex flex-col justify-between px-4 pb-5 pt-1 relative z-10 screen-enter">
+      <div>
+        <div class="flex items-center justify-between mb-3 px-1">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#1B5E20]/85 text-[#FDF6E3] border border-[#D4AF37]/60">
+            <span>★</span> Шаг 1 из 5
+          </span>
+          <span class="text-[11px] font-mono text-[#E9CE78]/90">Юбилей 25 лет</span>
+        </div>
+
+        <div id="captcha-card" class="postcard rounded-2xl p-4 relative overflow-hidden">
+          <!-- Хвойная веточка -->
+          <svg class="absolute -top-1 -right-1 w-14 h-14 opacity-80 pointer-events-none" viewBox="0 0 64 64">
+            <path d="M62 2 C46 8, 34 18, 22 30" stroke="#1B5E20" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M54 6 L46 2 M48 11 L38 8 M42 16 L32 14 M36 22 L27 21" stroke="#1B5E20" stroke-width="2" stroke-linecap="round"/>
+            <path d="M54 6 L56 15 M47 11 L50 20 M40 17 L43 26" stroke="#1B5E20" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="48" cy="14" r="3.5" fill="#B71C1C"/>
+            <circle cx="38" cy="21" r="2.8" fill="#D4AF37"/>
+          </svg>
+
+          <div class="mb-3 pr-8">
+            <p class="text-[11px] font-mono uppercase tracking-widest text-[#B71C1C] font-bold">
+              Проверка при каждом входе
+            </p>
+            <h1 class="font-display text-2xl font-extrabold text-[#2B1F16] leading-tight mt-0.5">
+              Докажи, что ты мой друг ❄️
+            </h1>
+            <p class="text-xs text-[#4A3728] mt-1 leading-relaxed">
+              Выбери <strong class="text-[#B71C1C]">3 настоящие детские фотки</strong> именинника — остальные 6 созданы нейросетью.
+            </p>
+          </div>
+
+          <div id="captcha-grid" class="grid grid-cols-3 gap-2"></div>
+
+          <!-- Штамп успеха -->
+          <div id="captcha-success-stamp" class="hidden absolute inset-0 bg-[#FDF6E3]/80 backdrop-blur-[2px] z-30 flex items-center justify-center p-4">
+            <div class="vintage-stamp rounded-xl px-5 py-3 text-center animate-stamp bg-[#FDF6E3]">
+              <p class="font-display text-xl font-black tracking-wide uppercase">Свой человек! ★</p>
+              <p class="font-mono text-[11px] mt-0.5">Пропуск подтверждён</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 space-y-2.5">
+        <button id="btn-verify-captcha" disabled
+          class="w-full py-3.5 rounded-xl font-display font-bold text-base tracking-wide transition-all duration-200 bg-[#1B3A4E] text-[#FDF6E3]/40 border border-[#D4AF37]/30 cursor-not-allowed">
+          Проверить (0/3)
+        </button>
+
+        <div class="winter-card rounded-xl px-3.5 py-2.5 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">🧪</span>
+            <span class="text-xs text-[#FDF6E3]/90 font-serif">Режим теста: подсветить оригиналы</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="toggle-test-mode" class="sr-only peer">
+            <div class="w-10 h-5 bg-[#0A1822] border border-[#D4AF37]/50 rounded-full peer peer-checked:bg-[#1B5E20] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#FDF6E3] after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ШАГ 2: ВХОДЯЩИЙ ВИДЕОЗВОНОК («Именинник из детства»)
+         ========================================================= -->
+    <section id="screen-call" class="hidden flex-1 flex-col justify-between px-4 pb-6 pt-2 relative z-10">
+      <!-- Состояние А: Входящий вызов -->
+      <div id="call-ringing-view" class="flex-1 flex flex-col justify-between items-center text-center py-2">
+        <div class="w-full flex items-center justify-between px-1">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#B71C1C]/90 text-[#FDF6E3] border border-[#D4AF37]/70">
+            <span>📞</span> Шаг 2 из 5
+          </span>
+          <button id="btn-sound-ring" type="button"
+            class="text-[11px] font-mono px-2.5 py-1 rounded-full bg-[#FDF6E3]/10 text-[#E9CE78] border border-[#D4AF37]/40 active:scale-95">
+            🔔 Звук гудка
+          </button>
+        </div>
+
+        <!-- Информация о звонящем -->
+        <div class="my-auto flex flex-col items-center">
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-[#E9CE78] mb-2 animate-pulse">
+            Входящий видеовызов...
+          </p>
+          <h2 class="font-display text-3xl font-black text-[#FDF6E3] leading-tight">
+            Именинник из детства
+          </h2>
+          <p class="text-xs font-mono text-[#FDF6E3]/70 mt-1 mb-8">
+            Междугородняя линия • Привет из прошлого
+          </p>
+
+          <!-- Пульсирующий аватар -->
+          <div class="relative w-40 h-40 flex items-center justify-center mb-6">
+            <div class="absolute inset-0 rounded-full border-2 border-[#D4AF37] call-ring-wave"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-[#B71C1C] call-ring-wave" style="animation-delay: 0.6s"></div>
+            <div id="call-avatar-box"
+              class="relative w-36 h-36 rounded-full border-[4px] border-[#D4AF37] overflow-hidden shadow-[0_0_35px_rgba(212,175,55,0.45)] bg-[#F5E4C3] flex items-center justify-center">
+              <!-- Заполняется фото assets/child/12.jpg или SVG-заглушкой -->
+            </div>
+          </div>
+
+          <div id="call-reject-warning" class="hidden postcard-scalloped rounded-xl px-4 py-2 text-xs font-bold text-[#B71C1C] max-w-[300px]">
+            Нельзя сбрасывать звонок из прошлого! ☎️
+          </div>
+        </div>
+
+        <!-- Кнопки Принять / Сбросить -->
+        <div class="w-full grid grid-cols-2 gap-6 px-4 pb-3">
+          <div class="flex flex-col items-center gap-2">
+            <button id="btn-call-reject" type="button"
+              class="w-18 h-18 p-5 rounded-full bg-gradient-to-b from-[#C62828] to-[#8E1313] border-2 border-[#D4AF37] text-[#FDF6E3] shadow-xl active:scale-90 transition-transform flex items-center justify-center">
+              <svg class="w-8 h-8 rotate-[135deg]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+              </svg>
+            </button>
+            <span class="text-xs font-mono text-[#FDF6E3]/85">Сбросить</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2">
+            <button id="btn-call-accept" type="button"
+              class="w-18 h-18 p-5 rounded-full bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] border-2 border-[#D4AF37] text-[#FDF6E3] shadow-xl btn-yes-giant active:scale-90 transition-transform flex items-center justify-center">
+              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+              </svg>
+            </button>
+            <span class="text-xs font-mono font-bold text-[#E9CE78]">Принять</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Состояние Б: Активный видеозвонок (реальное видео или симуляция) -->
+      <div id="call-active-view" class="hidden flex-1 flex-col justify-between">
+        <div class="relative flex-1 rounded-2xl overflow-hidden border-2 border-[#D4AF37] bg-[#091620] shadow-2xl flex flex-col justify-between min-h-[470px]">
+          <!-- Реальное видео assets/call.mp4 -->
+          <video id="call-video-el" playsinline class="hidden absolute inset-0 w-full h-full object-cover z-0"></video>
+
+          <!-- Симуляция видеозвонка (если assets/call.mp4 еще не загружен) -->
+          <div id="call-sim-stage" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#163347] via-[#0F2433] to-[#08131B] p-5 z-0">
+            <div class="retro-scanlines absolute inset-0 pointer-events-none"></div>
+            <div id="call-sim-avatar"
+              class="w-44 h-44 rounded-full border-4 border-[#D4AF37] overflow-hidden shadow-[0_0_40px_rgba(212,175,55,0.35)] bg-[#F5E4C3] animate-talk flex items-center justify-center mb-5">
+            </div>
+            <!-- Индикатор голосовой волны -->
+            <div class="flex items-end gap-1.5 h-6 mb-4" id="call-voice-bars">
+              <span class="w-1.5 bg-[#E9CE78] rounded-full animate-pulse" style="height: 45%"></span>
+              <span class="w-1.5 bg-[#D4AF37] rounded-full animate-pulse" style="height: 95%; animation-delay: 0.12s"></span>
+              <span class="w-1.5 bg-[#B71C1C] rounded-full animate-pulse" style="height: 65%; animation-delay: 0.25s"></span>
+              <span class="w-1.5 bg-[#E9CE78] rounded-full animate-pulse" style="height: 100%; animation-delay: 0.35s"></span>
+              <span class="w-1.5 bg-[#D4AF37] rounded-full animate-pulse" style="height: 55%; animation-delay: 0.45s"></span>
+            </div>
+            <span class="text-[10px] font-mono text-[#E9CE78]/75 px-2.5 py-0.5 rounded-full border border-[#D4AF37]/30 bg-[#091722]/70">
+              Демо-режим (пока не добавлен assets/call.mp4)
+            </span>
+          </div>
+
+          <!-- Верхняя панель звонка -->
+          <div class="relative z-10 flex items-center justify-between p-3.5 bg-gradient-to-b from-[#07131C]/85 to-transparent">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#E53935] animate-pulse"></span>
+              <span class="font-mono text-xs font-bold text-[#FDF6E3]">ПРЯМОЙ ЭФИР</span>
+            </div>
+            <span id="call-timer" class="font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-[#091722]/80 text-[#E9CE78] border border-[#D4AF37]/40">
+              00:00
+            </span>
+          </div>
+
+          <!-- Субтитры снизу -->
+          <div class="relative z-10 p-4 bg-gradient-to-t from-[#07131C]/95 via-[#07131C]/75 to-transparent">
+            <div class="postcard rounded-xl p-3.5 text-center shadow-xl">
+              <p class="font-mono text-[10px] uppercase tracking-wider text-[#B71C1C] font-bold mb-1">
+                Именинник из детства говорит:
+              </p>
+              <p id="call-subtitle-text" class="font-serif text-sm font-bold text-[#2B1F16] leading-snug min-h-[44px]">
+                Алло! Связь установлена...
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Кнопка перехода к свечам -->
+        <button id="btn-call-continue" type="button"
+          class="mt-4 w-full py-3.5 rounded-xl bg-gradient-to-b from-[#1B5E20] to-[#124116] text-[#FDF6E3] font-display font-bold text-base tracking-wide border-2 border-[#D4AF37] shadow-lg active:scale-[0.98]">
+          Продолжить →
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ШАГ 3: ЗАДУЙ 25 СВЕЧЕЙ В МИКРОФОН
+         ========================================================= -->
+    <section id="screen-candles" class="hidden flex-1 flex-col justify-between px-4 pb-5 pt-1 relative z-10">
+      <div>
+        <div class="flex items-center justify-between mb-3 px-1">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#1B5E20]/85 text-[#FDF6E3] border border-[#D4AF37]/60">
+            <span>🕯️</span> Шаг 3 из 5
+          </span>
+          <span id="candles-counter" class="text-xs font-mono font-bold text-[#E9CE78]">
+            Осталось свечей: 25 / 25
+          </span>
+        </div>
+
+        <div class="postcard rounded-2xl p-4 text-center relative overflow-hidden">
+          <p class="text-[11px] font-mono uppercase tracking-widest text-[#B71C1C] font-bold">
+            Загадай желание
+          </p>
+          <h2 class="font-display text-2xl font-black text-[#2B1F16] leading-tight mt-0.5">
+            Задуй 25 свечей! 🎂
+          </h2>
+          <p class="text-xs text-[#5C4433] mt-1 mb-4">
+            Включи микрофон и подуй прямо в телефон — или нажимай кнопку ниже.
+          </p>
+
+          <!-- Праздничный винтажный торт с 25 свечами -->
+          <div class="relative mx-auto w-full max-w-[320px] pt-8 pb-2">
+            <!-- Сетка из 25 свечей (2 ряда: 12 сверху, 13 снизу) -->
+            <div id="candles-row-top" class="flex justify-center gap-[9px] mb-1 relative z-20 px-3"></div>
+            <div id="candles-row-bottom" class="flex justify-center gap-[8px] -mb-3 relative z-30 px-1"></div>
+
+            <!-- Верхний ярус торта (глазурь + вишенки) -->
+            <div class="relative z-10 mx-auto w-[84%] h-12 rounded-t-2xl bg-gradient-to-b from-[#FFFDF7] via-[#F7E8C8] to-[#E6C792] border-2 border-[#C99E52] shadow-md overflow-hidden">
+              <!-- Потеки крема -->
+              <svg class="w-full h-6" viewBox="0 0 260 28" preserveAspectRatio="none">
+                <path d="M0 0 H260 V12 Q245 24 230 12 T200 14 T170 12 T140 16 T110 12 T80 15 T50 12 T20 15 Q10 22 0 12 Z" fill="#FFFDF7"/>
+              </svg>
+              <div class="flex justify-around px-4 -mt-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#B71C1C] inline-block shadow"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#1B5E20] inline-block shadow"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#B71C1C] inline-block shadow"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#D4AF37] inline-block shadow"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#B71C1C] inline-block shadow"></span>
+              </div>
+            </div>
+
+            <!-- Нижний ярус торта -->
+            <div class="relative z-10 mx-auto w-[96%] h-16 rounded-t-xl rounded-b-2xl bg-gradient-to-b from-[#9E352B] via-[#7E241C] to-[#5E1812] border-2 border-[#D4AF37] shadow-lg flex items-center justify-center">
+              <div class="px-4 py-1 rounded-full bg-[#FDF6E3] border border-[#D4AF37] shadow">
+                <span class="font-display font-black text-base text-[#B71C1C]">25 ЛЕТ ★</span>
+              </div>
+            </div>
+
+            <!-- Блюдо -->
+            <div class="mx-auto w-full h-3.5 rounded-full bg-gradient-to-r from-[#C8A64B] via-[#F5E09B] to-[#C8A64B] border border-[#9E7C26] shadow-md -mt-1"></div>
+          </div>
+
+          <!-- Индикатор силы выдоха -->
+          <div class="mt-4 text-left bg-[#F3E6C6]/80 border border-[#D4AF37]/60 rounded-xl p-3">
+            <div class="flex items-center justify-between text-[11px] font-mono font-bold text-[#4A3728] mb-1.5">
+              <span>Сила выдоха</span>
+              <span id="blow-level-text">Микрофон выключен</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-[#0F2433]/15 overflow-hidden border border-[#D4AF37]/50">
+              <div id="blow-progress-bar" class="h-full w-0 bg-gradient-to-r from-[#1B5E20] via-[#D4AF37] to-[#B71C1C] transition-all duration-75 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопки управления микрофоном и фолбэк -->
+      <div class="mt-4 space-y-2.5">
+        <div id="candles-controls" class="space-y-2.5">
+          <button id="btn-mic-start" type="button"
+            class="w-full py-3.5 rounded-xl bg-gradient-to-b from-[#B71C1C] to-[#8E1313] text-[#FDF6E3] font-display font-bold text-base border-2 border-[#D4AF37] shadow-lg active:scale-[0.98]">
+            Включить микрофон и дунуть 🎤
+          </button>
+
+          <button id="btn-manual-blow" type="button"
+            class="w-full py-3 rounded-xl winter-card font-serif font-bold text-sm text-[#FDF6E3] active:scale-[0.98] transition-transform">
+            Подуть нажатием 💨
+          </button>
+        </div>
+
+        <!-- Появляется, когда все 25 свечей потушены -->
+        <button id="btn-candles-done" type="button"
+          class="hidden w-full py-4 rounded-xl bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] text-[#FDF6E3] font-display font-black text-lg border-2 border-[#D4AF37] btn-yes-giant active:scale-95">
+          Ура! Все свечи задуты! Дальше →
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ШАГ 4: ПРИКОЛЫ С КНОПКОЙ «НЕ ПРИДУ» (RSVP)
+         ========================================================= -->
+    <section id="screen-rsvp" class="hidden flex-1 flex-col justify-between px-4 pb-5 pt-2 relative z-10 overflow-hidden">
+      <div class="postcard rounded-2xl p-5 text-center relative overflow-hidden">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <span class="h-[1px] w-10 bg-[#D4AF37]"></span>
+          <span class="text-[#B71C1C] text-xs font-mono font-bold uppercase">Шаг 4 из 5 ★</span>
+          <span class="h-[1px] w-10 bg-[#D4AF37]"></span>
+        </div>
+
+        <div class="relative w-20 h-20 mx-auto mb-3 rounded-full border-[3px] border-[#D4AF37] bg-gradient-to-b from-[#F4E3BC] to-[#E6CA8E] shadow-md flex items-center justify-center vintage-photo-grain">
+          <span class="text-4xl">🥳</span>
+          <span class="absolute -bottom-1.5 -right-2 bg-[#B71C1C] text-[#FDF6E3] text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border border-[#D4AF37]">
+            25 ЛЕТ
+          </span>
+        </div>
+
+        <h2 class="font-display text-2xl font-black text-[#2B1F16] leading-tight mb-1.5">
+          Ты придёшь на мой День Рождения?
+        </h2>
+        <p class="text-xs text-[#5C4433] mb-3.5 italic">
+          Сбор гостей 19 декабря 2027 в 11:00, а в полночь встречаем мои 25 лет!
+        </p>
+
+        <div class="grid grid-cols-3 gap-1.5 text-left bg-[#F3E6C6]/75 border border-[#D4AF37]/60 rounded-xl p-2.5 text-[11px]">
+          <div class="text-center border-r border-[#D4AF37]/40 pr-1">
+            <p class="font-mono text-[9px] uppercase text-[#B71C1C]">Сбор</p>
+            <p class="font-bold text-[#2B1F16] mt-0.5">19.12 • 11:00</p>
+          </div>
+          <div class="text-center border-r border-[#D4AF37]/40 px-1">
+            <p class="font-mono text-[9px] uppercase text-[#B71C1C]">ДР 25 лет</p>
+            <p class="font-bold text-[#2B1F16] mt-0.5">20.12 • 00:00</p>
+          </div>
+          <div class="text-center pl-1">
+            <p class="font-mono text-[9px] uppercase text-[#B71C1C]">Адрес</p>
+            <p class="font-bold text-[#2B1F16] mt-0.5 truncate">Секретный</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Арена кнопок -->
+      <div class="flex-1 flex flex-col items-center justify-center gap-6 my-5 relative min-h-[240px]">
+        <div id="rsvp-broken-caption" class="hidden postcard-scalloped rounded-xl px-4 py-2.5 text-center text-sm font-bold text-[#B71C1C] animate-bounce">
+          Кнопка отказа сломалась! Придётся идти 🎄😎
+        </div>
+
+        <!-- ОГРОМНАЯ кнопка «НЕ ПРИДУ» -->
+        <button id="btn-decline" type="button"
+          class="relative w-full py-6 px-6 rounded-2xl bg-gradient-to-b from-[#C62828] to-[#8E1313] text-[#FDF6E3] font-display font-black text-2xl tracking-wider shadow-[0_10px_24px_rgba(0,0,0,0.45)] border-2 border-[#D4AF37] active:scale-95 overflow-hidden select-none">
+          <span class="relative z-10">НЕ ПРИДУ</span>
+          <svg id="crack-svg-1" class="hidden absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 300 90" preserveAspectRatio="none">
+            <path d="M92 0 L108 28 L94 54 L116 90" stroke="#1E130C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M108 28 L134 38" stroke="#FDF6E3" stroke-width="1.5" fill="none" opacity="0.65"/>
+          </svg>
+          <svg id="crack-svg-2" class="hidden absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 300 90" preserveAspectRatio="none">
+            <path d="M214 0 L196 34 L218 62 L192 90" stroke="#1E130C" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M196 34 L158 46 L142 68" stroke="#1E130C" stroke-width="2.5" fill="none"/>
+            <path d="M44 90 L60 56 L38 28" stroke="#FDF6E3" stroke-width="2" fill="none" opacity="0.5"/>
+          </svg>
+        </button>
+
+        <!-- КРОШЕЧНАЯ кнопка «Приду» -->
+        <button id="btn-accept" type="button"
+          class="px-3.5 py-1.5 rounded-lg bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] text-[#FDF6E3] font-serif font-bold text-xs border border-[#D4AF37] shadow-md active:scale-95 select-none">
+          Приду
+        </button>
+      </div>
+
+      <p class="text-center text-[11px] font-mono text-[#E9CE78]/70 pb-1">
+        Выбери ответ, чтобы получить именной VIP-билет
+      </p>
+
+      <!-- Модальное окно для Тап 1 (Ошибка 403) и Тап 2–3 (Манипуляции с детским фото) -->
+      <div id="rsvp-modal" class="hidden fixed inset-0 z-50 bg-[#07131C]/80 backdrop-blur-sm flex items-center justify-center p-5">
+        <div class="postcard rounded-2xl p-5 w-full max-w-[330px] text-center shadow-2xl screen-enter">
+          <div id="rsvp-modal-visual" class="mb-4 flex justify-center"></div>
+          <h3 id="rsvp-modal-title" class="font-display text-lg font-extrabold text-[#2B1F16] mb-2 leading-snug"></h3>
+          <p id="rsvp-modal-desc" class="text-xs text-[#5C4433] mb-4 leading-relaxed"></p>
+          <button id="rsvp-modal-close" type="button"
+            class="w-full py-3 rounded-xl bg-gradient-to-b from-[#B71C1C] to-[#8E1313] text-[#FDF6E3] font-display font-bold text-sm border border-[#D4AF37] shadow active:scale-95 transition-transform">
+            Понятно
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ШАГ 5: ГЕНЕРАТОР VIP-БИЛЕТА С РАСПОЗНАВАНИЕМ ЛИЦА
+         ========================================================= -->
+    <section id="screen-ticket" class="hidden flex-1 flex-col justify-between px-4 pb-6 pt-1 relative z-10">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between px-1">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#1B5E20]/85 text-[#FDF6E3] border border-[#D4AF37]/60">
+            <span>🎟️</span> Шаг 5 из 5
+          </span>
+          <button id="btn-ticket-skip" type="button"
+            class="text-[11px] font-mono text-[#E9CE78]/80 underline underline-offset-2 active:opacity-70">
+            Пропустить (тест)
+          </button>
+        </div>
+
+        <!-- Форма загрузки фото -->
+        <div id="ticket-form-card" class="postcard rounded-2xl p-4">
+          <p class="text-[11px] font-mono uppercase tracking-widest text-[#B71C1C] font-bold">
+            Именной пригласительный
+          </p>
+          <h2 class="font-display text-2xl font-black text-[#2B1F16] leading-tight mt-0.5">
+            Получи свой VIP-билет 🎟️
+          </h2>
+          <p class="text-xs text-[#5C4433] mt-1 mb-4 leading-relaxed">
+            Введи своё имя и загрузи совместное фото с именинником — нейросеть проверит, что на снимке действительно он!
+          </p>
+
+          <div class="space-y-3">
+            <div>
+              <label for="guest-name-input" class="block font-mono text-[10px] uppercase font-bold text-[#6B5238] mb-1">
+                Твоё имя
+              </label>
+              <input id="guest-name-input" type="text" maxlength="26" placeholder="Например: Алексей"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFDF7] border-2 border-[#D4AF37]/80 text-[#2B1F16] font-serif text-sm focus:outline-none focus:border-[#B71C1C]" />
+            </div>
+
+            <div>
+              <label class="block font-mono text-[10px] uppercase font-bold text-[#6B5238] mb-1">
+                Совместное фото с именинником
+              </label>
+              <label for="guest-photo-input"
+                class="flex flex-col items-center justify-center w-full min-h-[120px] rounded-xl border-2 border-dashed border-[#B71C1C]/60 bg-[#F3E6C6]/65 cursor-pointer p-3 text-center hover:bg-[#F3E6C6] transition-colors">
+                <img id="guest-photo-preview" alt="Предпросмотр" class="hidden max-h-40 rounded-lg border-2 border-[#D4AF37] shadow mb-2 object-cover" />
+                <div id="guest-photo-placeholder">
+                  <span class="text-3xl block mb-1">📷</span>
+                  <span class="text-xs font-bold text-[#2B1F16] block">Нажми, чтобы выбрать фото</span>
+                  <span class="text-[10px] font-mono text-[#6B5238]">JPG / PNG с галереи телефона</span>
+                </div>
+                <input id="guest-photo-input" type="file" accept="image/*" class="hidden" />
+              </label>
+            </div>
+
+            <!-- Статус проверки нейросетью -->
+            <div id="face-status-box" class="hidden rounded-xl px-3 py-2.5 text-xs font-mono bg-[#0F2433] text-[#FDF6E3] border border-[#D4AF37]/60 flex items-center gap-2.5">
+              <span id="face-status-icon" class="text-base shrink-0">⏳</span>
+              <span id="face-status-text" class="leading-snug">Подготовка проверки...</span>
+            </div>
+
+            <button id="btn-verify-face" type="button"
+              class="w-full py-3.5 rounded-xl bg-gradient-to-b from-[#B71C1C] to-[#8E1313] text-[#FDF6E3] font-display font-bold text-base border-2 border-[#D4AF37] shadow-lg active:scale-[0.98]">
+              Проверить фото и выписать билет ✨
+            </button>
+          </div>
+        </div>
+
+        <!-- Готовый VIP-билет на Canvas -->
+        <div id="ticket-result-card" class="hidden space-y-3 screen-enter">
+          <div class="winter-card rounded-2xl p-3 text-center">
+            <p id="ticket-verify-badge" class="inline-block font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#1B5E20] text-[#FDF6E3] border border-[#D4AF37] mb-2.5">
+              ✓ Лицо подтверждено
+            </p>
+            <canvas id="vip-ticket-canvas" width="760" height="1080" class="w-full h-auto rounded-xl shadow-2xl border border-[#D4AF37]/60"></canvas>
+          </div>
+
+          <div class="grid grid-cols-1 gap-2.5">
+            <button id="btn-download-ticket" type="button"
+              class="w-full py-3.5 rounded-xl bg-gradient-to-b from-[#B71C1C] to-[#8E1313] text-[#FDF6E3] font-display font-bold text-base border-2 border-[#D4AF37] shadow-lg active:scale-[0.98]">
+              Скачать билет 🎟️
+            </button>
+            <button id="btn-enter-app" type="button"
+              class="w-full py-3.5 rounded-xl bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] text-[#FDF6E3] font-display font-bold text-base border-2 border-[#D4AF37] shadow-lg active:scale-[0.98]">
+              Перейти к празднику →
+            </button>
+            <button id="btn-remake-ticket" type="button"
+              class="w-full py-2 text-xs font-mono text-[#E9CE78]/80 underline underline-offset-2">
+              Сделать билет с другим фото
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ШАГ 6: ОСНОВНОЕ ПРИЛОЖЕНИЕ (4 ВКЛАДКИ)
+         ========================================================= -->
+    <section id="screen-main" class="hidden flex-1 flex-col relative z-10 pb-24">
+
+      <!-- Шапка -->
+      <header class="px-4 pt-2 pb-3 flex items-center justify-between border-b border-[#D4AF37]/30">
+        <div>
+          <p class="text-[10px] font-mono uppercase tracking-widest text-[#E9CE78]">Юбилей • 25 лет</p>
+          <h1 id="main-header-title" class="font-display text-xl font-black text-[#FDF6E3]">Главная 🎄</h1>
+        </div>
+        <div class="px-2.5 py-1 rounded-full bg-[#1B5E20] border border-[#D4AF37] text-[11px] font-mono font-bold text-[#FDF6E3] flex items-center gap-1.5 shadow">
+          <span class="w-2 h-2 rounded-full bg-[#E9CE78]"></span>
+          VIP гость
+        </div>
+      </header>
+
+      <main class="flex-1 px-4 pt-4 space-y-4 overflow-y-auto no-scrollbar">
+
+        <!-- === ВКЛАДКА 1: ГЛАВНАЯ === -->
+        <div id="tab-home" class="space-y-4 screen-enter">
+          <!-- Главная открытка-приглашение -->
+          <div class="postcard rounded-2xl p-5 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-[#B71C1C] text-[#FDF6E3] font-bold">
+                🎟️ Приглашение
+              </span>
+              <span class="vintage-stamp font-mono text-[10px] font-bold px-2 py-0.5 rounded">
+                25 ЛЕТ ★
+              </span>
+            </div>
+
+            <h2 class="font-display text-2xl font-black text-[#2B1F16] mb-1">
+              Мой День Рождения! 🎂
+            </h2>
+            <p class="text-xs text-[#5C4433] mb-4 italic">
+              Уютный зимний праздник в кругу самых близких: игры, тосты, сюрпризы и встреча 25-летия в полночь!
+            </p>
+
+            <div class="space-y-2 text-sm">
+              <div class="flex items-center gap-3 bg-[#F3E6C6]/75 border border-[#D4AF37]/50 rounded-xl px-3 py-2">
+                <span class="text-lg">🕚</span>
+                <div>
+                  <p class="font-mono text-[10px] uppercase text-[#B71C1C] font-bold leading-none">Сбор гостей</p>
+                  <p class="font-bold text-[#2B1F16] mt-0.5">19 декабря 2027 в 11:00</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-[#F3E6C6]/75 border border-[#D4AF37]/50 rounded-xl px-3 py-2">
+                <span class="text-lg">🥂</span>
+                <div>
+                  <p class="font-mono text-[10px] uppercase text-[#1B5E20] font-bold leading-none">Сам день рождения (25 лет)</p>
+                  <p class="font-bold text-[#2B1F16] mt-0.5">20 декабря 2027 в 00:00</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-[#F3E6C6]/75 border border-[#D4AF37]/50 rounded-xl px-3 py-2">
+                <span class="text-lg">📍</span>
+                <div>
+                  <p class="font-mono text-[10px] uppercase text-[#7A5C3E] leading-none">Адрес</p>
+                  <p class="font-bold text-[#2B1F16] mt-0.5">Секретный</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 bg-[#F3E6C6]/75 border border-[#D4AF37]/50 rounded-xl px-3 py-2">
+                <span class="text-lg">✨</span>
+                <div>
+                  <p class="font-mono text-[10px] uppercase text-[#7A5C3E] leading-none">Дресс-код</p>
+                  <p class="font-bold text-[#2B1F16] mt-0.5">Праздничный и уютный, можно с новогодними элементами</p>
+                </div>
+              </div>
+            </div>
+
+            <button id="btn-home-open-ticket" type="button"
+              class="mt-4 w-full py-2.5 rounded-xl bg-gradient-to-b from-[#1B5E20] to-[#124116] text-[#FDF6E3] font-display font-bold text-sm border border-[#D4AF37] shadow active:scale-[0.98]">
+              🎟️ Посмотреть / создать VIP-билет
+            </button>
+          </div>
+
+          <!-- Живой таймер обратного отсчета до 19.12.2027 11:00 -->
+          <div class="winter-card rounded-2xl p-4 text-center">
+            <p class="font-mono text-[11px] uppercase tracking-widest text-[#E9CE78] mb-3">
+              ⏳ До сбора гостей (19.12.2027 • 11:00)
+            </p>
+            <div class="grid grid-cols-4 gap-2">
+              <div class="bg-[#0A1822]/80 border border-[#D4AF37]/40 rounded-xl py-2.5">
+                <p id="cd-days" class="font-display text-2xl font-black text-[#FDF6E3]">000</p>
+                <p class="font-mono text-[10px] text-[#E9CE78]/80">дней</p>
+              </div>
+              <div class="bg-[#0A1822]/80 border border-[#D4AF37]/40 rounded-xl py-2.5">
+                <p id="cd-hours" class="font-display text-2xl font-black text-[#FDF6E3]">00</p>
+                <p class="font-mono text-[10px] text-[#E9CE78]/80">часов</p>
+              </div>
+              <div class="bg-[#0A1822]/80 border border-[#D4AF37]/40 rounded-xl py-2.5">
+                <p id="cd-mins" class="font-display text-2xl font-black text-[#FDF6E3]">00</p>
+                <p class="font-mono text-[10px] text-[#E9CE78]/80">минут</p>
+              </div>
+              <div class="bg-[#0A1822]/80 border border-[#D4AF37]/40 rounded-xl py-2.5">
+                <p id="cd-secs" class="font-display text-2xl font-black text-[#B71C1C] bg-[#FDF6E3] mx-2 rounded-md">00</p>
+                <p class="font-mono text-[10px] text-[#E9CE78]/80 mt-0.5">секунд</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Компактная тестовая панель для быстрого перехода к любому шагу -->
+          <div class="winter-card rounded-2xl p-3.5">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-[#E9CE78] mb-2.5">
+              🧪 Тестовая панель (быстрый повтор этапов)
+            </p>
+            <div class="grid grid-cols-3 gap-1.5 text-[11px] font-mono">
+              <button onclick="jumpToStep('captcha')" type="button" class="py-2 px-1.5 rounded-lg bg-[#FDF6E3]/10 border border-[#D4AF37]/35 text-[#FDF6E3] active:scale-95">1. Капча</button>
+              <button onclick="jumpToStep('call')" type="button" class="py-2 px-1.5 rounded-lg bg-[#FDF6E3]/10 border border-[#D4AF37]/35 text-[#FDF6E3] active:scale-95">2. Звонок</button>
+              <button onclick="jumpToStep('candles')" type="button" class="py-2 px-1.5 rounded-lg bg-[#FDF6E3]/10 border border-[#D4AF37]/35 text-[#FDF6E3] active:scale-95">3. Свечи</button>
+              <button onclick="jumpToStep('rsvp')" type="button" class="py-2 px-1.5 rounded-lg bg-[#FDF6E3]/10 border border-[#D4AF37]/35 text-[#FDF6E3] active:scale-95">4. Кнопка</button>
+              <button onclick="jumpToStep('ticket')" type="button" class="py-2 px-1.5 rounded-lg bg-[#FDF6E3]/10 border border-[#D4AF37]/35 text-[#FDF6E3] active:scale-95 col-span-2">5. VIP-билет (Face ID)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- === ВКЛАДКА 2: ИГРЫ === -->
+        <div id="tab-games" class="hidden space-y-4 pb-3 screen-enter">
+          <div>
+            <div class="flex items-center justify-between mb-2.5 px-1">
+              <h2 class="font-display text-lg font-bold text-[#FDF6E3]">Мини-игры (8)</h2>
+              <span class="font-mono text-[10px] text-[#E9CE78]">Этапы 4–5</span>
+            </div>
+            <div id="games-grid" class="grid grid-cols-2 gap-2.5"></div>
+          </div>
+
+          <!-- Таблица рекордов (Supabase) -->
+          <div class="postcard rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="font-display text-base font-extrabold text-[#2B1F16]">🏆 Таблица рекордов</h3>
+                <p class="font-mono text-[10px] text-[#1B5E20] font-bold">Supabase • Подключим на Этапе 5</p>
+              </div>
+              <span class="text-xl">🌟</span>
+            </div>
+
+            <div class="flex items-end justify-center gap-2.5 mt-2 mb-4">
+              <div class="flex-1 flex flex-col items-center">
+                <div class="w-10 h-10 rounded-full bg-[#EFE0BC] border-2 border-[#9E9E9E] flex items-center justify-center text-lg mb-1">😎</div>
+                <p class="text-xs font-bold text-[#2B1F16]">Макс</p>
+                <p class="font-mono text-[10px] text-[#6B5238] mb-1">1 420</p>
+                <div class="w-full h-12 rounded-t-lg bg-[#D7CFC0] border border-[#B5A996] flex items-center justify-center text-sm font-bold">🥈</div>
+              </div>
+              <div class="flex-1 flex flex-col items-center">
+                <span class="text-sm">👑</span>
+                <div class="w-12 h-12 rounded-full bg-[#F7E3A8] border-2 border-[#D4AF37] flex items-center justify-center text-xl mb-1 shadow">🤩</div>
+                <p class="text-xs font-extrabold text-[#B71C1C]">Аня</p>
+                <p class="font-mono text-[10px] text-[#6B5238] mb-1">2 150</p>
+                <div class="w-full h-16 rounded-t-lg bg-gradient-to-t from-[#D4AF37] to-[#E9CE78] border border-[#B08D26] flex items-center justify-center text-lg font-bold">🥇</div>
+              </div>
+              <div class="flex-1 flex flex-col items-center">
+                <div class="w-10 h-10 rounded-full bg-[#EFE0BC] border-2 border-[#CD7F32] flex items-center justify-center text-lg mb-1">🥳</div>
+                <p class="text-xs font-bold text-[#2B1F16]">Дима</p>
+                <p class="font-mono text-[10px] text-[#6B5238] mb-1">1 180</p>
+                <div class="w-full h-10 rounded-t-lg bg-[#DFC3A5] border border-[#B89470] flex items-center justify-center text-sm font-bold">🥉</div>
+              </div>
+            </div>
+
+            <div class="space-y-1.5 font-mono text-xs">
+              <div class="flex items-center justify-between bg-[#F3E6C6]/70 rounded-lg px-3 py-1.5 border border-[#D4AF37]/40">
+                <span>#4 Лена</span>
+                <span class="font-bold text-[#1B5E20]">980 очк.</span>
+              </div>
+              <div class="flex items-center justify-between bg-[#F3E6C6]/70 rounded-lg px-3 py-1.5 border border-[#D4AF37]/40">
+                <span>#5 Игорь</span>
+                <span class="font-bold text-[#1B5E20]">840 очк.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === ВКЛАДКА 3: ТУСОВКА === -->
+        <div id="tab-party" class="hidden space-y-3 pb-3 screen-enter">
+          <div class="px-1">
+            <h2 class="font-display text-lg font-bold text-[#FDF6E3]">Интерактивы вечера ✨</h2>
+            <p class="text-xs text-[#E9CE78]/80">Откроются на Этапе 3</p>
+          </div>
+
+          <div onclick="showBottomToast('Шейкер вечеринки на встряхивание телефона (акселерометр) появится на Этапе 3! 🥂')"
+            class="postcard rounded-2xl p-4 cursor-pointer active:scale-[0.98] transition-transform">
+            <div class="flex items-start gap-3.5 mb-3">
+              <div class="w-12 h-12 rounded-xl bg-[#1B5E20]/15 border border-[#1B5E20]/40 flex items-center justify-center text-2xl shrink-0">🥂</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="font-display font-bold text-base text-[#2B1F16]">Шейкер вечеринки</h3>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#B71C1C] text-[#FDF6E3]">Этап 3</span>
+                </div>
+                <p class="text-xs text-[#5C4433] mt-1">Встряхни телефон — получи карточку в одном из 4 режимов:</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5 text-xs font-bold text-[#2B1F16]">
+              <div class="bg-[#F3E6C6] border border-[#D4AF37]/50 rounded-lg px-2.5 py-1.5">🥂 Тосты</div>
+              <div class="bg-[#F3E6C6] border border-[#D4AF37]/50 rounded-lg px-2.5 py-1.5">🔮 Предсказания</div>
+              <div class="bg-[#F3E6C6] border border-[#D4AF37]/50 rounded-lg px-2.5 py-1.5">🎯 Челленджи</div>
+              <div class="bg-[#F3E6C6] border border-[#D4AF37]/50 rounded-lg px-2.5 py-1.5">🍹 Напитки</div>
+            </div>
+          </div>
+
+          <div onclick="showBottomToast('Викторина со стираемыми скретч-подсказками откроется на Этапе 3! 🪙')"
+            class="postcard rounded-2xl p-4 cursor-pointer active:scale-[0.98] transition-transform">
+            <div class="flex items-start gap-3.5 mb-2.5">
+              <div class="w-12 h-12 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center text-2xl shrink-0">🪙</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="font-display font-bold text-base text-[#2B1F16]">Викторина + скретч-карта</h3>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#B71C1C] text-[#FDF6E3]">Этап 3</span>
+                </div>
+                <p class="text-xs text-[#5C4433] mt-1">Сотри защитный слой пальцем, чтобы открыть подсказку к вопросу.</p>
+              </div>
+            </div>
+            <div class="rounded-lg py-2 px-3 text-center bg-gradient-to-r from-[#C8C2B4] via-[#DFDAD0] to-[#C8C2B4] border border-dashed border-[#7A6A53]">
+              <span class="font-mono text-[11px] font-bold text-[#3F3426]">✨ Потри здесь пальцем (Этап 3) ✨</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- === ВКЛАДКА 4: ФОТОБУДКА === -->
+        <div id="tab-photobooth" class="hidden space-y-4 pb-3 screen-enter">
+          <div class="postcard rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="font-display text-base font-extrabold text-[#2B1F16]">📸 Праздничная фотобудка</h3>
+                <p class="text-xs text-[#5C4433]">Рамка праздника + детская фигурка</p>
+              </div>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#B71C1C] text-[#FDF6E3]">Этап 3</span>
+            </div>
+
+            <div onclick="showBottomToast('Фотобудка с камерой и наложением детской фигурки заработает на Этапе 3! 📸')"
+              class="relative aspect-[4/5] w-full rounded-xl bg-[#102534] border-[3px] border-[#D4AF37] overflow-hidden flex flex-col items-center justify-center cursor-pointer shadow-inner">
+              <div class="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-[#E9CE78]"></div>
+              <div class="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-[#E9CE78]"></div>
+              <div class="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-[#E9CE78]"></div>
+              <div class="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-[#E9CE78]"></div>
+
+              <div class="text-center px-6">
+                <div class="w-16 h-16 mx-auto mb-2.5 rounded-full bg-[#FDF6E3]/10 border border-[#D4AF37]/50 flex items-center justify-center text-3xl">🤳</div>
+                <p class="font-display text-sm font-bold text-[#FDF6E3]">Камера или загрузка фото</p>
+                <p class="text-[11px] text-[#E9CE78]/80 mt-0.5">Сохрани открытку себе на телефон</p>
+              </div>
+
+              <div class="absolute bottom-3.5 left-3.5 bg-[#B71C1C] border border-[#D4AF37] text-[#FDF6E3] font-mono text-[10px] font-bold px-2.5 py-1 rounded">
+                ЮБИЛЕЙ 25 ЛЕТ ★
+              </div>
+
+              <div class="absolute -bottom-1 -right-1 w-24 h-24 bg-[#FDF6E3] rounded-tl-2xl border-t-4 border-l-4 border-[#D4AF37] shadow-xl flex flex-col items-center justify-center rotate-[-5deg]">
+                <span class="text-4xl">👶🏻</span>
+                <span class="font-mono text-[8px] font-bold text-[#2B1F16] uppercase mt-0.5">Из детства</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Нижняя навигация -->
+      <nav class="retro-nav fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-30 px-2.5 py-2">
+        <div class="grid grid-cols-4 gap-1.5">
+          <button onclick="switchMainTab('home')" data-tab="home" type="button"
+            class="retro-nav-btn active flex flex-col items-center justify-center py-1.5 rounded-xl">
+            <span class="text-lg leading-none mb-1">🎄</span>
+            <span class="text-[10px] font-bold font-serif">Главная</span>
+          </button>
+          <button onclick="switchMainTab('games')" data-tab="games" type="button"
+            class="retro-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl">
+            <span class="text-lg leading-none mb-1">🎲</span>
+            <span class="text-[10px] font-bold font-serif">Игры</span>
+          </button>
+          <button onclick="switchMainTab('party')" data-tab="party" type="button"
+            class="retro-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl">
+            <span class="text-lg leading-none mb-1">🥂</span>
+            <span class="text-[10px] font-bold font-serif">Тусовка</span>
+          </button>
+          <button onclick="switchMainTab('photobooth')" data-tab="photobooth" type="button"
+            class="retro-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl">
+            <span class="text-lg leading-none mb-1">📸</span>
+            <span class="text-[10px] font-bold font-serif">Фотобудка</span>
+          </button>
+        </div>
+      </nav>
+    </section>
+
+  </div>
+
+  <!-- =========================================================
+       JAVASCRIPT ЛОГИКА ПРИЛОЖЕНИЯ (ЭТАПЫ 1 + 2)
+       ========================================================= -->
+  <script>
+    // =========================================================
+    // === 1. КОНФИГУРАЦИЯ ДЛЯ GITHUB PAGES ===
+    // Загрузи реальные файлы в репозиторий по указанным путям.
+    // Если файл еще не загружен — сработает четкая ретро SVG-заглушка.
+    // =========================================================
+    const CONFIG = {
+      event: {
+        milestone: 25,
+        gatheringDateISO: '2027-12-19T11:00:00',
+        gatheringText: '19.12.2027 в 11:00',
+        birthdayText: '20.12.2027 в 00:00',
+        address: 'Секретный',
+        dressCode: 'праздничный и уютный, можно с новогодними элементами'
+      },
+      // 13 реальных детских фото
+      realPhotos: Array.from({ length: 13 }, (_, i) => `assets/child/${i + 1}.jpg`),
+      // 45 нейросетевых аналогов
+      aiPhotos: Array.from({ length: 45 }, (_, i) => `assets/ai/${i + 1}.jpg`),
+      // 5 эталонных актуальных фото именинника для face-api.js
+      refPhotos: Array.from({ length: 5 }, (_, i) => `assets/ref/${i + 1}.jpg`),
+      // Видео для входящего звонка из детства
+      callVideo: 'assets/call.mp4',
+      // Аватар звонка (фото с ретро-телефоном)
+      callAvatar: 'assets/child/12.jpg',
+      // CDN моделей face-api.js
+      faceModelsUrl: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model',
+      // Supabase (подключим на Этапе 5)
+      supabase: {
+        url: 'YOUR_SUPABASE_PROJECT_URL',
+        anonKey: 'YOUR_SUPABASE_ANON_KEY',
+        enabled: false
+      }
+    };
+
+    const MINI_GAMES = [
+      { id: 'catch-cake',  title: 'Поймай торт',        icon: '🎂', desc: 'Лови торт, уворачивайся от дел' },
+      { id: 'flappy',      title: 'Flappy Birthday',    icon: '🎈', desc: 'Лети между праздничных свечей' },
+      { id: 'whac',        title: 'Поймай именинника',  icon: '🔨', desc: 'Успей нажать за секунду' },
+      { id: 'timeline',    title: 'Собери хронологию',  icon: '⏳', desc: 'От детского сада до сегодня' },
+      { id: 'memory',      title: 'Найди пару',         icon: '🃏', desc: 'Фото из детства + сейчас' },
+      { id: 'cake-stack',  title: 'Башня из торта',     icon: '🍰', desc: 'Собери самый высокий торт' },
+      { id: 'puzzle-3x3',  title: 'Пятнашки 3×3',       icon: '🧩', desc: 'Собери портрет из кусочков' },
+      { id: 'defuse-gift', title: 'Разминируй подарок', icon: '🎁', desc: 'Перережь правильный провод' }
+    ];
+
+    // =========================================================
+    // === СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===
+    // =========================================================
+    const state = {
+      currentScreen: 'captcha',
+      // Капча
+      captchaItems: [],
+      selectedIds: new Set(),
+      testMode: false,
+      // Звонок
+      ringInterval: null,
+      audioCtx: null,
+      callTimerInterval: null,
+      callSubTimers: [],
+      callSeconds: 0,
+      // Свечи
+      candlesLit: Array(25).fill(true),
+      micStream: null,
+      micAudioCtx: null,
+      micRafId: null,
+      lastBlowExtinguish: 0,
+      // RSVP
+      declineCount: 0,
+      pendingModalAction: null,
+      // Билет
+      faceModelsLoaded: false,
+      uploadedImgEl: null,
+      lastTicketGenerated: false,
+      // Главная
+      activeTab: 'home'
+    };
+
+    // =========================================================
+    // === РЕТРО SVG-ЗАГЛУШКИ (БЕЗ BASE64, ЧЕТКИЕ НА ЛЮБОМ ЭКРАНЕ) ===
+    // =========================================================
+    const CHILD_LABELS = ['С мамой', 'С вишней', 'На велике', 'На дельфине', 'В батуте', 'На пляже', 'У ёлки', 'С грибом', 'Аккордеон', 'Ролики', 'В лесу', 'С трубкой', 'Подсолнух'];
+    const CHILD_YEARS  = ['2008', '2007', '2011', '2010', '2010', '2010', '2013', '2009', '2012', '2009', '2008', '2005', '2003'];
+    const AI_LABELS    = ['НЕЙРО_v4', '6 ПАЛЬЦЕВ', 'СИНТЕЗ', 'ПРОМПТ', 'АРТЕФАКТ', 'ГЛИТЧ', 'AI_GEN', 'МОДЕЛЬ_X', 'ФЕЙК'];
+
+    function createRetroChildSvg(index, customLabel = null) {
+      const label = customLabel || CHILD_LABELS[index % CHILD_LABELS.length];
+      const year  = CHILD_YEARS[index % CHILD_YEARS.length];
+      return `
+        <svg viewBox="0 0 120 120" class="w-full h-full block" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="120" fill="#FFFDF7"/>
+          <rect x="7" y="7" width="106" height="90" rx="4" fill="#F0DDB7" stroke="#C9B382" stroke-width="1.5"/>
+          <circle cx="60" cy="44" r="18" fill="#E5BA95" stroke="#8C6239" stroke-width="1.5"/>
+          <path d="M42 40 Q60 20 78 40 Q74 28 60 28 Q46 28 42 40 Z" fill="#5C3D28"/>
+          <circle cx="53" cy="44" r="2.2" fill="#2B1F16"/>
+          <circle cx="67" cy="44" r="2.2" fill="#2B1F16"/>
+          <path d="M54 52 Q60 57 66 52" stroke="#8C4A32" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M34 97 Q38 69 60 69 Q82 69 86 97 Z" fill="#1B5E20"/>
+          <polygon points="96,15 98,21 104,21 99,24 101,30 96,26 91,30 93,24 88,21 94,21" fill="#B71C1C"/>
+          <text x="60" y="111" text-anchor="middle" font-family="PT Mono, monospace" font-size="9" font-weight="bold" fill="#6B5238">${label} • ${year}</text>
+        </svg>
+      `;
+    }
+
+    function createRetroAiSvg(index) {
+      const tag = AI_LABELS[index % AI_LABELS.length];
+      return `
+        <svg viewBox="0 0 120 120" class="w-full h-full block" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="120" fill="#162938"/>
+          <path d="M0 30 H120 M0 60 H120 M0 90 H120 M30 0 V120 M60 0 V120 M90 0 V120" stroke="#D4AF37" stroke-opacity="0.16" stroke-width="1"/>
+          <rect x="34" y="26" width="52" height="44" rx="12" fill="#243E52" stroke="#E9CE78" stroke-width="2"/>
+          <circle cx="49" cy="46" r="5" fill="#E9CE78"/>
+          <circle cx="71" cy="46" r="5" fill="#E9CE78"/>
+          <path d="M46 59 H74" stroke="#B71C1C" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="26" x2="60" y2="14" stroke="#E9CE78" stroke-width="2"/>
+          <circle cx="60" cy="12" r="3.5" fill="#B71C1C"/>
+          <rect x="18" y="84" width="84" height="20" rx="5" fill="#091722" stroke="#D4AF37" stroke-opacity="0.6"/>
+          <text x="60" y="97" text-anchor="middle" font-family="PT Mono, monospace" font-size="9" font-weight="bold" fill="#E9CE78">${tag}</text>
+        </svg>
+      `;
+    }
+
+    // Вспомогательная вставка фото с автоматическим SVG-фолбэком
+    function mountImageWithFallback(container, src, fallbackSvgHtml, imgClasses = 'w-full h-full object-cover') {
+      container.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Фото';
+      img.className = imgClasses;
+      img.onerror = () => {
+        container.innerHTML = fallbackSvgHtml;
+      };
+      container.appendChild(img);
+    }
+
+    // =========================================================
+    // === УТИЛИТЫ: ВИБРАЦИЯ, ТОСТЫ, СНЕГ, КОНФЕТТИ ===
+    // =========================================================
+    function triggerHaptic(pattern) {
+      try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) {}
+    }
+
+    let topToastTimer = null;
+    function showTopToast(message, type = 'error') {
+      const toast = document.getElementById('top-toast');
+      const inner = document.getElementById('top-toast-inner');
+      const icon  = document.getElementById('top-toast-icon');
+      const text  = document.getElementById('top-toast-text');
+
+      text.textContent = message;
+      if (type === 'success') {
+        inner.className = 'rounded-xl px-4 py-3 shadow-2xl border-2 flex items-center gap-3 bg-[#1B5E20] border-[#D4AF37] text-[#FDF6E3]';
+        icon.textContent = '🎉';
+      } else {
+        inner.className = 'rounded-xl px-4 py-3 shadow-2xl border-2 flex items-center gap-3 bg-[#B71C1C] border-[#D4AF37] text-[#FDF6E3]';
+        icon.textContent = '🚫';
+      }
+
+      toast.classList.remove('opacity-0', '-translate-y-6');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(topToastTimer);
+      topToastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-6');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 3100);
+    }
+
+    let bottomToastTimer = null;
+    function showBottomToast(message) {
+      const toast = document.getElementById('bottom-toast');
+      document.getElementById('bottom-toast-text').textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-6');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      triggerHaptic(18);
+      clearTimeout(bottomToastTimer);
+      bottomToastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-6');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2600);
+    }
+
+    function fireConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#D4AF37', '#B71C1C', '#FDF6E3', '#1B5E20', '#E9CE78', '#E53935'];
+      const particles = Array.from({ length: 100 }, () => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 110,
+        y: canvas.height * 0.42,
+        vx: (Math.random() - 0.5) * 14,
+        vy: Math.random() * -14 - 4,
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 14,
+        gravity: 0.34,
+        opacity: 1
+      }));
+
+      let frame = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.vx *= 0.99;
+          p.rotation += p.vRot;
+          if (frame > 48) p.opacity -= 0.02;
+          if (p.opacity > 0 && p.y < canvas.height + 20) {
+            alive = true;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+            ctx.restore();
+          }
+        });
+        frame++;
+        if (alive && frame < 145) requestAnimationFrame(animate);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      animate();
+    }
+
+    function initSnowfall() {
+      const canvas = document.getElementById('snow-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const flakes = Array.from({ length: 55 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2.4 + 0.9,
+        speedY: Math.random() * 0.8 + 0.35,
+        drift: Math.random() * Math.PI * 2,
+        opacity: Math.random() * 0.55 + 0.25
+      }));
+
+      function drawSnow() {
+        ctx.clearRect(0, 0, width, height);
+        flakes.forEach(f => {
+          f.y += f.speedY;
+          f.drift += 0.015;
+          f.x += Math.sin(f.drift) * 0.35;
+          if (f.y > height + 5) { f.y = -5; f.x = Math.random() * width; }
+          if (f.x > width + 5) f.x = -5;
+          if (f.x < -5) f.x = width + 5;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(253, 246, 227, ${f.opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(drawSnow);
+      }
+      drawSnow();
+    }
+
+    // Переключение между 6 экранами с очисткой активных ресурсов
+    function showScreen(screenName) {
+      cleanupCallResources();
+      stopMicrophone();
+
+      ['captcha', 'call', 'candles', 'rsvp', 'ticket', 'main'].forEach(name => {
+        const el = document.getElementById(`screen-${name}`);
+        if (name === screenName) {
+          el.classList.remove('hidden');
+          el.classList.add('flex', 'screen-enter');
+        } else {
+          el.classList.add('hidden');
+          el.classList.remove('flex', 'screen-enter');
+        }
+      });
+
+      state.currentScreen = screenName;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (screenName === 'call') initIncomingCallScreen();
+      if (screenName === 'candles') initCandlesScreen();
+      if (screenName === 'rsvp') resetRsvpScreen();
+    }
+
+    function jumpToStep(stepName) {
+      if (stepName === 'captcha') generateCaptchaRound();
+      if (stepName === 'ticket') resetTicketView(false);
+      showScreen(stepName);
+    }
+
+    // =========================================================
+    // === ШАГ 1: ЛОГИКА ОБЯЗАТЕЛЬНОЙ КАПЧИ ===
+    // =========================================================
+    const REAL_POOL = CONFIG.realPhotos.map((src, i) => ({ id: `real-${i}`, isReal: true, src, idx: i }));
+    const AI_POOL   = CONFIG.aiPhotos.map((src, i) => ({ id: `ai-${i}`, isReal: false, src, idx: i }));
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateCaptchaRound() {
+      const pickedReal = shuffleArray(REAL_POOL).slice(0, 3);
+      const pickedAI   = shuffleArray(AI_POOL).slice(0, 6);
+      state.captchaItems = shuffleArray([...pickedReal, ...pickedAI]);
+      state.selectedIds.clear();
+      document.getElementById('captcha-success-stamp').classList.add('hidden');
+      renderCaptchaGrid();
+      updateVerifyButton();
+    }
+
+    function renderCaptchaGrid() {
+      const grid = document.getElementById('captcha-grid');
+      grid.innerHTML = '';
+
+      state.captchaItems.forEach(item => {
+        const isSelected = state.selectedIds.has(item.id);
+        const isTestHighlight = state.testMode && item.isReal;
+
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.className = `relative aspect-square rounded-lg overflow-hidden transition-all duration-200 select-none active:scale-95 bg-[#FFFDF7] ${
+          isSelected
+            ? 'ring-[3px] ring-[#B71C1C] scale-[0.94] shadow-md'
+            : isTestHighlight
+              ? 'ring-[3px] ring-[#1B5E20] shadow-md'
+              : 'ring-1 ring-[#C9B382]'
+        }`;
+
+        const imgBox = document.createElement('div');
+        imgBox.className = 'w-full h-full';
+        const fallbackSvg = item.isReal ? createRetroChildSvg(item.idx) : createRetroAiSvg(item.idx);
+        mountImageWithFallback(imgBox, item.src, fallbackSvg);
+        tile.appendChild(imgBox);
+
+        if (isTestHighlight) {
+          const badge = document.createElement('span');
+          badge.className = 'absolute top-1 left-1 bg-[#1B5E20] text-[#FDF6E3] font-mono text-[8px] font-bold px-1.5 py-0.5 rounded shadow z-20 border border-[#D4AF37]';
+          badge.textContent = 'REAL';
+          tile.appendChild(badge);
+        }
+
+        if (isSelected) {
+          const check = document.createElement('div');
+          check.className = 'absolute top-1 right-1 w-5 h-5 rounded-full bg-[#B71C1C] text-[#FDF6E3] border border-[#FDF6E3] flex items-center justify-center font-bold text-[11px] shadow z-20';
+          check.textContent = '✓';
+          tile.appendChild(check);
+        }
+
+        tile.addEventListener('click', () => toggleCaptchaTile(item.id));
+        grid.appendChild(tile);
+      });
+    }
+
+    function toggleCaptchaTile(id) {
+      triggerHaptic(15);
+      if (state.selectedIds.has(id)) {
+        state.selectedIds.delete(id);
+      } else {
+        if (state.selectedIds.size >= 3) {
+          showTopToast('Можно выбрать только 3 фотографии!', 'error');
+          return;
+        }
+        state.selectedIds.add(id);
+      }
+      renderCaptchaGrid();
+      updateVerifyButton();
+    }
+
+    function updateVerifyButton() {
+      const btn = document.getElementById('btn-verify-captcha');
+      const count = state.selectedIds.size;
+      btn.textContent = `Проверить (${count}/3)`;
+
+      if (count === 3) {
+        btn.disabled = false;
+        btn.className = 'w-full py-3.5 rounded-xl font-display font-bold text-base tracking-wide transition-all duration-200 bg-gradient-to-b from-[#B71C1C] to-[#8E1313] text-[#FDF6E3] border-2 border-[#D4AF37] shadow-lg active:scale-[0.98] cursor-pointer';
+      } else {
+        btn.disabled = true;
+        btn.className = 'w-full py-3.5 rounded-xl font-display font-bold text-base tracking-wide transition-all duration-200 bg-[#1B3A4E] text-[#FDF6E3]/40 border border-[#D4AF37]/30 cursor-not-allowed';
+      }
+    }
+
+    function verifyCaptcha() {
+      const selectedItems = state.captchaItems.filter(item => state.selectedIds.has(item.id));
+      const allReal = selectedItems.length === 3 && selectedItems.every(item => item.isReal);
+
+      if (allReal) {
+        triggerHaptic([40, 30, 80]);
+        fireConfetti();
+        document.getElementById('captcha-success-stamp').classList.remove('hidden');
+        showTopToast('Отлично! Узнал именинника! 🎉', 'success');
+        setTimeout(() => showScreen('call'), 1000);
+      } else {
+        triggerHaptic([100, 50, 100]);
+        const card = document.getElementById('captcha-card');
+        card.classList.remove('animate-shake');
+        void card.offsetWidth;
+        card.classList.add('animate-shake');
+        showTopToast('Не угадал! Среди выбранных есть нейросеть 🤖 Попробуй ещё раз!', 'error');
+        setTimeout(() => generateCaptchaRound(), 550);
+      }
+    }
+
+    // =========================================================
+    // === ШАГ 2: ФЕЙКОВЫЙ ВХОДЯЩИЙ ВИДЕОЗВОНОК ===
+    // =========================================================
+    const CALL_SUBTITLES = [
+      { ms: 0,     text: 'Привет! Ты вообще видел, сколько мне лет исполняется?' },
+      { ms: 3400,  text: '25! Я сам в шоке.' },
+      { ms: 5800,  text: 'Короче, если ты сейчас нажмешь кнопку «Не приду» — я обижусь и вообще всё расскажу маме.' },
+      { ms: 11200, text: 'Так что жду тебя 19 декабря, не опаздывай!' }
+    ];
+
+    function playRetroRingBurst() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        if (!state.audioCtx) state.audioCtx = new AudioContextClass();
+        if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
+
+        const now = state.audioCtx.currentTime;
+        const osc1 = state.audioCtx.createOscillator();
+        const osc2 = state.audioCtx.createOscillator();
+        const gain = state.audioCtx.createGain();
+
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(440, now);
+        osc2.frequency.setValueAtTime(480, now);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.08, now + 0.05);
+        gain.gain.setValueAtTime(0.08, now + 0.55);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(state.audioCtx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.7);
+        osc2.stop(now + 0.7);
+      } catch (e) {}
+    }
+
+    function startRingingLoop() {
+      stopRingingLoop();
+      playRetroRingBurst();
+      triggerHaptic([200, 120, 200]);
+      state.ringInterval = setInterval(() => {
+        playRetroRingBurst();
+        triggerHaptic([180, 120, 180]);
+      }, 2200);
+    }
+
+    function stopRingingLoop() {
+      if (state.ringInterval) {
+        clearInterval(state.ringInterval);
+        state.ringInterval = null;
+      }
+    }
+
+    function cleanupCallResources() {
+      stopRingingLoop();
+      if (state.callTimerInterval) {
+        clearInterval(state.callTimerInterval);
+        state.callTimerInterval = null;
+      }
+      state.callSubTimers.forEach(t => clearTimeout(t));
+      state.callSubTimers = [];
+      const video = document.getElementById('call-video-el');
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
+
+    function initIncomingCallScreen() {
+      document.getElementById('call-ringing-view').classList.remove('hidden');
+      document.getElementById('call-active-view').classList.add('hidden');
+      document.getElementById('call-active-view').classList.remove('flex');
+      document.getElementById('call-reject-warning').classList.add('hidden');
+
+      const fallbackAvatar = createRetroChildSvg(11, 'С трубкой');
+      mountImageWithFallback(document.getElementById('call-avatar-box'), CONFIG.callAvatar, fallbackAvatar);
+      mountImageWithFallback(document.getElementById('call-sim-avatar'), CONFIG.callAvatar, fallbackAvatar);
+
+      // Пытаемся мягко запустить гудок (браузер разрешит, т.к. только что был клик на капче)
+      startRingingLoop();
+    }
+
+    function handleCallReject() {
+      triggerHaptic([90, 50, 90]);
+      const view = document.getElementById('call-ringing-view');
+      const warn = document.getElementById('call-reject-warning');
+      warn.classList.remove('hidden');
+      view.classList.remove('animate-shake');
+      void view.offsetWidth;
+      view.classList.add('animate-shake');
+      showTopToast('Нельзя сбрасывать звонок из прошлого! 📞', 'error');
+    }
+
+    function startActiveVideoCall() {
+      stopRingingLoop();
+      triggerHaptic(35);
+
+      document.getElementById('call-ringing-view').classList.add('hidden');
+      const activeView = document.getElementById('call-active-view');
+      activeView.classList.remove('hidden');
+      activeView.classList.add('flex', 'screen-enter');
+
+      // Таймер звонка
+      state.callSeconds = 0;
+      const timerEl = document.getElementById('call-timer');
+      timerEl.textContent = '00:00';
+      state.callTimerInterval = setInterval(() => {
+        state.callSeconds++;
+        const m = String(Math.floor(state.callSeconds / 60)).padStart(2, '0');
+        const s = String(state.callSeconds % 60).padStart(2, '0');
+        timerEl.textContent = `${m}:${s}`;
+      }, 1000);
+
+      // Запуск субтитров
+      const subEl = document.getElementById('call-subtitle-text');
+      CALL_SUBTITLES.forEach(item => {
+        const t = setTimeout(() => {
+          subEl.textContent = item.text;
+        }, item.ms);
+        state.callSubTimers.push(t);
+      });
+
+      // Попытка воспроизвести реальный assets/call.mp4 с плавным переходом в симуляцию при отсутствии файла
+      const video = document.getElementById('call-video-el');
+      const simStage = document.getElementById('call-sim-stage');
+      video.classList.add('hidden');
+      simStage.classList.remove('hidden');
+
+      video.src = CONFIG.callVideo;
+      video.oncanplay = () => {
+        simStage.classList.add('hidden');
+        video.classList.remove('hidden');
+        video.play().catch(() => {
+          video.classList.add('hidden');
+          simStage.classList.remove('hidden');
+        });
+      };
+      video.onerror = () => {
+        video.classList.add('hidden');
+        simStage.classList.remove('hidden');
+      };
+      video.load();
+    }
+
+    // =========================================================
+    // === ШАГ 3: ЗАДУЙ 25 СВЕЧЕЙ В МИКРОФОН ===
+    // =========================================================
+    function initCandlesScreen() {
+      state.candlesLit = Array(25).fill(true);
+      document.getElementById('candles-controls').classList.remove('hidden');
+      document.getElementById('btn-candles-done').classList.add('hidden');
+      document.getElementById('blow-progress-bar').style.width = '0%';
+      document.getElementById('blow-level-text').textContent = 'Микрофон выключен';
+      document.getElementById('btn-mic-start').textContent = 'Включить микрофон и дунуть 🎤';
+      document.getElementById('btn-mic-start').disabled = false;
+      renderCandles();
+    }
+
+    function renderCandles() {
+      const topRow = document.getElementById('candles-row-top');
+      const botRow = document.getElementById('candles-row-bottom');
+      topRow.innerHTML = '';
+      botRow.innerHTML = '';
+
+      const stripeColors = ['#B71C1C', '#1B5E20', '#D4AF37', '#1565C0'];
+
+      state.candlesLit.forEach((isLit, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'relative flex flex-col items-center';
+        wrap.dataset.candleIdx = i;
+
+        const bodyColor = stripeColors[i % stripeColors.length];
+        wrap.innerHTML = `
+          <div class="h-4 flex items-end justify-center relative">
+            ${isLit
+              ? `<div class="candle-flame w-2.5 h-3.5 rounded-full bg-gradient-to-t from-[#E65100] via-[#FFB300] to-[#FFF9C4] shadow-[0_0_8px_#FFB300]" style="animation-delay:${(i % 5) * 0.11}s"></div>`
+              : `<div class="w-1.5 h-1.5 rounded-full bg-gray-400/50 candle-smoke"></div>`
+            }
+          </div>
+          <div class="w-[1.5px] h-1 bg-[#2B1F16]"></div>
+          <div class="w-2.5 h-8 rounded-t-sm border border-[#2B1F16]/30 shadow-sm" style="background: repeating-linear-gradient(45deg, ${bodyColor}, ${bodyColor} 3px, #FDF6E3 3px, #FDF6E3 6px)"></div>
+        `;
+
+        if (i < 12) topRow.appendChild(wrap);
+        else botRow.appendChild(wrap);
+      });
+
+      const remaining = state.candlesLit.filter(Boolean).length;
+      document.getElementById('candles-counter').textContent = `Осталось свечей: ${remaining} / 25`;
+
+      if (remaining === 0) {
+        onAllCandlesExtinguished();
+      }
+    }
+
+    function extinguishRandomCandles(count) {
+      const litIndices = state.candlesLit
+        .map((lit, idx) => (lit ? idx : -1))
+        .filter(idx => idx !== -1);
+
+      if (litIndices.length === 0) return;
+
+      const toPutOut = shuffleArray(litIndices).slice(0, count);
+      toPutOut.forEach(idx => { state.candlesLit[idx] = false; });
+      triggerHaptic(22);
+      renderCandles();
+    }
+
+    function onAllCandlesExtinguished() {
+      stopMicrophone();
+      fireConfetti();
+      triggerHaptic([60, 40, 120]);
+      document.getElementById('blow-progress-bar').style.width = '100%';
+      document.getElementById('blow-level-text').textContent = 'Все 25 свечей потушены! 🎉';
+      document.getElementById('candles-controls').classList.add('hidden');
+      document.getElementById('btn-candles-done').classList.remove('hidden');
+      showTopToast('Желание загадано! Все 25 свечей задуты! 🎂', 'success');
+    }
+
+    async function startMicrophoneListening() {
+      const btn = document.getElementById('btn-mic-start');
+      const statusText = document.getElementById('blow-level-text');
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showTopToast('Микрофон недоступен в этом браузере — используй кнопку «Подуть нажатием» 💨', 'error');
+        return;
+      }
+
+      try {
+        statusText.textContent = 'Запрос доступа...';
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        state.micStream = stream;
+
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContextClass();
+        state.micAudioCtx = audioCtx;
+
+        const source = audioCtx.createMediaStreamSource(stream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        source.connect(analyser);
+
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        btn.textContent = '🎤 Микрофон активен — дуй сильнее!';
+        btn.disabled = true;
+        statusText.textContent = 'Слушаю... дуй в микрофон!';
+
+        function detectBlow() {
+          if (state.currentScreen !== 'candles') {
+            stopMicrophone();
+            return;
+          }
+          analyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+          const avg = sum / dataArray.length;
+
+          const percent = Math.min(100, Math.round((avg / 75) * 100));
+          document.getElementById('blow-progress-bar').style.width = `${percent}%`;
+
+          const now = Date.now();
+          if (avg > 34 && now - state.lastBlowExtinguish > 170) {
+            state.lastBlowExtinguish = now;
+            const power = avg > 60 ? 5 : 2;
+            extinguishRandomCandles(power);
+          }
+
+          if (state.candlesLit.some(Boolean)) {
+            state.micRafId = requestAnimationFrame(detectBlow);
+          }
+        }
+        detectBlow();
+      } catch (err) {
+        statusText.textContent = 'Нет доступа к микрофону';
+        showTopToast('Доступ к микрофону отклонён — используй кнопку «Подуть нажатием» 💨', 'error');
+      }
+    }
+
+    function stopMicrophone() {
+      if (state.micRafId) {
+        cancelAnimationFrame(state.micRafId);
+        state.micRafId = null;
+      }
+      if (state.micStream) {
+        state.micStream.getTracks().forEach(t => t.stop());
+        state.micStream = null;
+      }
+      if (state.micAudioCtx) {
+        state.micAudioCtx.close().catch(() => {});
+        state.micAudioCtx = null;
+      }
+    }
+
+    // =========================================================
+    // === ШАГ 4: ПРИКОЛЫ С КНОПКОЙ «НЕ ПРИДУ» ===
+    // =========================================================
+    function resetRsvpScreen() {
+      state.declineCount = 0;
+      const btnDecline = document.getElementById('btn-decline');
+      const btnAccept  = document.getElementById('btn-accept');
+      document.getElementById('crack-svg-1').classList.add('hidden');
+      document.getElementById('crack-svg-2').classList.add('hidden');
+      document.getElementById('rsvp-broken-caption').classList.add('hidden');
+
+      btnDecline.classList.remove('btn-broken-fall', 'hidden');
+      btnDecline.style.transform = 'scale(1) rotate(0deg)';
+      btnDecline.style.opacity = '1';
+
+      btnAccept.className = 'px-3.5 py-1.5 rounded-lg bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] text-[#FDF6E3] font-serif font-bold text-xs border border-[#D4AF37] shadow-md active:scale-95 select-none';
+      btnAccept.style.transform = 'scale(1)';
+      btnAccept.textContent = 'Приду';
+    }
+
+    function openRsvpModal({ visualHtml, title, desc, btnText, onClose }) {
+      document.getElementById('rsvp-modal-visual').innerHTML = visualHtml;
+      document.getElementById('rsvp-modal-title').textContent = title;
+      document.getElementById('rsvp-modal-desc').textContent = desc || '';
+      document.getElementById('rsvp-modal-close').textContent = btnText;
+      state.pendingModalAction = onClose;
+      document.getElementById('rsvp-modal').classList.remove('hidden');
+    }
+
+    function handleDeclineTap() {
+      state.declineCount++;
+      const btnDecline = document.getElementById('btn-decline');
+      const btnAccept  = document.getElementById('btn-accept');
+      const crack1     = document.getElementById('crack-svg-1');
+      const crack2     = document.getElementById('crack-svg-2');
+      const caption    = document.getElementById('rsvp-broken-caption');
+
+      if (state.declineCount === 1) {
+        // Тап 1: Модалка Ошибка 403 + перетягивание масштаба
+        triggerHaptic([60, 40, 80]);
+        openRsvpModal({
+          visualHtml: `<div class="w-16 h-16 rounded-full bg-[#B71C1C]/15 border-2 border-[#B71C1C] flex items-center justify-center text-3xl">🚫</div>`,
+          title: 'Ошибка 403',
+          desc: 'Недостаточно прав для отказа. Функция временно недоступна до конца вечеринки.',
+          btnText: 'Ладно...',
+          onClose: () => {
+            btnDecline.style.transform = 'scale(0.8)';
+            btnAccept.style.transform  = 'scale(1.55)';
+          }
+        });
+      } else if (state.declineCount === 2) {
+        // Тап 2: Грустное детское фото #1 + трещины
+        triggerHaptic([80, 50, 80]);
+        const boxId = 'sad-photo-1';
+        openRsvpModal({
+          visualHtml: `<div id="${boxId}" class="w-40 h-40 bg-[#FFFDF7] p-2 shadow-md border border-[#C9B382] rotate-[-2deg] overflow-hidden"></div>`,
+          title: 'Точно? А если подумать?',
+          desc: 'Маленький именинник с аккордеоном уже разучивал для тебя праздничную песню...',
+          btnText: 'Ладно, подумаю',
+          onClose: () => {
+            crack1.classList.remove('hidden');
+            btnDecline.style.transform = 'scale(0.65) rotate(-5deg)';
+            btnAccept.style.transform  = 'scale(2.1)';
+          }
+        });
+        mountImageWithFallback(document.getElementById(boxId), CONFIG.realPhotos[8], createRetroChildSvg(8, 'Обиделся 🥺'));
+      } else if (state.declineCount === 3) {
+        // Тап 3: Грустное детское фото #2 + сильные трещины и наклон
+        triggerHaptic([100, 50, 120]);
+        const boxId = 'sad-photo-2';
+        openRsvpModal({
+          visualHtml: `<div id="${boxId}" class="w-40 h-40 bg-[#FFFDF7] p-2 shadow-md border border-[#C9B382] rotate-[2deg] overflow-hidden"></div>`,
+          title: 'Ну ладно, я не обиделся (обиделся)',
+          desc: 'И вообще, я же по телефону предупреждал, что всё расскажу маме!',
+          btnText: 'Понял...',
+          onClose: () => {
+            crack2.classList.remove('hidden');
+            btnDecline.style.transform = 'scale(0.55) rotate(12deg)';
+            btnAccept.style.transform  = 'scale(2.5)';
+          }
+        });
+        mountImageWithFallback(document.getElementById(boxId), CONFIG.realPhotos[0], createRetroChildSvg(0, 'Расскажу маме'));
+      } else if (state.declineCount >= 4) {
+        // Тап 4: Кнопка отваливается вниз!
+        triggerHaptic([150, 60, 200]);
+        btnDecline.classList.add('btn-broken-fall');
+        setTimeout(() => {
+          btnDecline.classList.add('hidden');
+          caption.classList.remove('hidden');
+          btnAccept.style.transform = 'scale(1)';
+          btnAccept.textContent = 'ПРИДУ! 🎉';
+          btnAccept.className = 'w-full py-6 px-6 rounded-2xl bg-gradient-to-b from-[#2E7D32] to-[#1B5E20] text-[#FDF6E3] font-display font-black text-2xl tracking-wider border-2 border-[#D4AF37] btn-yes-giant active:scale-95 select-none';
+        }, 700);
+      }
+    }
+
+    function handleAcceptTap() {
+      triggerHaptic([40, 40, 100]);
+      fireConfetti();
+      showTopToast('Отлично! Осталось выписать именной VIP-билет 🎟️', 'success');
+      setTimeout(() => showScreen('ticket'), 750);
+    }
+
+    // =========================================================
+    // === ШАГ 5: ГЕНЕРАТОР VIP-БИЛЕТА (FACE-API.JS + CANVAS) ===
+    // =========================================================
+    function setFaceStatus(icon, text) {
+      const box = document.getElementById('face-status-box');
+      box.classList.remove('hidden');
+      document.getElementById('face-status-icon').textContent = icon;
+      document.getElementById('face-status-text').textContent = text;
+    }
+
+    function resetTicketView(keepResult = false) {
+      if (keepResult && state.lastTicketGenerated) {
+        document.getElementById('ticket-form-card').classList.add('hidden');
+        document.getElementById('ticket-result-card').classList.remove('hidden');
+      } else {
+        document.getElementById('ticket-form-card').classList.remove('hidden');
+        document.getElementById('ticket-result-card').classList.add('hidden');
+        document.getElementById('face-status-box').classList.add('hidden');
+      }
+    }
+
+    function loadHtmlImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Image failed to load'));
+        img.src = src;
+      });
+    }
+
+    async function ensureFaceModelsLoaded() {
+      if (state.faceModelsLoaded) return true;
+      if (typeof faceapi === 'undefined') return false;
+      setFaceStatus('🧠', 'Загружаем модели нейросети (face-api.js)...');
+      await Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(CONFIG.faceModelsUrl),
+        faceapi.nets.faceLandmark68Net.loadFromUri(CONFIG.faceModelsUrl),
+        faceapi.nets.faceRecognitionNet.loadFromUri(CONFIG.faceModelsUrl)
+      ]);
+      state.faceModelsLoaded = true;
+      return true;
+    }
+
+    async function handleVerifyAndGenerateTicket() {
+      const nameInput = document.getElementById('guest-name-input');
+      const guestName = nameInput.value.trim();
+
+      if (!guestName) {
+        showTopToast('Введи своё имя для именного билета!', 'error');
+        nameInput.focus();
+        return;
+      }
+      if (!state.uploadedImgEl) {
+        showTopToast('Загрузи совместную фотографию с именинником!', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify-face');
+      btn.disabled = true;
+      btn.textContent = 'Проверяем фото...';
+
+      let verifyBadgeText = '✓ Лицо именинника подтверждено';
+      let verified = false;
+
+      try {
+        const modelsOk = await ensureFaceModelsLoaded();
+
+        if (modelsOk) {
+          setFaceStatus('🔍', 'Загружаем эталонные фото именинника...');
+          const refDescriptors = [];
+
+          for (const refSrc of CONFIG.refPhotos) {
+            try {
+              const refImg = await loadHtmlImage(refSrc);
+              const det = await faceapi
+                .detectSingleFace(refImg, new faceapi.TinyFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+              if (det) refDescriptors.push(det.descriptor);
+            } catch (e) {
+              // Эталонное фото еще не загружено на GitHub
+            }
+          }
+
+          setFaceStatus('✨', 'Анализируем лица на твоём снимке...');
+          const guestDetections = await faceapi
+            .detectAllFaces(state.uploadedImgEl, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+
+          if (refDescriptors.length > 0) {
+            // ПОЛНОЦЕННАЯ ПРОВЕРКА ПО ЭТАЛОНАМ
+            if (guestDetections.length === 0) {
+              setFaceStatus('❌', 'На фото не удалось найти лица. Попробуй более чёткий снимок!');
+              showTopToast('Лица на фото не найдены. Попробуй другое фото!', 'error');
+            } else {
+              const labeled = new faceapi.LabeledFaceDescriptors('Именинник', refDescriptors);
+              const matcher = new faceapi.FaceMatcher(labeled, 0.58);
+              const matched = guestDetections.some(d => matcher.findBestMatch(d.descriptor).label === 'Именинник');
+
+              if (matched) {
+                verified = true;
+                verifyBadgeText = '✓ Именинник узнан нейросетью!';
+              } else {
+                setFaceStatus('🤔', 'Именинник на этом фото не узнан. Загрузи совместное фото, где его хорошо видно!');
+                showTopToast('Именинник не найден на фото — попробуй другой снимок!', 'error');
+              }
+            }
+          } else {
+            // УМНЫЙ ДЕМО-РЕЖИМ (когда assets/ref/1..5.jpg еще не залиты в репозиторий)
+            verified = true;
+            verifyBadgeText = guestDetections.length > 0
+              ? `🧪 Демо-проверка: найдено лиц (${guestDetections.length})`
+              : '🧪 Демо-проверка (добавь assets/ref/ на GitHub)';
+          }
+        } else {
+          // Фолбэк, если CDN face-api.js временно недоступен
+          verified = true;
+          verifyBadgeText = '🧪 Демо-проверка (офлайн-режим)';
+        }
+      } catch (err) {
+        verified = true;
+        verifyBadgeText = '🧪 Демо-проверка (превью-режим)';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Проверить фото и выписать билет ✨';
+
+      if (verified) {
+        triggerHaptic([40, 30, 100]);
+        fireConfetti();
+        renderVipTicketCanvas(guestName, state.uploadedImgEl);
+        state.lastTicketGenerated = true;
+        document.getElementById('ticket-verify-badge').textContent = verifyBadgeText;
+        document.getElementById('ticket-form-card').classList.add('hidden');
+        document.getElementById('ticket-result-card').classList.remove('hidden');
+        showTopToast('VIP-билет готов! Можешь скачать его себе 🎟️', 'success');
+      }
+    }
+
+    // Отрисовка советского новогоднего VIP-билета на HTML5 Canvas
+    function renderVipTicketCanvas(guestName, photoImg) {
+      const canvas = document.getElementById('vip-ticket-canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // 1. Фон кремовой бумаги открытки
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+      bgGrad.addColorStop(0, '#FFFDF5');
+      bgGrad.addColorStop(1, '#F2E3BE');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Легкая текстура бумаги
+      ctx.fillStyle = 'rgba(139, 98, 48, 0.05)';
+      for (let x = 16; x < W; x += 22) {
+        for (let y = 16; y < H; y += 22) {
+          ctx.fillRect(x, y, 2, 2);
+        }
+      }
+
+      // 2. Двойная золотая и алая рамка
+      ctx.strokeStyle = '#D4AF37';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(20, 20, W - 40, H - 40);
+
+      ctx.strokeStyle = '#B71C1C';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(36, 36, W - 72, H - 72);
+
+      // 3. Верхняя хвойная полоса-шапка
+      ctx.fillStyle = '#1B5E20';
+      ctx.fillRect(46, 46, W - 92, 118);
+      ctx.strokeStyle = '#D4AF37';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(46, 46, W - 92, 118);
+
+      ctx.fillStyle = '#E9CE78';
+      ctx.font = 'bold 20px "PT Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ ПРИГЛАСИТЕЛЬНЫЙ БИЛЕТ ★', W / 2, 86);
+
+      ctx.fillStyle = '#FDF6E3';
+      ctx.font = '900 44px "Playfair Display", Georgia, serif';
+      ctx.fillText('ЮБИЛЕЙ 25 ЛЕТ', W / 2, 140);
+
+      // 4. Загруженное фото в винтажной рамке (с crop cover)
+      const frameX = 180;
+      const frameY = 195;
+      const frameW = 400;
+      const frameH = 340;
+
+      ctx.save();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(43, 31, 22, 0.25)';
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = 8;
+      ctx.fillRect(frameX - 12, frameY - 12, frameW + 24, frameH + 24);
+      ctx.restore();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(frameX, frameY, frameW, frameH);
+      ctx.clip();
+
+      const imgRatio = photoImg.width / photoImg.height;
+      const boxRatio = frameW / frameH;
+      let drawW, drawH, drawX, drawY;
+      if (imgRatio > boxRatio) {
+        drawH = frameH;
+        drawW = frameH * imgRatio;
+        drawX = frameX - (drawW - frameW) / 2;
+        drawY = frameY;
+      } else {
+        drawW = frameW;
+        drawH = frameW / imgRatio;
+        drawX = frameX;
+        drawY = frameY - (drawH - frameH) / 2;
+      }
+      ctx.drawImage(photoImg, drawX, drawY, drawW, drawH);
+      ctx.restore();
+
+      ctx.strokeStyle = '#D4AF37';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(frameX, frameY, frameW, frameH);
+
+      // 5. Имя гостя
+      ctx.fillStyle = '#7A5C3E';
+      ctx.font = 'bold 18px "PT Mono", monospace';
+      ctx.fillText('ПОЧЁТНЫЙ ГОСТЬ:', W / 2, 588);
+
+      ctx.fillStyle = '#B71C1C';
+      ctx.font = '900 42px "Playfair Display", Georgia, serif';
+      ctx.fillText(guestName, W / 2, 636);
+
+      // Разделительная линия со звездой
+      ctx.strokeStyle = '#D4AF37';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(90, 662);
+      ctx.lineTo(W / 2 - 28, 662);
+      ctx.moveTo(W / 2 + 28, 662);
+      ctx.lineTo(W - 90, 662);
+      ctx.stroke();
+      ctx.fillStyle = '#B71C1C';
+      ctx.font = '24px Georgia, serif';
+      ctx.fillText('★', W / 2, 670);
+
+      // 6. Детали праздника
+      ctx.textAlign = 'left';
+      const infoX = 76;
+      let infoY = 716;
+
+      const rows = [
+        { label: 'СБОР ГОСТЕЙ:', value: CONFIG.event.gatheringText },
+        { label: 'ДЕНЬ РОЖДЕНИЯ:', value: CONFIG.event.birthdayText },
+        { label: 'АДРЕС:', value: CONFIG.event.address },
+        { label: 'ДРЕСС-КОД:', value: 'праздничный и уютный,' },
+        { label: '', value: 'с новогодними элементами' }
+      ];
+
+      rows.forEach(r => {
+        if (r.label) {
+          ctx.fillStyle = '#1B5E20';
+          ctx.font = 'bold 20px "PT Mono", monospace';
+          ctx.fillText(r.label, infoX, infoY);
+          ctx.fillStyle = '#2B1F16';
+          ctx.font = 'bold 23px "PT Serif", Georgia, serif';
+          ctx.fillText(r.value, infoX + 205, infoY);
+        } else {
+          ctx.fillStyle = '#2B1F16';
+          ctx.font = 'bold 23px "PT Serif", Georgia, serif';
+          ctx.fillText(r.value, infoX + 205, infoY);
+        }
+        infoY += 42;
+      });
+
+      // 7. Отрывная перфорация и уникальный номер билета
+      ctx.save();
+      ctx.setLineDash([10, 8]);
+      ctx.strokeStyle = '#9E7C26';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(46, 944);
+      ctx.lineTo(W - 46, 944);
+      ctx.stroke();
+      ctx.restore();
+
+      const ticketNo = `№ 25-${Math.floor(1000 + Math.random() * 9000)}`;
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#5C4433';
+      ctx.font = 'bold 22px "PT Mono", monospace';
+      ctx.fillText(`БИЛЕТ ${ticketNo}`, 76, 998);
+
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#1B5E20';
+      ctx.font = 'bold 20px "PT Mono", monospace';
+      ctx.fillText('ДЕЙСТВИТЕЛЕН 19–20.12.2027', W - 76, 998);
+
+      // 8. Праздничный красный штамп «VIP ДОПУСК»
+      ctx.save();
+      ctx.translate(W - 155, 520);
+      ctx.rotate(-0.24);
+      ctx.strokeStyle = 'rgba(183, 28, 28, 0.88)';
+      ctx.fillStyle = 'rgba(253, 246, 227, 0.82)';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.arc(0, 0, 74, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, 64, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(183, 28, 28, 0.95)';
+      ctx.textAlign = 'center';
+      ctx.font = '900 26px "Playfair Display", Georgia, serif';
+      ctx.fillText('VIP', 0, -8);
+      ctx.font = 'bold 18px "PT Mono", monospace';
+      ctx.fillText('ДОПУСК', 0, 18);
+      ctx.font = '14px Georgia, serif';
+      ctx.fillText('★ 25 ЛЕТ ★', 0, 42);
+      ctx.restore();
+    }
+
+    function downloadVipTicketPng() {
+      const canvas = document.getElementById('vip-ticket-canvas');
+      const link = document.createElement('a');
+      link.download = 'VIP-Bilet-25-let.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      triggerHaptic(30);
+      showTopToast('Билет сохранён в загрузки! 🎟️', 'success');
+    }
+
+    // =========================================================
+    // === ШАГ 6: ОСНОВНОЕ ПРИЛОЖЕНИЕ, ТАЙМЕР И ИГРЫ ===
+    // =========================================================
+    const TAB_TITLES = {
+      home: 'Главная 🎄',
+      games: 'Игры 🎲',
+      party: 'Тусовка 🥂',
+      photobooth: 'Фотобудка 📸'
+    };
+
+    function switchMainTab(tabName) {
+      triggerHaptic(12);
+      state.activeTab = tabName;
+      document.getElementById('main-header-title').textContent = TAB_TITLES[tabName];
+
+      ['home', 'games', 'party', 'photobooth'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tabName);
+      });
+      document.querySelectorAll('.retro-nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+    }
+
+    function renderMiniGamesGrid() {
+      const container = document.getElementById('games-grid');
+      container.innerHTML = '';
+
+      MINI_GAMES.forEach(game => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'postcard rounded-xl p-3 text-left flex flex-col justify-between min-h-[126px] active:scale-95 transition-transform';
+        card.innerHTML = `
+          <div class="flex items-start justify-between w-full mb-2">
+            <span class="text-2xl">${game.icon}</span>
+            <span class="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#B71C1C]/12 text-[#B71C1C] border border-[#B71C1C]/35">
+              Этап 4–5
+            </span>
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-sm text-[#2B1F16] leading-tight mb-0.5">${game.title}</h4>
+            <p class="text-[11px] text-[#5C4433] leading-snug">${game.desc}</p>
+          </div>
+        `;
+        card.addEventListener('click', () => {
+          showBottomToast(`Игра «${game.title}» откроется на Этапе 4–5!`);
+        });
+        container.appendChild(card);
+      });
+    }
+
+    function startCountdown() {
+      const targetTs = new Date(CONFIG.event.gatheringDateISO).getTime();
+      function tick() {
+        const diff = Math.max(0, targetTs - Date.now());
+        const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins  = Math.floor((diff / (1000 * 60)) % 60);
+        const secs  = Math.floor((diff / 1000) % 60);
+
+        const pad = n => String(n).padStart(2, '0');
+        document.getElementById('cd-days').textContent  = days;
+        document.getElementById('cd-hours').textContent = pad(hours);
+        document.getElementById('cd-mins').textContent  = pad(mins);
+        document.getElementById('cd-secs').textContent  = pad(secs);
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // =========================================================
+    // === ИНИЦИАЛИЗАЦИЯ ВСЕХ СОБЫТИЙ ===
+    // =========================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initSnowfall();
+      startCountdown();
+      renderMiniGamesGrid();
+
+      // Шаг 1: Капча (обязательная при каждом заходе)
+      generateCaptchaRound();
+      document.getElementById('btn-verify-captcha').addEventListener('click', verifyCaptcha);
+      document.getElementById('toggle-test-mode').addEventListener('change', (e) => {
+        state.testMode = e.target.checked;
+        renderCaptchaGrid();
+      });
+
+      // Шаг 2: Звонок
+      document.getElementById('btn-sound-ring').addEventListener('click', () => playRetroRingBurst());
+      document.getElementById('btn-call-reject').addEventListener('click', handleCallReject);
+      document.getElementById('btn-call-accept').addEventListener('click', startActiveVideoCall);
+      document.getElementById('btn-call-continue').addEventListener('click', () => showScreen('candles'));
+
+      // Шаг 3: 25 свечей
+      document.getElementById('btn-mic-start').addEventListener('click', startMicrophoneListening);
+      document.getElementById('btn-manual-blow').addEventListener('click', () => {
+        document.getElementById('blow-progress-bar').style.width = '78%';
+        document.getElementById('blow-level-text').textContent = 'Отличный выдох! 💨';
+        extinguishRandomCandles(4);
+        setTimeout(() => {
+          if (state.candlesLit.some(Boolean)) {
+            document.getElementById('blow-progress-bar').style.width = '12%';
+          }
+        }, 220);
+      });
+      document.getElementById('btn-candles-done').addEventListener('click', () => showScreen('rsvp'));
+
+      // Шаг 4: Кнопка «НЕ ПРИДУ»
+      document.getElementById('btn-decline').addEventListener('click', handleDeclineTap);
+      document.getElementById('btn-accept').addEventListener('click', handleAcceptTap);
+      document.getElementById('rsvp-modal-close').addEventListener('click', () => {
+        document.getElementById('rsvp-modal').classList.add('hidden');
+        if (typeof state.pendingModalAction === 'function') {
+          state.pendingModalAction();
+          state.pendingModalAction = null;
+        }
+      });
+
+      // Шаг 5: VIP-билет и распознавание лица
+      document.getElementById('guest-photo-input').addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const objectUrl = URL.createObjectURL(file);
+        const preview = document.getElementById('guest-photo-preview');
+        preview.src = objectUrl;
+        preview.classList.remove('hidden');
+        document.getElementById('guest-photo-placeholder').classList.add('hidden');
+
+        loadHtmlImage(objectUrl).then(img => {
+          state.uploadedImgEl = img;
+        });
+      });
+
+      document.getElementById('btn-verify-face').addEventListener('click', handleVerifyAndGenerateTicket);
+      document.getElementById('btn-download-ticket').addEventListener('click', downloadVipTicketPng);
+      document.getElementById('btn-enter-app').addEventListener('click', () => {
+        switchMainTab('home');
+        showScreen('main');
+      });
+      document.getElementById('btn-ticket-skip').addEventListener('click', () => {
+        switchMainTab('home');
+        showScreen('main');
+      });
+      document.getElementById('btn-remake-ticket').addEventListener('click', () => resetTicketView(false));
+
+      // Шаг 6: Кнопка билета на Главной
+      document.getElementById('btn-home-open-ticket').addEventListener('click', () => {
+        resetTicketView(true);
+        showScreen('ticket');
+      });
+    });
+  </script>
+</body>
+</html>
