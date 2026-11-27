@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --bg-night: #0d1f1c;
@@ -422,11 +421,11 @@
       background: #1b1715;
       color: #f7efe0;
       border-radius: 12px;
-      padding: 14px 18px;
+      padding: 16px 18px;
       border-top: 8px dashed #f7efe0;
       border-bottom: 8px dashed #f7efe0;
       text-align: center;
-      min-height: 150px;
+      min-height: 155px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -480,7 +479,7 @@
     .scratch-wrap {
       position: relative;
       width: 100%;
-      height: 74px;
+      height: 76px;
       border-radius: 10px;
       overflow: hidden;
       border: 2px solid var(--ink);
@@ -664,6 +663,15 @@
       border-bottom: 1px dashed var(--border);
       font-size: 13px;
     }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 6px 0 10px;
+      font-size: 12px;
+      font-family: 'PT Mono', monospace;
+    }
+    .slider-row input[type="range"] { flex: 1; accent-color: var(--red); }
   </style>
 </head>
 <body>
@@ -706,7 +714,7 @@
     <!-- SCREEN 2: INCOMING CALL -->
     <section class="screen" id="screenCall">
       <div class="call-box">
-        <div class="stamp-badge" style="color:#ffd24d; border-color:#ffd24d;">Звонок из прошлого</div>
+        <div class="stamp-badge" style="color:#ffd24d; border-color:#ffd24d;">Звонок из Яреги</div>
         <h2 style="color:#fff8ee;">Входящий видеозвонок</h2>
         <p style="color:#d6c7b2; font-size:14px;">Именинник (из детства)</p>
         <div class="caller-avatar" id="callerAvatarBox">
@@ -751,7 +759,8 @@
         <p><strong>19 декабря 2026 в 11:00</strong> — сбор гостей.<br>
         <strong>20 декабря 2026 в 00:00</strong> — встречаем мои <strong>25 лет</strong>!</p>
         <p class="muted">Место проведения: строго секретное (координаты после оформления билета).<br>
-        Дресс-код: праздничный и уютный, можно с новогодними элементами.</p>
+        Дресс-код: праздничный и уютный, можно с новогодними элементами.<br>
+        <em>Правило дня: кто опоздал — начинает день с бани!</em></p>
         <div class="rsvp-arena">
           <button class="btn btn-ghost" id="btnNo" onclick="handleNoClick()">НЕ ПРИДУ</button>
           <button class="btn btn-red" id="btnYes" onclick="goScreen('screenTicket')">Приду</button>
@@ -789,7 +798,7 @@
           <h1>Юбилейный Новогодний Огонёк</h1>
           <p class="muted">До сбора гостей осталось:</p>
           <div class="countdown-grid">
-            <div class="cd-box"><span class="cd-num" id="cdDays">000</span><span class="cd-lbl">дней</span></div>
+            <div class="cd-box"><span class="cd-num" id="cdDays">0</span><span class="cd-lbl">дней</span></div>
             <div class="cd-box"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">часов</span></div>
             <div class="cd-box"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">минут</span></div>
             <div class="cd-box"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">секунд</span></div>
@@ -800,16 +809,16 @@
           <div class="info-row"><span class="info-k">Дресс-код:</span><span class="info-v">Праздничный и уютный, можно с новогодними элементами</span></div>
         </div>
 
-        <!-- Filmstrip Swipe Cards (Tinder style) -->
+        <!-- Filmstrip Swipe Cards -->
         <div class="card">
-          <div class="stamp-badge">Диафильм • Правила и факты</div>
+          <div class="stamp-badge">Диафильм • Факты и правила</div>
           <h3>Листай карточки вечеринки</h3>
           <div class="filmstrip-card" id="filmstripCard">
-            <div class="filmstrip-tag" id="filmTag">КАДР 1 ИЗ 8</div>
+            <div class="filmstrip-tag" id="filmTag">КАДР 1 ИЗ 10</div>
             <div id="filmText" style="font-size:16px; font-weight:700;"></div>
           </div>
           <div style="display:flex; gap:10px;">
-            <button class="btn btn-ghost" id="swipeNoBtn" onclick="swipeCard(false)">← Не согласен</button>
+            <button class="btn btn-ghost" onclick="swipeCard(false)">← Не согласен</button>
             <button class="btn btn-pine" onclick="swipeCard(true)">Точно! →</button>
           </div>
           <p class="muted" id="swipeFeedback" style="margin-top:8px; text-align:center;"></p>
@@ -818,12 +827,12 @@
         <button class="btn btn-ghost" onclick="restartFlow()">Пройти входной квест заново</button>
       </div>
 
-      <!-- TAB 2: GAMES (ALL 8 MINI-GAMES + LEADERBOARD) -->
+      <!-- TAB 2: GAMES (ALL 8 MINI-GAMES + LOCAL LEADERBOARD) -->
       <div class="tab-pane" id="tabGames">
         <div class="card" id="gamesCatalogCard">
           <div class="stamp-badge">2-я программа • Игротека</div>
           <h2>Игровой зал (8 мини-игр)</h2>
-          <p class="muted">Выбирай игру и ставь рекорд в общей таблице гостей!</p>
+          <p class="muted">Выбирай игру и ставь личные рекорды!</p>
           <div class="games-list">
             <div class="game-tile" onclick="openGame('catch')">🎂<strong>Поймай торт</strong><span class="muted">Аркада</span></div>
             <div class="game-tile" onclick="openGame('flappy')">🎈<strong>Flappy Birthday</strong><span class="muted">Полёт</span></div>
@@ -847,10 +856,10 @@
           <div id="gameContainer"></div>
         </div>
 
-        <!-- Leaderboard -->
+        <!-- Local Leaderboard -->
         <div class="card">
           <div class="stamp-badge">Доска почёта</div>
-          <h3>Лучшие результаты гостей</h3>
+          <h3>Твои лучшие результаты</h3>
           <div id="leaderboardList"></div>
         </div>
       </div>
@@ -888,20 +897,32 @@
         </div>
       </div>
 
-      <!-- TAB 4: PHOTOBOOTH -->
+      <!-- TAB 4: PHOTOBOOTH (SEAMLESS NEURAL BLEND) -->
       <div class="tab-pane" id="tabPhoto">
         <div class="card">
-          <div class="stamp-badge">4-я программа • Фотоателье</div>
-          <h2>Праздничная фотобудка</h2>
-          <p class="muted">Загрузи селфи или сделай снимок на камеру — добавим новогоднюю рамку и маленького именинника в угол!</p>
-          <input type="file" id="boothInput" accept="image/*" capture="user" onchange="renderPhotobooth()" />
-          <div style="display:flex; gap:6px; margin-bottom:10px;">
-            <button class="btn btn-ghost btn-sm" onclick="setSticker(8)">С грибом</button>
-            <button class="btn btn-ghost btn-sm" onclick="setSticker(9)">С аккордеоном</button>
-            <button class="btn btn-ghost btn-sm" onclick="setSticker(13)">С подсолнухами</button>
+          <div class="stamp-badge">4-я программа • Нейро-фотоателье</div>
+          <h2>Совместный кадр с именинником</h2>
+          <p class="muted">Загрузи своё селфи — нейро-фильтр плавно объединит вас в одном кадре с именинником без рамок и склеек!</p>
+          <input type="file" id="boothInput" accept="image/*" capture="user" onchange="loadBoothGuestPhoto()" />
+
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="setBoothScene('party')">Огонёк</button>
+            <button class="btn btn-ghost btn-sm" onclick="setBoothScene('retro')">Открытка</button>
+            <button class="btn btn-ghost btn-sm" onclick="setBoothScene('gold')">Юбилей 25</button>
           </div>
-          <canvas id="boothCanvas" width="600" height="750" style="width:100%; border-radius:10px; border:2px solid var(--ink); display:block; margin-bottom:10px;"></canvas>
-          <button class="btn btn-gold" onclick="downloadBooth()">Сохранить фото на память</button>
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="setCompanion(2)">Образ 1</button>
+            <button class="btn btn-ghost btn-sm" onclick="setCompanion(4)">Образ 2</button>
+            <button class="btn btn-ghost btn-sm" onclick="setCompanion(5)">Образ 3</button>
+          </div>
+          <div class="slider-row">
+            <span>Масштаб фото:</span>
+            <input type="range" id="boothZoom" min="0.7" max="1.6" step="0.05" value="1.0" oninput="renderPhotobooth()" />
+          </div>
+          <p class="muted" style="font-size:11px; margin-top:-6px;">Подвинь своё фото пальцем прямо по кадру, чтобы встать плечом к плечу</p>
+
+          <canvas id="boothCanvas" width="640" height="640" style="width:100%; border-radius:12px; border:2px solid var(--ink); display:block; margin-bottom:10px; touch-action:none;"></canvas>
+          <button class="btn btn-gold" onclick="downloadBooth()">Сохранить совместное фото</button>
         </div>
       </div>
     </section>
@@ -919,14 +940,6 @@
     const CHILD_COUNT = 13;
     const AI_COUNT = 32;
     const REF_COUNT = 5;
-
-    // Optional Supabase credentials (fill in when ready)
-    const SUPABASE_URL = '';
-    const SUPABASE_ANON_KEY = '';
-    let sbClient = null;
-    if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
-      sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
 
     // Decor
     (function initDecor() {
@@ -969,6 +982,7 @@
         renderFilmstrip();
         renderQuiz();
         renderLeaderboard();
+        initBoothCanvasEvents();
         renderPhotobooth();
       }
     }
@@ -1053,7 +1067,7 @@
     // --- 2. CALL ---
     function declineCall() {
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-      alert('Сбросить звонок из прошлого невозможно — сначала нужно выслушать именинника!');
+      alert('Сбросить звонок из Яреги невозможно — сначала нужно выслушать именинника!');
     }
 
     function acceptCall() {
@@ -1114,7 +1128,7 @@
       lit.forEach((c, i) => setTimeout(() => blowOneCandle(c), i * 35));
     }
 
-    // --- 4. RSVP "NO" BUTTON (NO USSR REFERENCES) ---
+    // --- 4. RSVP "NO" BUTTON ---
     let noStep = 0;
     function handleNoClick() {
       noStep++;
@@ -1159,7 +1173,7 @@
     }
     function closeSadModal() { document.getElementById('sadModal').classList.remove('show'); }
 
-    // --- 5. VIP TICKET & FACE RECOGNITION (FIXED LAYOUT & 2026 DATES) ---
+    // --- 5. VIP TICKET & FACE RECOGNITION ---
     let modelsLoaded = false;
     let refDescriptors = null;
 
@@ -1250,7 +1264,6 @@
       ctx.lineWidth = 2;
       ctx.strokeRect(24, 24, W - 48, H - 48);
 
-      // Stub divider at x = 520
       const stubX = 520;
       ctx.setLineDash([8, 8]);
       ctx.beginPath();
@@ -1260,7 +1273,6 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Left main body
       ctx.textAlign = 'left';
       ctx.fillStyle = '#b82924';
       ctx.font = 'bold 16px monospace';
@@ -1277,7 +1289,6 @@
       ctx.fillText('Место: Секретный объект (VIP-допуск)', 42, 261);
       ctx.fillText('Дресс-код: Праздничный и уютный + НГ', 42, 295);
 
-      // Stamp (positioned cleanly on left half without touching stub line)
       ctx.save();
       ctx.translate(365, 348);
       ctx.rotate(-0.10);
@@ -1290,7 +1301,6 @@
       ctx.fillText('ОДОБРЕНО • 2026', 0, 6);
       ctx.restore();
 
-      // Right stub (centered inside x = 520..736, center = 628)
       const stubCenter = 628;
       const photoW = 150, photoH = 185;
       const photoX = stubCenter - photoW / 2;
@@ -1301,7 +1311,6 @@
         ctx.beginPath();
         ctx.rect(photoX, photoY, photoW, photoH);
         ctx.clip();
-        // Cover crop so aspect ratio doesn't distort
         const scale = Math.max(photoW / photoImg.width, photoH / photoImg.height);
         const dw = photoImg.width * scale;
         const dh = photoImg.height * scale;
@@ -1356,7 +1365,7 @@
       goScreen('screenCaptcha');
     }
 
-    // Countdown to Dec 19, 2026 11:00
+    // Countdown without leading zero on days
     function updateCountdown() {
       const target = new Date('2026-12-19T11:00:00').getTime();
       const diff = Math.max(0, target - Date.now());
@@ -1364,20 +1373,24 @@
       const h = Math.floor((diff % 86400000) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById('cdDays').textContent = String(d).padStart(3, '0');
+      document.getElementById('cdDays').textContent = String(d);
       document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
       document.getElementById('cdMins').textContent = String(m).padStart(2, '0');
       document.getElementById('cdSecs').textContent = String(s).padStart(2, '0');
     }
 
-    // --- STAGE 3A: FILMSTRIP SWIPE CARDS ---
+    // --- STAGE 3A: FILMSTRIP SWIPE CARDS (PERSONALIZED!) ---
     const SWIPE_CARDS = [
-      { text: 'Прийти 19 декабря к 11:00 с отличным настроением', mustAgree: true },
-      { text: 'В детстве именинник собирал в лесу грибы размером с голову', mustAgree: false },
-      { text: 'Обязательно поднять бокал ровно в 00:00 за 25-летие!', mustAgree: true },
-      { text: 'Именинник закончил музыкальную школу по классу аккордеона', mustAgree: false },
+      { text: 'Центр вселенной именинника — родной посёлок Ярега!', mustAgree: true },
+      { text: 'Кто опоздал на праздник 19 декабря — начинает день с бани!', mustAgree: true },
+      { text: 'В детстве именинник всерьёз хотел играть на саксофоне', mustAgree: false },
+      { text: 'Главная детская мечта именинника — стать Президентом', mustAgree: false },
+      { text: 'Делать работу тяп-ляп на этой вечеринке', mustAgree: false, forceNo: true },
+      { text: 'Коронный комбо-ужин: горячая лазанья и холодный морс', mustAgree: true },
+      { text: 'В школьные годы именинник втихаря уехал за 300 км на 1 день, никому не сказав', mustAgree: false },
+      { text: 'Главный итог 25-летия: чем старше — тем меньше болит спина (тьфу-тьфу-тьфу!)', mustAgree: true },
       { text: 'Уйти спать в 22:00 до полуночи', mustAgree: false, forceNo: true },
-      { text: 'Надеть что-то уютное или с новогодним настроением', mustAgree: true }
+      { text: '«А я думала, сова!» — официальный пароль хорошего настроения', mustAgree: true }
     ];
     let swipeIdx = 0;
 
@@ -1397,7 +1410,7 @@
         box.classList.remove('shake');
         void box.offsetWidth;
         box.classList.add('shake');
-        fb.textContent = 'Этот пункт обязательный — карточка пружинит обратно!';
+        fb.textContent = 'Это золотое правило — карточка пружинит обратно!';
         return;
       }
       if (card.forceNo && isYes) {
@@ -1405,39 +1418,39 @@
         box.classList.remove('shake');
         void box.offsetWidth;
         box.classList.add('shake');
-        fb.textContent = 'Никакого сна до полуночи! Жми «Не согласен»!';
+        fb.textContent = 'Никакого тяп-ляп и раннего отбоя! Жми «Не согласен»!';
         return;
       }
-      fb.textContent = isYes ? 'Принято! Листаем дальше.' : 'Правильный выбор!';
+      fb.textContent = isYes ? 'В точку! Листаем дальше.' : 'Верно подмечено!';
       swipeIdx++;
       renderFilmstrip();
     }
 
-    // --- STAGE 3B: PARTY SHAKER ---
+    // --- STAGE 3B: PARTY SHAKER (PERSONALIZED!) ---
     const SHAKER_DATA = {
       toast: [
-        'За то, чтобы в 25 лет энергии хватало на все авантюры, а утро 20 декабря было добрым!',
-        'За именинника — человека, который даже секретную вечеринку превращает в лучший праздник года!',
-        'За дружбу, проверенную годами, детскими фотографиями и сегодняшним столом!',
-        'Пусть сбываются даже те мечты, о которых мы загадывали в 7 лет!'
+        'За центр вселенной — славный посёлок Ярега, подаривший нам сегодняшнего юбиляра!',
+        'За то, чтобы к 25 годам спина не болела вообще никогда — тьфу-тьфу-тьфу!',
+        'За человека, который в школе втихаря рванул за 300 км на один день и до сих пор не сбавляет оборотов!',
+        'За то, чтобы всё в жизни делалось с душой, а не тяп-ляп! С 25-летием!'
       ],
       predict: [
-        'Сегодня около 23:45 ты будешь громче всех подпевать песне, слов которой не знаешь.',
-        'Тебе достанется самый удачный кусок именинного торта!',
-        'Через час кто-то обязательно предложит сделать общее фото, и ты окажешься в центре.',
-        'Сегодня ты узнаешь как минимум одну новую историю из детства именинника.'
+        'Сегодня около 23:45 ты с умным видом произнесёшь: «А я думала, сова!»',
+        'На праздничном столе тебе достанется самый сочный кусок лазаньи!',
+        'Если ты сегодня опоздал — баня уже топится специально для тебя.',
+        'К полуночи кто-то обязательно предложит имениннику исполнить соло на воображаемом саксофоне.'
       ],
       challenge: [
-        'Сделай прямо сейчас совместное селфи с тем, кто сидит слева от тебя!',
-        'Расскажи за 15 секунд самую смешную историю, связанную с именинником.',
-        'Скажи тост, используя слова «мандарин», «25» и «секрет».',
-        'Повтори позу именинника с любой его детской фотографии!'
+        'Сделай селфи с тем, кто сидит слева, и отправь в чат с подписью «А я думала, сова!»',
+        'Расскажи за 15 секунд, куда бы ты втихаря уехал за 300 км на один день.',
+        'Скажи тост, обязательно упомянув Ярегу, баню и 25-летие!',
+        'Изобрази игру на саксофоне под аплодисменты всего стола!'
       ],
       drink: [
-        'Игристое праздничное — идеально для разминки!',
-        'Фирменный коктейль вечера со льдом и цитрусом.',
-        'Освежающий лимонад / морс — чтобы дотянуть до полуночи в тонусе!',
-        'Выбор именинника — спроси у него, что налито в его бокале прямо сейчас.'
+        'Фирменный ягодный морс — любимый напиток именинника!',
+        'Игристое праздничное — для разминки перед полуночью!',
+        'Освежающий морс со льдом — чтобы дотянуть до 00:00 в отличной форме!',
+        'Выбор юбиляра — спроси у него, что налито в его бокале прямо сейчас.'
       ]
     };
     let shakerMode = 'toast';
@@ -1488,31 +1501,55 @@
       });
     }
 
-    // --- STAGE 3C: QUIZ WITH SCRATCH-OFF HINTS ---
+    // --- STAGE 3C: QUIZ WITH SCRATCH-OFF HINTS (PERSONALIZED!) ---
     const QUIZ_DATA = [
       {
-        q: 'Сколько лет исполняется имениннику 20 декабря 2026 в 00:00?',
-        opts: ['21 год', '25 лет', '30 лет', '18 лет (в душе)'],
-        ans: 1,
-        hint: 'Четверть века! Ровно столько же было свечей на торте.'
-      },
-      {
-        q: 'На каком музыкальном инструменте именинник играл в детстве?',
-        opts: ['На скрипке', 'На барабанах', 'На аккордеоне', 'На балалайке'],
-        ans: 2,
-        hint: 'С мехами и клавишами — он был на фото при попытке нажать «Не приду».'
-      },
-      {
-        q: 'Какой главный лесной трофей есть на детских фото именинника?',
-        opts: ['Огромный белый гриб', 'Шишка с арбуз', 'Корзина земляники', 'Ёжик'],
+        q: 'Какой посёлок именинник считает настоящим центром вселенной?',
+        opts: ['Посёлок Ярега', 'Посёлок Шушенское', 'Посёлок Рускеала', 'Посёлок Барвиха'],
         ans: 0,
-        hint: 'Растёт в сосновом бору и помещается в одну детскую ладонь.'
+        hint: 'Название начинается на «Я» и находится в Республике Коми.'
       },
       {
-        q: 'Во сколько начинается сбор гостей 19 декабря 2026?',
-        opts: ['В 19:00', 'В 11:00 утра', 'В 23:55', 'В 15:00'],
+        q: 'На каком инструменте именинник мечтал играть в детстве (помимо аккордеона)?',
+        opts: ['На электрогитаре', 'На саксофоне', 'На барабанах', 'На трубе'],
         ans: 1,
-        hint: 'С самого утра! Начинаем в 11:00 и гуляем до полуночи.'
+        hint: 'Джазовый духовой инструмент из блестящей меди.'
+      },
+      {
+        q: 'Кем именинник мечтал стать в детстве?',
+        opts: ['Космонавтом', 'Президентом', 'Капитаном корабля', 'Рок-звездой'],
+        ans: 1,
+        hint: 'Самая главная должность в стране!'
+      },
+      {
+        q: 'Любимое блюдо и главный напиток именинника?',
+        opts: ['Пельмени и квас', 'Пицца и кола', 'Лазанья и морс', 'Борщ и компот'],
+        ans: 2,
+        hint: 'Итальянская слоёная запеканка + ягодный напиток.'
+      },
+      {
+        q: 'Какой тайный подвиг именинник совершил в школьные годы?',
+        opts: ['Уехал за 300 км на 1 день, никому не сказав', 'Прогулял всю четверть в кино', 'Выиграл олимпиаду по балету', 'Угнал трактор'],
+        ans: 0,
+        hint: 'Дальняя однодневная поездка в полном секрете от взрослых.'
+      },
+      {
+        q: 'С чего начинает день тот, кто опоздает на праздник?',
+        opts: ['Со штрафной рюмки', 'С бани!', 'С отжиманий', 'С тоста на табуретке'],
+        ans: 1,
+        hint: 'Там жарко, есть веники и пар!'
+      },
+      {
+        q: 'Какой главный «взрослый» итог к 25 годам отмечает именинник?',
+        opts: ['Научился рано вставать', 'Чем старше — тем меньше болит спина (тьфу-тьфу-тьфу)', 'Полюбил оливки', 'Перестал опаздывать'],
+        ans: 1,
+        hint: 'Касается поясницы и требует постучать по дереву.'
+      },
+      {
+        q: 'Какую кассету купили имениннику в детстве, которую он обожал?',
+        opts: ['«Ну, погоди!»', '«Том и Джерри»', '«Король Лев»', '«Чебурашка»'],
+        ans: 0,
+        hint: 'Классика про Волка и Зайца!'
       }
     ];
     let quizIdx = 0, quizScore = 0, quizAnswered = false;
@@ -1556,7 +1593,7 @@
       if (!canvas) return;
       const rect = canvas.parentElement.getBoundingClientRect();
       canvas.width = rect.width || 320;
-      canvas.height = rect.height || 74;
+      canvas.height = rect.height || 76;
       const ctx = canvas.getContext('2d');
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#b5a48b';
@@ -1581,11 +1618,98 @@
       window.onpointerup = () => { scratching = false; };
     }
 
-    // --- STAGE 3D: PHOTOBOOTH ---
-    let selectedStickerId = 8;
-    function setSticker(id) {
-      selectedStickerId = id;
+    // --- STAGE 3D: UPGRADED SEAMLESS NEURAL STUDIO PHOTOBOOTH ---
+    let companionRefId = 2;
+    let boothScene = 'party'; // 'party' | 'retro' | 'gold'
+    let guestBoothImg = null;
+    let guestOffsetX = 0;
+    let guestOffsetY = 0;
+    let boothEventsBound = false;
+
+    function setCompanion(id) {
+      companionRefId = id;
       renderPhotobooth();
+    }
+    function setBoothScene(sc) {
+      boothScene = sc;
+      renderPhotobooth();
+    }
+
+    function loadBoothGuestPhoto() {
+      const fileInput = document.getElementById('boothInput');
+      if (!fileInput || !fileInput.files || !fileInput.files[0]) return;
+      const r = new FileReader();
+      r.onload = () => {
+        const im = new Image();
+        im.onload = () => {
+          guestBoothImg = im;
+          guestOffsetX = 0;
+          guestOffsetY = 0;
+          renderPhotobooth();
+        };
+        im.src = r.result;
+      };
+      r.readAsDataURL(fileInput.files[0]);
+    }
+
+    function initBoothCanvasEvents() {
+      if (boothEventsBound) return;
+      const canvas = document.getElementById('boothCanvas');
+      if (!canvas) return;
+      boothEventsBound = true;
+      let dragging = false, startX = 0, startY = 0;
+      canvas.addEventListener('pointerdown', e => {
+        dragging = true;
+        startX = e.clientX - guestOffsetX;
+        startY = e.clientY - guestOffsetY;
+      });
+      canvas.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        guestOffsetX = e.clientX - startX;
+        guestOffsetY = e.clientY - startY;
+        renderPhotobooth();
+      });
+      window.addEventListener('pointerup', () => { dragging = false; });
+    }
+
+    // Helper: draws a portrait onto an offscreen canvas with soft radial/elliptical feathering so edges melt seamlessly into the shared studio scene
+    function createFeatheredPortrait(img, targetW, targetH, zoom, offX, offY) {
+      const off = document.createElement('canvas');
+      off.width = targetW;
+      off.height = targetH;
+      const octx = off.getContext('2d');
+
+      if (img && img.complete && img.naturalWidth) {
+        const scale = Math.max(targetW / img.width, targetH / img.height) * zoom;
+        const dw = img.width * scale;
+        const dh = img.height * scale;
+        const dx = (targetW - dw) / 2 + offX;
+        const dy = (targetH - dh) * 0.25 + offY;
+        octx.drawImage(img, dx, dy, dw, dh);
+      } else {
+        octx.fillStyle = '#36584f';
+        octx.fillRect(0, 0, targetW, targetH);
+        octx.fillStyle = '#f7efe0';
+        octx.font = 'bold 18px Georgia';
+        octx.textAlign = 'center';
+        octx.fillText('Загрузи селфи', targetW / 2, targetH / 2 - 8);
+        octx.font = '14px Georgia';
+        octx.fillText('и встань рядом!', targetW / 2, targetH / 2 + 16);
+      }
+
+      // Soft radial alpha mask so edges dissolve smoothly without rectangular borders
+      octx.globalCompositeOperation = 'destination-in';
+      const grad = octx.createRadialGradient(
+        targetW * 0.5, targetH * 0.48, targetW * 0.26,
+        targetW * 0.5, targetH * 0.50, targetW * 0.52
+      );
+      grad.addColorStop(0, 'rgba(0,0,0,1)');
+      grad.addColorStop(0.72, 'rgba(0,0,0,0.92)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      octx.fillStyle = grad;
+      octx.fillRect(0, 0, targetW, targetH);
+
+      return off;
     }
 
     function renderPhotobooth() {
@@ -1593,85 +1717,87 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
-      ctx.fillStyle = '#142c27';
-      ctx.fillRect(0, 0, W, H);
+      const zoom = parseFloat(document.getElementById('boothZoom')?.value || '1.0');
 
-      const fileInput = document.getElementById('boothInput');
-      const drawFrameAndSticker = () => {
-        // Festive border
+      const compImg = new Image();
+      compImg.src = `assets/ref/${companionRefId}.jpg`;
+
+      const paint = () => {
+        // 1. Unified studio background based on scene
+        const bg = ctx.createRadialGradient(W / 2, H * 0.42, 40, W / 2, H * 0.5, W * 0.75);
+        if (boothScene === 'party') {
+          bg.addColorStop(0, '#27594d');
+          bg.addColorStop(1, '#0d1f1c');
+        } else if (boothScene === 'retro') {
+          bg.addColorStop(0, '#6e352c');
+          bg.addColorStop(1, '#241412');
+        } else {
+          bg.addColorStop(0, '#5c461e');
+          bg.addColorStop(1, '#1c160b');
+        }
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Warm studio bokeh lights behind both people
+        for (let i = 0; i < 28; i++) {
+          ctx.fillStyle = i % 3 === 0 ? 'rgba(255, 215, 100, 0.18)' : (i % 3 === 1 ? 'rgba(255, 110, 95, 0.14)' : 'rgba(130, 240, 190, 0.12)');
+          ctx.beginPath();
+          ctx.arc((i * 89) % W, 70 + ((i * 151) % (H - 130)), 12 + (i % 5) * 9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 2. Seamless side-by-side feathered portraits (overlapping softly in center)
+        const portW = 350, portH = 440;
+        const leftFeather = createFeatheredPortrait(guestBoothImg, portW, portH, zoom, guestOffsetX, guestOffsetY);
+        const rightFeather = createFeatheredPortrait(compImg, portW, portH, 1.08, 0, 0);
+
+        ctx.drawImage(leftFeather, 14, 108);
+        ctx.drawImage(rightFeather, 276, 108);
+
+        // 3. Unified color grading & warm holiday glow across the whole scene so both look photographed together
+        const unifiedGrade = ctx.createLinearGradient(0, 0, W, H);
+        unifiedGrade.addColorStop(0, 'rgba(255, 210, 140, 0.12)');
+        unifiedGrade.addColorStop(1, 'rgba(184, 41, 36, 0.10)');
+        ctx.fillStyle = unifiedGrade;
+        ctx.fillRect(0, 0, W, H);
+
+        // Foreground festive sparkles & confetti
+        for (let i = 0; i < 18; i++) {
+          ctx.fillStyle = i % 2 === 0 ? 'rgba(255, 224, 115, 0.65)' : 'rgba(255, 255, 255, 0.55)';
+          ctx.beginPath();
+          ctx.arc((i * 113 + 30) % W, (i * 97 + 60) % H, 2.5 + (i % 3), 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 4. Clean postcard border & automatic date caption
         ctx.strokeStyle = '#d4a13b';
-        ctx.lineWidth = 14;
-        ctx.strokeRect(12, 12, W - 24, H - 24);
+        ctx.lineWidth = 10;
+        ctx.strokeRect(10, 10, W - 20, H - 20);
+
+        ctx.fillStyle = 'rgba(247, 239, 224, 0.94)';
+        ctx.fillRect(34, H - 78, W - 68, 46);
         ctx.strokeStyle = '#b82924';
-        ctx.lineWidth = 6;
-        ctx.strokeRect(24, 24, W - 48, H - 48);
+        ctx.lineWidth = 2;
+        ctx.strokeRect(34, H - 78, W - 68, 46);
 
-        // Top banner
-        ctx.fillStyle = '#b82924';
-        ctx.fillRect(40, 36, W - 80, 54);
-        ctx.fillStyle = '#fff8ee';
-        ctx.font = 'bold 24px Georgia';
-        ctx.textAlign = 'center';
-        ctx.fillText('ЮБИЛЕЙНЫЙ ОГОНЁК • 25 ЛЕТ', W / 2, 71);
-
-        // Bottom caption
-        ctx.fillStyle = '#f7efe0';
-        ctx.fillRect(40, H - 90, W - 80, 48);
         ctx.fillStyle = '#241914';
-        ctx.font = 'bold 20px monospace';
-        ctx.fillText('19–20 ДЕКАБРЯ 2026', W / 2, H - 59);
-
-        // Childhood cutout badge in bottom-right corner
-        const stickerImg = new Image();
-        stickerImg.onload = () => {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(W - 115, H - 175, 78, 0, Math.PI * 2);
-          ctx.clip();
-          ctx.drawImage(stickerImg, W - 193, H - 253, 156, 156);
-          ctx.restore();
-          ctx.strokeStyle = '#ffd24d';
-          ctx.lineWidth = 5;
-          ctx.beginPath();
-          ctx.arc(W - 115, H - 175, 78, 0, Math.PI * 2);
-          ctx.stroke();
-        };
-        stickerImg.src = `assets/child/${selectedStickerId}.jpg`;
+        ctx.font = 'bold 19px Georgia';
+        ctx.textAlign = 'center';
+        ctx.fillText('ЮБИЛЕЙНЫЙ ОГОНЁК • 25 ЛЕТ • 19–20.12.2026', W / 2, H - 48);
       };
 
-      if (fileInput && fileInput.files && fileInput.files[0]) {
-        const r = new FileReader();
-        r.onload = () => {
-          const im = new Image();
-          im.onload = () => {
-            const scale = Math.max(W / im.width, H / im.height);
-            const dw = im.width * scale, dh = im.height * scale;
-            ctx.drawImage(im, (W - dw) / 2, (H - dh) / 2, dw, dh);
-            drawFrameAndSticker();
-          };
-          im.src = r.result;
-        };
-        r.readAsDataURL(fileInput.files[0]);
-      } else {
-        ctx.fillStyle = '#eadcc3';
-        ctx.fillRect(36, 36, W - 72, H - 72);
-        ctx.fillStyle = '#635147';
-        ctx.font = 'bold 22px Georgia';
-        ctx.textAlign = 'center';
-        ctx.fillText('Загрузи фото сверху,', W / 2, H / 2 - 14);
-        ctx.fillText('чтобы примерить рамку!', W / 2, H / 2 + 18);
-        drawFrameAndSticker();
-      }
+      if (compImg.complete) paint();
+      else compImg.onload = paint;
     }
 
     function downloadBooth() {
       const link = document.createElement('a');
-      link.download = 'Fotobudka_25_let.png';
+      link.download = 'Sovmestnoe_foto_25_let.png';
       link.href = document.getElementById('boothCanvas').toDataURL('image/png');
       link.click();
     }
 
-    // --- STAGE 4 & 5: ALL 8 MINI-GAMES + LEADERBOARD ---
+    // --- STAGE 4 & 5: ALL 8 MINI-GAMES + LOCAL LEADERBOARD ---
     let activeGameAnim = null;
     function stopActiveGameLoop() {
       if (activeGameAnim) {
@@ -1687,33 +1813,19 @@
       document.getElementById('gamesCatalogCard').style.display = 'block';
     }
 
-    async function saveScore(gameName, score) {
+    function saveScore(gameName, score) {
       const player = localStorage.getItem('bday25_guest_name') || 'Гость';
       const local = JSON.parse(localStorage.getItem('bday25_scores') || '[]');
       local.push({ player, game: gameName, score, ts: Date.now() });
       local.sort((a, b) => b.score - a.score);
       localStorage.setItem('bday25_scores', JSON.stringify(local.slice(0, 15)));
-
-      if (sbClient) {
-        try {
-          await sbClient.from('leaderboard').insert([{ player_name: player, game_name: gameName, score }]);
-        } catch (e) {}
-      }
       renderLeaderboard();
     }
 
-    async function renderLeaderboard() {
+    function renderLeaderboard() {
       const box = document.getElementById('leaderboardList');
       if (!box) return;
-      let rows = JSON.parse(localStorage.getItem('bday25_scores') || '[]');
-      if (sbClient) {
-        try {
-          const { data } = await sbClient.from('leaderboard').select('*').order('score', { ascending: false }).limit(10);
-          if (data && data.length) {
-            rows = data.map(r => ({ player: r.player_name, game: r.game_name, score: r.score }));
-          }
-        } catch (e) {}
-      }
+      const rows = JSON.parse(localStorage.getItem('bday25_scores') || '[]');
       if (!rows.length) {
         box.innerHTML = '<p class="muted">Пока рекордов нет — сыграй первым!</p>';
         return;
@@ -1722,6 +1834,9 @@
         `<div class="lb-row"><span>${i + 1}. <strong>${r.player}</strong> (${r.game})</span><strong>${r.score}</strong></div>`
       ).join('');
     }
+
+    let bombOrder = [];
+    let bombPointer = 0;
 
     function openGame(type) {
       stopActiveGameLoop();
@@ -1733,13 +1848,13 @@
       const cont = document.getElementById('gameContainer');
       cont.innerHTML = '';
 
-      const headImg = new Image();
-      headImg.src = 'assets/child/8.jpg';
+      const faceCloseImg = new Image();
+      faceCloseImg.src = 'assets/ref/3.jpg';
 
       // 1. CATCH CAKE
       if (type === 'catch') {
         title.textContent = '🎂 Поймай торт';
-        desc.textContent = 'Води пальцем по экрану: лови торты и мандарины, уворачивайся от будильников!';
+        desc.textContent = 'Води пальцем по экрану: лови торты и морс, уворачивайся от работы тяп-ляп!';
         cont.innerHTML = '<canvas id="gameCanvas" width="320" height="380"></canvas>';
         const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
         let px = 160, score = 0, lives = 3, items = [], frame = 0;
@@ -1751,7 +1866,7 @@
           frame++;
           if (frame % 32 === 0) {
             const bad = Math.random() < 0.28;
-            items.push({ x: 20 + Math.random() * 280, y: -20, vy: 2.6 + score * 0.08, icon: bad ? '⏰' : (Math.random() < 0.5 ? '🎂' : '🍊'), bad });
+            items.push({ x: 20 + Math.random() * 280, y: -20, vy: 2.6 + score * 0.08, icon: bad ? '⏰' : (Math.random() < 0.5 ? '🎂' : '🧃'), bad });
           }
           ctx.fillStyle = '#142c27';
           ctx.fillRect(0, 0, 320, 380);
@@ -1788,36 +1903,67 @@
         cont.innerHTML = '<canvas id="gameCanvas" width="320" height="380"></canvas>';
         const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
         let by = 180, vy = 0, pipes = [], score = 0, frame = 0;
+        const radius = 25;
         c.onpointerdown = () => { vy = -5.2; };
         function loop() {
           frame++;
           vy += 0.28;
           by += vy;
           if (frame % 95 === 0) {
-            const gapY = 70 + Math.random() * 170;
+            const gapY = 75 + Math.random() * 165;
             pipes.push({ x: 340, gapY, passed: false });
           }
           ctx.fillStyle = '#142c27';
           ctx.fillRect(0, 0, 320, 380);
 
-          let dead = by < 10 || by > 370;
+          let dead = by < 12 || by > 368;
           pipes.forEach(p => {
             p.x -= 2.3;
             ctx.fillStyle = '#b82924';
-            ctx.fillRect(p.x, 0, 38, p.gapY - 52);
-            ctx.fillRect(p.x, p.gapY + 52, 38, 380);
-            if (!p.passed && p.x + 38 < 70) { p.passed = true; score++; }
-            if (70 + 14 > p.x && 70 - 14 < p.x + 38 && (by - 14 < p.gapY - 52 || by + 14 > p.gapY + 52)) dead = true;
+            ctx.fillRect(p.x, 0, 38, p.gapY - 58);
+            ctx.fillRect(p.x, p.gapY + 58, 38, 380);
+            ctx.fillStyle = '#ffd24d';
+            ctx.fillRect(p.x, p.gapY - 64, 38, 6);
+            ctx.fillRect(p.x, p.gapY + 58, 38, 6);
+
+            if (!p.passed && p.x + 38 < 74) { p.passed = true; score++; }
+            if (74 + 18 > p.x && 74 - 18 < p.x + 38 && (by - 18 < p.gapY - 58 || by + 18 > p.gapY + 58)) dead = true;
           });
           pipes = pipes.filter(p => p.x > -50);
 
           ctx.save();
           ctx.beginPath();
-          ctx.arc(70, by, 18, 0, Math.PI * 2);
+          ctx.arc(74, by, radius, 0, Math.PI * 2);
           ctx.clip();
-          if (headImg.complete && headImg.naturalWidth) ctx.drawImage(headImg, 52, by - 18, 36, 36);
-          else { ctx.fillStyle = '#ffd24d'; ctx.fillRect(52, by - 18, 36, 36); }
+          if (faceCloseImg.complete && faceCloseImg.naturalWidth) {
+            const sw = faceCloseImg.width * 0.62;
+            const sh = sw;
+            const sx = (faceCloseImg.width - sw) / 2;
+            const sy = faceCloseImg.height * 0.22;
+            ctx.drawImage(faceCloseImg, sx, sy, sw, sh, 74 - radius, by - radius, radius * 2, radius * 2);
+          } else {
+            ctx.fillStyle = '#ffd24d';
+            ctx.fillRect(74 - radius, by - radius, radius * 2, radius * 2);
+          }
           ctx.restore();
+
+          ctx.strokeStyle = '#ffd24d';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(74, by, radius, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = '#ff4d4d';
+          ctx.beginPath();
+          ctx.moveTo(64, by - radius + 3);
+          ctx.lineTo(84, by - radius + 3);
+          ctx.lineTo(74, by - radius - 16);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = '#ffd24d';
+          ctx.beginPath();
+          ctx.arc(74, by - radius - 17, 4, 0, Math.PI * 2);
+          ctx.fill();
 
           hud.textContent = `Счёт: ${score}`;
           if (dead) {
@@ -1859,7 +2005,7 @@
           holes.forEach(h => h.innerHTML = '');
           activeHole = Math.floor(Math.random() * 9);
           isBad = Math.random() < 0.3;
-          holes[activeHole].innerHTML = isBad ? '⏰' : '<img src="assets/child/8.jpg" style="width:100%;height:100%;object-fit:cover;">';
+          holes[activeHole].innerHTML = isBad ? '⏰' : '<img src="assets/ref/3.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center 25%;">';
           hud.textContent = `Счёт: ${score} | Осталось: ${timeLeft}с`;
           if (timeLeft <= 0) {
             stopActiveGameLoop();
@@ -1872,38 +2018,106 @@
       // 4. CAKE TOWER
       else if (type === 'tower') {
         title.textContent = '🍰 Башня из торта';
-        desc.textContent = 'Тапай вовремя, чтобы ровно ставить ярусы торта друг на друга!';
-        cont.innerHTML = '<canvas id="gameCanvas" width="320" height="360"></canvas>';
+        desc.textContent = 'Тапай вовремя, чтобы ровно ставить аппетитные ярусы торта друг на друга!';
+        cont.innerHTML = '<canvas id="gameCanvas" width="320" height="370"></canvas>';
         const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
-        let stack = [{ x: 90, w: 140 }], cur = { x: 20, w: 140, dir: 3 }, score = 0;
+        let stack = [{ x: 80, w: 160, styleIdx: 0 }], cur = { x: 15, w: 160, dir: 3, styleIdx: 1 }, score = 0;
+
+        const CAKE_THEMES = [
+          { sponge: '#e5a95c', cream: '#fff7eb', drip: '#6b2d23', berry: '#d92626' },
+          { sponge: '#f2c17d', cream: '#ffe3ec', drip: '#c93b6b', berry: '#ff4d6d' },
+          { sponge: '#7c4330', cream: '#f7efe0', drip: '#d4a13b', berry: '#2d6a4f' },
+          { sponge: '#d98a4e', cream: '#e8f5e9', drip: '#b82924', berry: '#ffd24d' }
+        ];
+
+        function drawCakeTier(x, y, w, h, themeIdx, hasToppers) {
+          const t = CAKE_THEMES[themeIdx % CAKE_THEMES.length];
+          ctx.fillStyle = t.sponge;
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, 6);
+          ctx.fill();
+
+          ctx.fillStyle = t.cream;
+          ctx.fillRect(x + 2, y + h * 0.48, w - 4, 4);
+
+          ctx.fillStyle = t.drip;
+          ctx.beginPath();
+          ctx.roundRect(x - 1, y, w + 2, 9, [6, 6, 2, 2]);
+          ctx.fill();
+
+          const dripCount = Math.max(2, Math.floor(w / 18));
+          const step = w / dripCount;
+          for (let i = 0; i < dripCount; i++) {
+            const dx = x + step * i + step * 0.5;
+            const dripH = 7 + ((i * 5 + themeIdx * 3) % 7);
+            ctx.beginPath();
+            ctx.roundRect(dx - 3.5, y + 6, 7, dripH, 4);
+            ctx.fill();
+          }
+
+          if (w >= 26) {
+            const puffCount = Math.max(2, Math.floor(w / 24));
+            for (let i = 0; i < puffCount; i++) {
+              const px = x + (w / (puffCount + 1)) * (i + 1);
+              ctx.fillStyle = t.cream;
+              ctx.beginPath();
+              ctx.arc(px, y - 1, 5, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = t.berry;
+              ctx.beginPath();
+              ctx.arc(px, y - 4, 3, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          if (hasToppers) {
+            ctx.fillStyle = '#d4a13b';
+            ctx.fillRect(x - 14, y + h, w + 28, 6);
+            ctx.fillRect(x + w * 0.35, y + h + 6, w * 0.3, 8);
+          }
+
+          ctx.strokeStyle = 'rgba(36, 25, 20, 0.55)';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, 6);
+          ctx.stroke();
+        }
+
         c.onpointerdown = () => {
           const prev = stack[stack.length - 1];
           const overlapStart = Math.max(prev.x, cur.x);
           const overlapEnd = Math.min(prev.x + prev.w, cur.x + cur.w);
           const newW = overlapEnd - overlapStart;
-          if (newW <= 8) {
+          if (newW <= 10) {
             stopActiveGameLoop();
             saveScore('Башня из торта', score);
             cont.innerHTML = `<p style="font-weight:700;">Торт рухнул! Построено ярусов: ${score}</p><button class="btn btn-red" onclick="openGame('tower')">Построить заново</button>`;
             return;
           }
           score++;
-          stack.push({ x: overlapStart, w: newW });
-          if (stack.length > 9) stack.shift();
-          cur = { x: 10, w: newW, dir: (score % 2 === 0 ? 1 : -1) * (3 + score * 0.25) };
+          stack.push({ x: overlapStart, w: newW, styleIdx: cur.styleIdx });
+          if (stack.length > 8) stack.shift();
+          cur = { x: 10, w: newW, dir: (score % 2 === 0 ? 1 : -1) * (3 + score * 0.25), styleIdx: score + 1 };
           hud.textContent = `Ярусов: ${score}`;
         };
+
         function loop() {
           cur.x += cur.dir;
           if (cur.x < 0 || cur.x + cur.w > 320) cur.dir *= -1;
           ctx.fillStyle = '#142c27';
-          ctx.fillRect(0, 0, 320, 360);
+          ctx.fillRect(0, 0, 320, 370);
+
+          ctx.strokeStyle = 'rgba(212, 161, 59, 0.25)';
+          ctx.beginPath();
+          ctx.moveTo(0, 20);
+          ctx.quadraticCurveTo(160, 55, 320, 20);
+          ctx.stroke();
+
+          const tierH = 32;
           stack.forEach((s, idx) => {
-            ctx.fillStyle = idx % 2 === 0 ? '#d99b52' : '#b82924';
-            ctx.fillRect(s.x, 330 - idx * 30, s.w, 26);
+            drawCakeTier(s.x, 324 - idx * (tierH + 4), s.w, tierH, s.styleIdx, idx === 0 && score < 8);
           });
-          ctx.fillStyle = '#fff5e4';
-          ctx.fillRect(cur.x, 330 - stack.length * 30, cur.w, 26);
+          drawCakeTier(cur.x, 324 - stack.length * (tierH + 4), cur.w, tierH, cur.styleIdx, false);
           activeGameAnim = requestAnimationFrame(loop);
         }
         activeGameAnim = requestAnimationFrame(loop);
@@ -1995,7 +2209,6 @@
         title.textContent = '🧩 Пятнашки 3×3';
         desc.textContent = 'Нажимай на плитку рядом с пустым местом, чтобы собрать портрет!';
         let board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        // Shuffle with valid moves
         let empty = 8;
         for (let k = 0; k < 40; k++) {
           const r = Math.floor(empty / 3), col = empty % 3;
@@ -2047,18 +2260,32 @@
         cont.appendChild(grid);
       }
 
-      // 8. DEFUSE GIFT
+      // 8. DEFUSE GIFT (12 PERSONALIZED BLITZ QUESTIONS!)
       else if (type === 'bomb') {
         title.textContent = '💣 Разминируй подарок';
-        desc.textContent = 'Перережь правильный провод за 10 секунд, ответив на блиц-вопрос!';
+        desc.textContent = 'Перережь правильный провод за 10 секунд, ответив на блиц-вопрос об имениннике!';
         const bombs = [
-          { q: 'В каком месяце день рождения?', wires: ['Ноябрь (Синий)', 'Декабрь (Красный)', 'Январь (Зелёный)'], ok: 1 },
-          { q: 'Какой дресс-код на вечеринке?', wires: ['Строгий смокинг (Синий)', 'Пижама (Красный)', 'Праздничный и уютный (Зелёный)'], ok: 2 },
-          { q: 'Во сколько 20 декабря наступит 25-летие?', wires: ['В 00:00 (Синий)', 'В 12:00 (Красный)', 'В 18:00 (Зелёный)'], ok: 0 }
+          { q: 'Какой посёлок именинник считает центром вселенной?', wires: ['Шушенское (Синий)', 'Ярега (Красный)', 'Барвиха (Зелёный)'], ok: 1 },
+          { q: 'На каком инструменте именинник хотел играть в детстве?', wires: ['На скрипке (Синий)', 'На барабанах (Красный)', 'На саксофоне (Зелёный)'], ok: 2 },
+          { q: 'Кем именинник мечтал стать в детстве?', wires: ['Президентом (Синий)', 'Космонавтом (Красный)', 'Пожарным (Зелёный)'], ok: 0 },
+          { q: 'Какую видеокассету купили имениннику в детстве?', wires: ['«Том и Джерри» (Синий)', '«Ну, погоди!» (Красный)', '«Шрек» (Зелёный)'], ok: 1 },
+          { q: 'Любимое блюдо именинника?', wires: ['Лазанья (Синий)', 'Окрошка (Красный)', 'Суши (Зелёный)'], ok: 0 },
+          { q: 'Любимый напиток именинника?', wires: ['Тархун (Синий)', 'Морс (Красный)', 'Томатный сок (Зелёный)'], ok: 1 },
+          { q: 'Что мгновенно бесит именинника?', wires: ['Громкая музыка (Синий)', 'Холодная погода (Красный)', 'Работа тяп-ляп (Зелёный)'], ok: 2 },
+          { q: 'Коронная фраза именинника?', wires: ['«А я думала, сова!» (Синий)', '«Ну такое...» (Красный)', '«Где мои ключи?» (Зелёный)'], ok: 0 },
+          { q: 'На сколько километров именинник в школе втихаря уехал на 1 день?', wires: ['На 50 км (Синий)', 'На 300 км (Красный)', 'На 1000 км (Зелёный)'], ok: 1 },
+          { q: 'С чего начинает день тот, кто опоздал на праздник?', wires: ['Со штрафного тоста (Синий)', 'С бани (Красный)', 'С мытья посуды (Зелёный)'], ok: 1 },
+          { q: 'Что происходит со спиной именинника с возрастом?', wires: ['Меньше болит, тьфу-тьфу-тьфу (Синий)', 'Хрустит по утрам (Красный)', 'Требует массаж (Зелёный)'], ok: 0 },
+          { q: 'Во сколько 20 декабря наступит 25-летие?', wires: ['В 11:00 (Синий)', 'В 18:00 (Красный)', 'В 00:00 (Зелёный)'], ok: 2 }
         ];
-        const b = bombs[Math.floor(Math.random() * bombs.length)];
+
+        if (bombOrder.length !== bombs.length || bombPointer >= bombOrder.length) {
+          bombOrder = Array.from({ length: bombs.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+          bombPointer = 0;
+        }
+        const b = bombs[bombOrder[bombPointer++]];
         let sec = 10;
-        hud.textContent = `Таймер: ${sec} сек!`;
+        hud.textContent = `Вопрос ${bombPointer}/${bombs.length} • Таймер: ${sec} сек!`;
         const box = document.createElement('div');
         box.innerHTML = `<p style="font-weight:700; margin:10px 0;">${b.q}</p>`;
         const colors = ['#2b5b84', '#b82924', '#1e4d3b'];
@@ -2071,9 +2298,9 @@
             stopActiveGameLoop();
             if (idx === b.ok) {
               saveScore('Разминируй подарок', 80);
-              cont.innerHTML = `<p style="font-weight:700; color:#1e4d3b;">🎉 Подарок разминирован! +80 очков.</p><button class="btn btn-red" onclick="openGame('bomb')">Следующая коробка</button>`;
+              cont.innerHTML = `<p style="font-weight:700; color:#1e4d3b;">🎉 Подарок разминирован! +80 очков.</p><button class="btn btn-red" onclick="openGame('bomb')">Следующий вопрос</button>`;
             } else {
-              cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 БАБАХ! Коробка взорвалась конфетти — провод был не тот!</p><button class="btn btn-red" onclick="openGame('bomb')">Попробовать снова</button>`;
+              cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 БАБАХ! Коробка взорвалась конфетти — провод был не тот!</p><button class="btn btn-red" onclick="openGame('bomb')">Следующий вопрос</button>`;
             }
           };
           box.appendChild(btn);
@@ -2081,10 +2308,10 @@
         cont.appendChild(box);
         activeGameAnim = setInterval(() => {
           sec--;
-          hud.textContent = `Таймер: ${sec} сек!`;
+          hud.textContent = `Вопрос ${bombPointer}/${bombs.length} • Таймер: ${sec} сек!`;
           if (sec <= 0) {
             stopActiveGameLoop();
-            cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 Время вышло! Коробка взорвалась конфетти!</p><button class="btn btn-red" onclick="openGame('bomb')">Попробовать снова</button>`;
+            cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 Время вышло! Коробка взорвалась конфетти!</p><button class="btn btn-red" onclick="openGame('bomb')">Следующий вопрос</button>`;
           }
         }, 1000);
       }
