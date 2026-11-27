@@ -8,14 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --bg-night: #0d1f1c;
-      --bg-night-2: #142c27;
       --paper: #f7efe0;
       --paper-dark: #eadcc3;
       --red: #b82924;
-      --red-dark: #8c1b17;
       --pine: #1e4d3b;
       --gold: #d4a13b;
       --ink: #241914;
@@ -54,7 +53,7 @@
       to { transform: translateY(105vh) rotate(360deg); }
     }
 
-    /* Garland top */
+    /* Garland */
     .garland {
       position: sticky;
       top: 0;
@@ -85,10 +84,9 @@
       z-index: 5;
       max-width: 460px;
       margin: 0 auto;
-      padding: 8px 14px 92px;
+      padding: 8px 14px 96px;
     }
 
-    /* Postcard style containers */
     .card {
       background: var(--paper);
       background-image: radial-gradient(rgba(139, 108, 66, 0.08) 1px, transparent 0);
@@ -122,8 +120,9 @@
       line-height: 1.18;
       color: var(--ink);
     }
-    h1 { font-size: 26px; font-weight: 900; }
+    h1 { font-size: 25px; font-weight: 900; }
     h2 { font-size: 21px; font-weight: 700; }
+    h3 { font-size: 18px; font-weight: 700; }
     p { margin: 0 0 10px; line-height: 1.45; font-size: 15px; }
     .muted { color: var(--ink-muted); font-size: 13px; }
 
@@ -133,12 +132,12 @@
       justify-content: center;
       gap: 8px;
       width: 100%;
-      padding: 13px 16px;
+      padding: 12px 15px;
       border: 2px solid var(--ink);
       border-radius: 10px;
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: transform 0.14s ease, background 0.2s ease, opacity 0.2s ease;
       box-shadow: 0 4px 0 var(--ink);
@@ -148,8 +147,8 @@
     .btn-pine { background: var(--pine); color: #fff8ee; }
     .btn-gold { background: var(--gold); color: var(--ink); }
     .btn-ghost { background: var(--paper-dark); color: var(--ink); }
+    .btn-sm { padding: 8px 10px; font-size: 13px; }
 
-    /* Screens */
     .screen { display: none; animation: fadeIn 0.3s ease; }
     .screen.active { display: block; }
     @keyframes fadeIn {
@@ -174,16 +173,8 @@
       background: #d8c7a8;
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .cap-cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .cap-cell.selected {
-      border-color: var(--red);
-      transform: scale(0.95);
-    }
+    .cap-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cap-cell.selected { border-color: var(--red); transform: scale(0.95); }
     .cap-cell.selected::after {
       content: "✓";
       position: absolute;
@@ -202,10 +193,7 @@
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
-    .cap-cell.debug-real {
-      outline: 3px dashed #1e8e3e;
-      outline-offset: -4px;
-    }
+    .cap-cell.debug-real { outline: 3px dashed #1e8e3e; outline-offset: -4px; }
 
     .shake { animation: shakeAnim 0.42s ease; }
     @keyframes shakeAnim {
@@ -236,10 +224,10 @@
       border-radius: 12px;
       font-family: 'PT Mono', monospace;
       font-weight: 700;
-      font-size: 22px;
+      font-size: 21px;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       transform: rotate(-8deg) scale(1);
       box-shadow: 0 12px 35px rgba(0,0,0,0.5);
       animation: stampSlam 0.35s cubic-bezier(.17,.89,.32,1.28);
@@ -265,7 +253,6 @@
       border: 3px solid var(--gold);
       margin: 10px auto 12px;
       overflow: hidden;
-      box-shadow: 0 0 0 8px rgba(212, 161, 59, 0.16);
       animation: pulseRing 1.5s infinite;
     }
     .caller-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -274,11 +261,7 @@
       70% { box-shadow: 0 0 0 16px rgba(212, 161, 59, 0); }
       100% { box-shadow: 0 0 0 0 rgba(212, 161, 59, 0); }
     }
-    .call-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
-    }
+    .call-actions { display: flex; gap: 12px; margin-top: 18px; }
     .video-stage {
       display: none;
       margin-top: 12px;
@@ -286,7 +269,6 @@
       overflow: hidden;
       border: 2px solid var(--gold);
       background: #000;
-      position: relative;
     }
     .video-stage video { width: 100%; max-height: 360px; display: block; object-fit: cover; }
     .subtitle-box {
@@ -299,44 +281,45 @@
       font-style: italic;
     }
 
-    /* Cake & Candles */
+    /* Cake & Candles (Tap / Swipe only) */
     .cake-wrap {
       background: #1b3630;
       border-radius: 12px;
-      padding: 16px 10px 12px;
+      padding: 22px 10px 14px;
       text-align: center;
       color: #fff8ee;
       margin: 10px 0;
       border: 1.5px solid var(--gold);
+      touch-action: none;
     }
     .candles-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 7px;
-      max-width: 280px;
-      margin: 0 auto 10px;
+      gap: 9px;
+      max-width: 290px;
+      margin: 0 auto 12px;
     }
     .candle {
-      width: 10px;
-      height: 26px;
+      width: 12px;
+      height: 30px;
       background: repeating-linear-gradient(45deg, #fff, #fff 3px, var(--red) 3px, var(--red) 6px);
-      border-radius: 2px;
+      border-radius: 3px;
       position: relative;
       cursor: pointer;
     }
     .flame {
       position: absolute;
-      top: -12px;
+      top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      width: 8px;
-      height: 12px;
+      width: 10px;
+      height: 14px;
       background: radial-gradient(circle, #fff 15%, #ffd24d 55%, #ff5e00 95%);
       border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
-      box-shadow: 0 0 8px #ffae00;
+      box-shadow: 0 0 10px #ffae00;
       animation: flicker 0.25s infinite alternate;
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
     .candle.out .flame { opacity: 0; transform: translateX(-50%) scale(0); }
     @keyframes flicker {
@@ -344,8 +327,8 @@
       to { transform: translateX(-50%) scale(1.08) rotate(3deg); }
     }
     .cake-body {
-      height: 54px;
-      max-width: 260px;
+      height: 58px;
+      max-width: 270px;
       margin: 0 auto;
       background: linear-gradient(180deg, #fff5e4 0%, #fff5e4 28%, #8f3b2e 28%, #8f3b2e 64%, #d99b52 64%, #d99b52 100%);
       border-radius: 10px 10px 4px 4px;
@@ -358,19 +341,6 @@
       color: #fff;
       text-shadow: 0 1px 3px rgba(0,0,0,0.6);
       font-size: 15px;
-    }
-    .mic-meter {
-      height: 8px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    .mic-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #4dff88, #ffd24d, #ff4d4d);
-      transition: width 0.08s linear;
     }
 
     /* RSVP buttons */
@@ -406,7 +376,6 @@
       transition: all 0.25s cubic-bezier(.22,1,.36,1);
     }
 
-    /* Ticket canvas preview */
     #ticketCanvas {
       width: 100%;
       border-radius: 10px;
@@ -448,6 +417,110 @@
     .info-k { font-weight: 700; color: var(--red); white-space: nowrap; }
     .info-v { text-align: right; }
 
+    /* Filmstrip Swipe Cards */
+    .filmstrip-card {
+      background: #1b1715;
+      color: #f7efe0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      border-top: 8px dashed #f7efe0;
+      border-bottom: 8px dashed #f7efe0;
+      text-align: center;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 10px 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      user-select: none;
+    }
+    .filmstrip-tag {
+      font-family: 'PT Mono', monospace;
+      font-size: 11px;
+      color: var(--gold);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    /* Party Shaker & Quiz */
+    .pill-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+    .pill-btn {
+      padding: 7px 4px;
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      background: var(--paper-dark);
+      font-family: 'PT Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .pill-btn.active { background: var(--pine); color: #fff8ee; }
+
+    .shaker-box {
+      background: var(--paper-dark);
+      border: 2px dashed var(--red);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    /* Scratch card */
+    .scratch-wrap {
+      position: relative;
+      width: 100%;
+      height: 74px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      background: #fffdf8;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--pine);
+    }
+    #scratchCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: pointer;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      margin-bottom: 7px;
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      background: #fffdf8;
+      font-family: 'PT Serif', serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .quiz-opt.correct { background: #d4edda; border-color: #1e7e34; font-weight: 700; }
+    .quiz-opt.wrong { background: #f8d7da; border-color: #bd2130; }
+
+    /* Games Grid & Arena */
     .games-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -455,12 +528,71 @@
     }
     .game-tile {
       background: var(--paper-dark);
-      border: 1.5px solid var(--border);
+      border: 2px solid var(--ink);
       border-radius: 10px;
-      padding: 10px;
+      padding: 10px 8px;
       text-align: center;
+      cursor: pointer;
+      box-shadow: 0 3px 0 var(--ink);
     }
+    .game-tile:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
     .game-tile strong { display: block; font-size: 14px; margin: 4px 0 2px; }
+
+    #gameCanvas {
+      width: 100%;
+      background: #142c27;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      display: block;
+      touch-action: none;
+    }
+    .mem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .mem-card {
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      border: 2px solid var(--ink);
+      background: var(--red);
+      color: #fff8ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .mem-card img { width: 100%; height: 100%; object-fit: cover; }
+    .puzzle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      max-width: 280px;
+      margin: 10px auto;
+    }
+    .puz-tile {
+      aspect-ratio: 1 / 1;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      background-size: 300% 300%;
+      cursor: pointer;
+      position: relative;
+    }
+    .puz-tile span {
+      position: absolute;
+      bottom: 3px;
+      right: 5px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
 
     .tv-nav {
       position: fixed;
@@ -495,7 +627,6 @@
       font-weight: 700;
     }
 
-    /* Modal for sad childhood photos */
     .modal-bg {
       position: fixed;
       inset: 0;
@@ -507,10 +638,7 @@
       padding: 18px;
     }
     .modal-bg.show { display: flex; }
-    .modal-card {
-      max-width: 360px;
-      width: 100%;
-    }
+    .modal-card { max-width: 360px; width: 100%; }
     .modal-card img {
       width: 100%;
       max-height: 260px;
@@ -529,6 +657,13 @@
       font-size: 15px;
       margin-bottom: 10px;
     }
+    .lb-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-bottom: 1px dashed var(--border);
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -536,15 +671,15 @@
   <div class="garland" id="garland"></div>
 
   <div class="stamp-overlay" id="stampOverlay">
-    <div class="big-stamp">ДОПУЩЕН К БАНКЕТУ!<br><span style="font-size:13px;">Отдел кадров 25-летия</span></div>
+    <div class="big-stamp">ДОПУЩЕН К ПРАЗДНИКУ!<br><span style="font-size:13px;">Фейсконтроль 25-летия</span></div>
   </div>
 
   <!-- Sad photo modal for "No" button -->
   <div class="modal-bg" id="sadModal">
     <div class="card modal-card">
-      <div class="stamp-badge">Предупреждение парткома</div>
+      <div class="stamp-badge">Важное сообщение</div>
       <img id="sadPhoto" src="" alt="Грустный именинник" />
-      <h3 id="sadTitle">Товарищ, одумайся!</h3>
+      <h3 id="sadTitle">Эй, ты серьёзно?!</h3>
       <p id="sadText">Я уже и аккордеон достал, и стол накрыл...</p>
       <button class="btn btn-red" onclick="closeSadModal()">Ладно, подумаю ещё</button>
     </div>
@@ -554,9 +689,9 @@
     <!-- SCREEN 1: MANDATORY CAPTCHA -->
     <section class="screen active" id="screenCaptcha">
       <div class="card" id="captchaCard">
-        <div class="stamp-badge">Отдел кадров • Фейсконтроль</div>
+        <div class="stamp-badge">Фейсконтроль • Вход</div>
         <h1>Докажи, что знаешь именинника!</h1>
-        <p class="muted">Среди 9 архивных карточек найди <strong>все 3 настоящих детских фото</strong> именинника. Остальные — нейросетевые двойники.</p>
+        <p class="muted">Среди 9 карточек найди <strong>все 3 настоящих детских фото</strong> именинника. Остальные — нейросетевые двойники.</p>
         <div class="captcha-grid" id="captchaGrid"></div>
         <button class="btn btn-red" onclick="verifyCaptcha()">Подтвердить личность</button>
         <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -571,7 +706,7 @@
     <!-- SCREEN 2: INCOMING CALL -->
     <section class="screen" id="screenCall">
       <div class="call-box">
-        <div class="stamp-badge" style="color:#ffd24d; border-color:#ffd24d;">Междугородняя линия • 2002 г.</div>
+        <div class="stamp-badge" style="color:#ffd24d; border-color:#ffd24d;">Звонок из прошлого</div>
         <h2 style="color:#fff8ee;">Входящий видеозвонок</h2>
         <p style="color:#d6c7b2; font-size:14px;">Именинник (из детства)</p>
         <div class="caller-avatar" id="callerAvatarBox">
@@ -593,29 +728,28 @@
       </div>
     </section>
 
-    <!-- SCREEN 3: BLOW 25 CANDLES -->
+    <!-- SCREEN 3: BLOW 25 CANDLES (TAP / SWIPE ONLY) -->
     <section class="screen" id="screenCandles">
       <div class="card">
-        <div class="stamp-badge">Юбилейный ритуал • 25 лет</div>
+        <div class="stamp-badge">Праздничный ритуал • 25 лет</div>
         <h2>Задуй все 25 свечей!</h2>
-        <p class="muted">Нажми кнопку ниже и подуй в микрофон телефона (или тапай по свечам пальцем, если вокруг шумно).</p>
-        <div class="cake-wrap">
+        <p class="muted">Нажимай на огоньки или проведи пальцем по свечам, чтобы загадать желание за именинника.</p>
+        <div class="cake-wrap" id="cakeWrap">
           <div class="candles-grid" id="candlesGrid"></div>
           <div class="cake-body">С ДНЁМ РОЖДЕНИЯ • 25</div>
-          <div class="mic-meter"><div class="mic-fill" id="micFill"></div></div>
-          <div class="muted" style="color:#e6d7be; margin-top:6px;" id="candlesStatus">Горят все 25 свечей</div>
+          <div class="muted" style="color:#e6d7be; margin-top:10px;" id="candlesStatus">Горят все 25 свечей</div>
         </div>
-        <button class="btn btn-pine" id="micBtn" onclick="startMic()">Включить микрофон и дунуть</button>
+        <button class="btn btn-gold" onclick="blowAllRemaining()">Задуть одним мощным порывом 💨</button>
       </div>
     </section>
 
     <!-- SCREEN 4: RSVP TRAP -->
     <section class="screen" id="screenRsvp">
       <div class="card">
-        <div class="stamp-badge">Повестка на банкет</div>
+        <div class="stamp-badge">Приглашение на праздник</div>
         <h2>Официальное приглашение</h2>
-        <p><strong>19 декабря 2027 в 11:00</strong> — сбор гостей.<br>
-        <strong>20 декабря в 00:00</strong> — встречаем мои <strong>25 лет</strong>!</p>
+        <p><strong>19 декабря 2026 в 11:00</strong> — сбор гостей.<br>
+        <strong>20 декабря 2026 в 00:00</strong> — встречаем мои <strong>25 лет</strong>!</p>
         <p class="muted">Место проведения: строго секретное (координаты после оформления билета).<br>
         Дресс-код: праздничный и уютный, можно с новогодними элементами.</p>
         <div class="rsvp-arena">
@@ -628,7 +762,7 @@
     <!-- SCREEN 5: VIP TICKET GENERATOR -->
     <section class="screen" id="screenTicket">
       <div class="card">
-        <div class="stamp-badge">Билетная касса №1</div>
+        <div class="stamp-badge">Билетная касса</div>
         <h2>Оформление именного билета</h2>
         <p class="muted">Впиши своё имя и загрузи совместное фото с именинником — нейросеть проверит, что вы действительно знакомы.</p>
         <input type="text" id="guestNameInput" placeholder="Твоё имя и фамилия (или прозвище)" />
@@ -637,7 +771,7 @@
         <p class="muted" id="faceStatus" style="margin-top:8px;"></p>
 
         <div id="ticketResult" style="display:none; margin-top:12px;">
-          <canvas id="ticketCanvas" width="720" height="420"></canvas>
+          <canvas id="ticketCanvas" width="760" height="430"></canvas>
           <div style="display:flex; gap:8px;">
             <button class="btn btn-gold" onclick="downloadTicket()">Скачать билет</button>
             <button class="btn btn-red" onclick="enterMainApp()">Войти на праздник →</button>
@@ -646,7 +780,7 @@
       </div>
     </section>
 
-    <!-- SCREEN 6: MAIN APP (4 TV CHANNELS) -->
+    <!-- SCREEN 6: MAIN APP (4 CHANNELS) -->
     <section class="screen" id="screenMain">
       <!-- TAB 1: HOME -->
       <div class="tab-pane active" id="tabHome">
@@ -654,60 +788,120 @@
           <div class="stamp-badge">1-я программа • Главная</div>
           <h1>Юбилейный Новогодний Огонёк</h1>
           <p class="muted">До сбора гостей осталось:</p>
-          <div class="countdown-grid" id="countdownGrid">
+          <div class="countdown-grid">
             <div class="cd-box"><span class="cd-num" id="cdDays">000</span><span class="cd-lbl">дней</span></div>
             <div class="cd-box"><span class="cd-num" id="cdHours">00</span><span class="cd-lbl">часов</span></div>
             <div class="cd-box"><span class="cd-num" id="cdMins">00</span><span class="cd-lbl">минут</span></div>
             <div class="cd-box"><span class="cd-num" id="cdSecs">00</span><span class="cd-lbl">секунд</span></div>
           </div>
-          <div class="info-row"><span class="info-k">Сбор гостей:</span><span class="info-v">19 декабря 2027, 11:00</span></div>
-          <div class="info-row"><span class="info-k">День рождения:</span><span class="info-v">20 декабря 2027, 00:00 (25 лет!)</span></div>
+          <div class="info-row"><span class="info-k">Сбор гостей:</span><span class="info-v">19 декабря 2026, 11:00</span></div>
+          <div class="info-row"><span class="info-k">День рождения:</span><span class="info-v">20 декабря 2026, 00:00 (25 лет!)</span></div>
           <div class="info-row"><span class="info-k">Адрес:</span><span class="info-v">Секретный (сообщим лично)</span></div>
           <div class="info-row"><span class="info-k">Дресс-код:</span><span class="info-v">Праздничный и уютный, можно с новогодними элементами</span></div>
         </div>
+
+        <!-- Filmstrip Swipe Cards (Tinder style) -->
         <div class="card">
-          <h3>Картотека фактов (Этап 3)</h3>
-          <p class="muted">Здесь появится диафильм-свайпалка с фактами об имениннике и правилами вечеринки.</p>
-          <button class="btn btn-ghost" onclick="restartFlow()">Пройти входной квест заново</button>
+          <div class="stamp-badge">Диафильм • Правила и факты</div>
+          <h3>Листай карточки вечеринки</h3>
+          <div class="filmstrip-card" id="filmstripCard">
+            <div class="filmstrip-tag" id="filmTag">КАДР 1 ИЗ 8</div>
+            <div id="filmText" style="font-size:16px; font-weight:700;"></div>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-ghost" id="swipeNoBtn" onclick="swipeCard(false)">← Не согласен</button>
+            <button class="btn btn-pine" onclick="swipeCard(true)">Точно! →</button>
+          </div>
+          <p class="muted" id="swipeFeedback" style="margin-top:8px; text-align:center;"></p>
         </div>
+
+        <button class="btn btn-ghost" onclick="restartFlow()">Пройти входной квест заново</button>
       </div>
 
-      <!-- TAB 2: GAMES -->
+      <!-- TAB 2: GAMES (ALL 8 MINI-GAMES + LEADERBOARD) -->
       <div class="tab-pane" id="tabGames">
-        <div class="card">
+        <div class="card" id="gamesCatalogCard">
           <div class="stamp-badge">2-я программа • Игротека</div>
-          <h2>Зал игровых автоматов</h2>
-          <p class="muted">Мини-игры подключатся на Этапах 4 и 5 с общей таблицей рекордов.</p>
+          <h2>Игровой зал (8 мини-игр)</h2>
+          <p class="muted">Выбирай игру и ставь рекорд в общей таблице гостей!</p>
           <div class="games-list">
-            <div class="game-tile">🎂<strong>Поймай торт</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🎈<strong>Flappy Birthday</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🎁<strong>Поймай именинника</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🍰<strong>Башня из торта</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🕰️<strong>Хронология</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🃏<strong>Найди пару</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">🧩<strong>Пятнашки 3×3</strong><span class="muted">Скоро</span></div>
-            <div class="game-tile">💣<strong>Разминируй подарок</strong><span class="muted">Скоро</span></div>
+            <div class="game-tile" onclick="openGame('catch')">🎂<strong>Поймай торт</strong><span class="muted">Аркада</span></div>
+            <div class="game-tile" onclick="openGame('flappy')">🎈<strong>Flappy Birthday</strong><span class="muted">Полёт</span></div>
+            <div class="game-tile" onclick="openGame('whack')">🎁<strong>Поймай меня</strong><span class="muted">Реакция</span></div>
+            <div class="game-tile" onclick="openGame('tower')">🍰<strong>Башня из торта</strong><span class="muted">Баланс</span></div>
+            <div class="game-tile" onclick="openGame('chrono')">🕰️<strong>Хронология</strong><span class="muted">От мала до велика</span></div>
+            <div class="game-tile" onclick="openGame('memory')">🃏<strong>Найди пару</strong><span class="muted">Память</span></div>
+            <div class="game-tile" onclick="openGame('puzzle')">🧩<strong>Пятнашки 3×3</strong><span class="muted">Головоломка</span></div>
+            <div class="game-tile" onclick="openGame('bomb')">💣<strong>Разминируй приз</strong><span class="muted">Блиц-тест</span></div>
           </div>
         </div>
-      </div>
 
-      <!-- TAB 3: PARTY -->
-      <div class="tab-pane" id="tabParty">
+        <!-- Active Game Stage -->
+        <div class="card" id="gameStageCard" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 id="activeGameTitle" style="margin:0;">Игра</h3>
+            <button class="btn btn-ghost btn-sm" style="width:auto;" onclick="closeGame()">✕ Выйти</button>
+          </div>
+          <p class="muted" id="activeGameDesc"></p>
+          <div style="font-family:'PT Mono',monospace; font-weight:700; margin-bottom:8px;" id="activeGameHud">Счёт: 0</div>
+          <div id="gameContainer"></div>
+        </div>
+
+        <!-- Leaderboard -->
         <div class="card">
-          <div class="stamp-badge">3-я программа • Огонёк</div>
-          <h2>Шейкер и Викторина</h2>
-          <p class="muted">На Этапе 3 здесь заработают:</p>
-          <p>• <strong>Шейкер вечеринки:</strong> потряси телефон для тоста, предсказания, челленджа или выбора напитка.<br>
-          • <strong>Викторина со скретч-билетами «Спортлото»:</strong> стирай защитный слой пальцем, чтобы открыть подсказку.</p>
+          <div class="stamp-badge">Доска почёта</div>
+          <h3>Лучшие результаты гостей</h3>
+          <div id="leaderboardList"></div>
         </div>
       </div>
 
-      <!-- TAB 4: PHOTO -->
+      <!-- TAB 3: PARTY (SHAKER + SCRATCH QUIZ) -->
+      <div class="tab-pane" id="tabParty">
+        <div class="card">
+          <div class="stamp-badge">3-я программа • Новогодний Огонёк</div>
+          <h2>Шейкер вечеринки</h2>
+          <p class="muted">Выбери режим и потряси телефон (или нажми кнопку снизу):</p>
+          <div class="pill-tabs">
+            <button class="pill-btn active" onclick="setShakerMode('toast', this)">Тост</button>
+            <button class="pill-btn" onclick="setShakerMode('predict', this)">Прогноз</button>
+            <button class="pill-btn" onclick="setShakerMode('challenge', this)">Челлендж</button>
+            <button class="pill-btn" onclick="setShakerMode('drink', this)">Напиток</button>
+          </div>
+          <div class="shaker-box" id="shakerResult">Нажми «Встряхнуть» или потряси смартфон!</div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-red" onclick="triggerShake()">Встряхнуть! 🥂</button>
+            <button class="btn btn-ghost" id="motionBtn" onclick="enableMotion()">Датчик тряски</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stamp-badge">Викторина со скретч-картой</div>
+          <h3>Насколько хорошо ты знаешь именинника?</h3>
+          <p id="quizQText" style="font-weight:700;"></p>
+          <div class="scratch-wrap">
+            <span id="quizHintText">Подсказка</span>
+            <canvas id="scratchCanvas"></canvas>
+          </div>
+          <p class="muted" style="font-size:11px; margin-top:-4px;">↑ Потри защитный слой пальцем, если нужна подсказка</p>
+          <div id="quizOptions"></div>
+          <p class="muted" id="quizScoreLine" style="margin-top:8px;"></p>
+        </div>
+      </div>
+
+      <!-- TAB 4: PHOTOBOOTH -->
       <div class="tab-pane" id="tabPhoto">
         <div class="card">
           <div class="stamp-badge">4-я программа • Фотоателье</div>
-          <h2>Новогодняя фотобудка</h2>
-          <p class="muted">На Этапе 3 здесь можно будет сделать селфи в советской праздничной рамке с маленьким именинником в углу.</p>
+          <h2>Праздничная фотобудка</h2>
+          <p class="muted">Загрузи селфи или сделай снимок на камеру — добавим новогоднюю рамку и маленького именинника в угол!</p>
+          <input type="file" id="boothInput" accept="image/*" capture="user" onchange="renderPhotobooth()" />
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <button class="btn btn-ghost btn-sm" onclick="setSticker(8)">С грибом</button>
+            <button class="btn btn-ghost btn-sm" onclick="setSticker(9)">С аккордеоном</button>
+            <button class="btn btn-ghost btn-sm" onclick="setSticker(13)">С подсолнухами</button>
+          </div>
+          <canvas id="boothCanvas" width="600" height="750" style="width:100%; border-radius:10px; border:2px solid var(--ink); display:block; margin-bottom:10px;"></canvas>
+          <button class="btn btn-gold" onclick="downloadBooth()">Сохранить фото на память</button>
         </div>
       </div>
     </section>
@@ -726,7 +920,15 @@
     const AI_COUNT = 32;
     const REF_COUNT = 5;
 
-    // Snow & Garland init
+    // Optional Supabase credentials (fill in when ready)
+    const SUPABASE_URL = '';
+    const SUPABASE_ANON_KEY = '';
+    let sbClient = null;
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+      sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    // Decor
     (function initDecor() {
       const snow = document.getElementById('snowLayer');
       for (let i = 0; i < 24; i++) {
@@ -757,21 +959,31 @@
     }
 
     function goScreen(id) {
+      stopActiveGameLoop();
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       document.getElementById('tvNav').style.display = (id === 'screenMain') ? 'grid' : 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (id === 'screenCandles') initCandles();
+      if (id === 'screenMain') {
+        renderFilmstrip();
+        renderQuiz();
+        renderLeaderboard();
+        renderPhotobooth();
+      }
     }
 
     function switchTab(tabId, btn) {
+      stopActiveGameLoop();
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       document.querySelectorAll('.tv-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      if (tabId === 'tabParty') initScratchCanvas();
+      if (tabId === 'tabPhoto') renderPhotobooth();
     }
 
-    // --- CAPTCHA ---
+    // --- 1. CAPTCHA ---
     let captchaItems = [];
     function pickRandom(max, count) {
       const arr = Array.from({ length: max }, (_, i) => i + 1);
@@ -800,12 +1012,12 @@
       const grid = document.getElementById('captchaGrid');
       const debug = document.getElementById('debugToggle').checked;
       grid.innerHTML = '';
-      captchaItems.forEach((item, idx) => {
+      captchaItems.forEach(item => {
         const cell = document.createElement('div');
         cell.className = 'cap-cell' + (item.selected ? ' selected' : '') + (debug && item.isReal ? ' debug-real' : '');
         const img = document.createElement('img');
         img.src = item.src;
-        img.alt = 'Фото кандидата';
+        img.alt = 'Фото';
         img.onerror = () => { img.src = makeFallbackSvg(item.label); };
         cell.appendChild(img);
         cell.onclick = () => {
@@ -815,7 +1027,6 @@
         grid.appendChild(cell);
       });
     }
-
     function toggleDebug() { renderCaptcha(); }
 
     function verifyCaptcha() {
@@ -836,13 +1047,13 @@
       setTimeout(() => {
         overlay.classList.remove('show');
         goScreen('screenCall');
-      }, 1250);
+      }, 1200);
     }
 
-    // --- CALL ---
+    // --- 2. CALL ---
     function declineCall() {
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-      alert('Сбросить звонок из прошлого невозможно — линия заблокирована парткомом!');
+      alert('Сбросить звонок из прошлого невозможно — сначала нужно выслушать именинника!');
     }
 
     function acceptCall() {
@@ -859,9 +1070,8 @@
       vid.play().catch(() => {});
     }
 
-    // --- CANDLES ---
+    // --- 3. CANDLES (TAP / SWIPE ONLY) ---
     let candlesOut = 0;
-    let micStream = null;
     function initCandles() {
       const grid = document.getElementById('candlesGrid');
       if (grid.children.length > 0) return;
@@ -872,56 +1082,39 @@
         const fl = document.createElement('div');
         fl.className = 'flame';
         c.appendChild(fl);
-        c.onclick = () => blowOneCandle(c);
+        c.addEventListener('pointerdown', () => blowOneCandle(c));
+        c.addEventListener('pointerenter', e => { if (e.buttons > 0) blowOneCandle(c); });
         grid.appendChild(c);
       }
+      const wrap = document.getElementById('cakeWrap');
+      wrap.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        const el = document.elementFromPoint(t.clientX, t.clientY);
+        if (el) {
+          const candle = el.closest('.candle');
+          if (candle) blowOneCandle(candle);
+        }
+      }, { passive: true });
     }
 
     function blowOneCandle(el) {
       if (el.classList.contains('out')) return;
       el.classList.add('out');
       candlesOut++;
+      if (navigator.vibrate) navigator.vibrate(25);
       document.getElementById('candlesStatus').textContent = `Задуто свечей: ${candlesOut} из 25`;
       if (candlesOut >= 25) {
-        if (micStream) micStream.getTracks().forEach(t => t.stop());
         if (navigator.vibrate) navigator.vibrate([80, 40, 140]);
-        setTimeout(() => goScreen('screenRsvp'), 700);
+        setTimeout(() => goScreen('screenRsvp'), 600);
       }
     }
 
-    async function startMic() {
-      try {
-        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        document.getElementById('micBtn').textContent = 'Дуй в микрофон сильнее!';
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const src = ctx.createMediaStreamSource(micStream);
-        const analyser = ctx.createAnalyser();
-        analyser.fftSize = 256;
-        src.connect(analyser);
-        const data = new Uint8Array(analyser.frequencyBinCount);
-
-        function loop() {
-          if (candlesOut >= 25) return;
-          analyser.getByteFrequencyData(data);
-          let sum = 0;
-          for (let i = 0; i < data.length; i++) sum += data[i];
-          const avg = sum / data.length;
-          document.getElementById('micFill').style.width = Math.min(100, avg * 1.8) + '%';
-          if (avg > 38) {
-            const lit = Array.from(document.querySelectorAll('.candle:not(.out)'));
-            for (let k = 0; k < Math.min(3, lit.length); k++) {
-              blowOneCandle(lit[Math.floor(Math.random() * lit.length)]);
-            }
-          }
-          requestAnimationFrame(loop);
-        }
-        loop();
-      } catch (e) {
-        document.getElementById('micBtn').textContent = 'Микрофон недоступен — задувай свечи тапами!';
-      }
+    function blowAllRemaining() {
+      const lit = Array.from(document.querySelectorAll('.candle:not(.out)'));
+      lit.forEach((c, i) => setTimeout(() => blowOneCandle(c), i * 35));
     }
 
-    // --- RSVP "NO" BUTTON ---
+    // --- 4. RSVP "NO" BUTTON (NO USSR REFERENCES) ---
     let noStep = 0;
     function handleNoClick() {
       noStep++;
@@ -930,21 +1123,21 @@
       if (navigator.vibrate) navigator.vibrate(90);
 
       if (noStep === 1) {
-        alert('Постановление парткома (Ошибка 403): отказ от явки на 25-летие аннулирован!');
+        alert('Ошибка 403: функция отказа от праздника временно отключена именинником!');
         btnNo.style.width = '76%';
         btnNo.style.padding = '15px';
         btnNo.style.fontSize = '16px';
         btnYes.style.padding = '12px 26px';
         btnYes.style.fontSize = '18px';
       } else if (noStep === 2) {
-        showSadModal('assets/child/9.jpg', 'Я уже и аккордеон достал...', 'В музыкальной школе зря старался, получается? Нажми «Приду»!');
+        showSadModal('assets/child/9.jpg', 'Я уже и аккордеон достал...', 'Зря старался и готовился к празднику? Нажми «Приду»!');
         btnNo.classList.add('cracked');
         btnNo.style.width = '56%';
         btnNo.style.fontSize = '13px';
         btnYes.style.padding = '16px 36px';
         btnYes.style.fontSize = '21px';
       } else if (noStep === 3) {
-        showSadModal('assets/child/7.jpg', 'Даже у ёлки грустно стоять...', 'Какая гадость эта ваша кнопка «Не приду»! Последнее предупреждение.');
+        showSadModal('assets/child/7.jpg', 'Даже у ёлки грустно стоять...', 'Ну всё, кнопка отказа почти сломалась. Последний шанс исправиться!');
         btnNo.style.width = '40%';
         btnNo.style.fontSize = '11px';
         btnYes.style.width = '100%';
@@ -964,11 +1157,9 @@
       document.getElementById('sadText').textContent = text;
       document.getElementById('sadModal').classList.add('show');
     }
-    function closeSadModal() {
-      document.getElementById('sadModal').classList.remove('show');
-    }
+    function closeSadModal() { document.getElementById('sadModal').classList.remove('show'); }
 
-    // --- VIP TICKET & FACE RECOGNITION ---
+    // --- 5. VIP TICKET & FACE RECOGNITION (FIXED LAYOUT & 2026 DATES) ---
     let modelsLoaded = false;
     let refDescriptors = null;
 
@@ -988,9 +1179,7 @@
           if (det) labeled.push(det.descriptor);
         } catch (e) {}
       }
-      if (labeled.length) {
-        refDescriptors = new faceapi.LabeledFaceDescriptors('Именинник', labeled);
-      }
+      if (labeled.length) refDescriptors = new faceapi.LabeledFaceDescriptors('Именинник', labeled);
       modelsLoaded = true;
     }
 
@@ -1003,6 +1192,7 @@
         status.textContent = 'Сначала впиши своё имя для бланка билета!';
         return;
       }
+      localStorage.setItem('bday25_guest_name', name);
 
       if (!fileInput.files || !fileInput.files[0]) {
         status.textContent = 'Загрузи совместное фото с именинником (или нажми ещё раз для демо-билета).';
@@ -1014,7 +1204,7 @@
         return;
       }
 
-      status.textContent = 'Отдел кадров сверяет лица по архиву...';
+      status.textContent = 'Нейросеть проверяет фото по архиву...';
       const userImg = await new Promise(res => {
         const r = new FileReader();
         r.onload = () => {
@@ -1037,10 +1227,10 @@
           }
           status.textContent = 'Личность именинника подтверждена! Выписываем VIP-билет...';
         } else {
-          status.textContent = 'Архивная сверка пройдена! Выписываем VIP-билет...';
+          status.textContent = 'Проверка пройдена! Выписываем VIP-билет...';
         }
       } catch (e) {
-        status.textContent = 'Сверка выполнена в автономном режиме. Выписываем VIP-билет...';
+        status.textContent = 'Проверка выполнена! Выписываем VIP-билет...';
       }
 
       renderTicket(name, userImg);
@@ -1049,71 +1239,96 @@
     function renderTicket(guestName, photoImg) {
       const canvas = document.getElementById('ticketCanvas');
       const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
       ctx.fillStyle = '#f7efe0';
-      ctx.fillRect(0, 0, 720, 420);
+      ctx.fillRect(0, 0, W, H);
 
       ctx.strokeStyle = '#b82924';
       ctx.lineWidth = 6;
-      ctx.strokeRect(14, 14, 692, 392);
+      ctx.strokeRect(14, 14, W - 28, H - 28);
       ctx.strokeStyle = '#d4a13b';
       ctx.lineWidth = 2;
-      ctx.strokeRect(24, 24, 672, 372);
+      ctx.strokeRect(24, 24, W - 48, H - 48);
 
-      // Stub divider
+      // Stub divider at x = 520
+      const stubX = 520;
       ctx.setLineDash([8, 8]);
       ctx.beginPath();
-      ctx.moveTo(520, 24);
-      ctx.lineTo(520, 396);
+      ctx.moveTo(stubX, 24);
+      ctx.lineTo(stubX, H - 24);
       ctx.strokeStyle = '#635147';
       ctx.stroke();
       ctx.setLineDash([]);
 
+      // Left main body
+      ctx.textAlign = 'left';
       ctx.fillStyle = '#b82924';
       ctx.font = 'bold 16px monospace';
-      ctx.fillText('ПРИГЛАСИТЕЛЬНЫЙ БИЛЕТ № 0025', 42, 60);
+      ctx.fillText('ПРИГЛАСИТЕЛЬНЫЙ БИЛЕТ № 0025', 42, 62);
 
       ctx.fillStyle = '#241914';
-      ctx.font = 'bold 30px Georgia';
-      ctx.fillText('ЮБИЛЕЙНЫЙ ОГОНЁК • 25 ЛЕТ', 42, 102);
+      ctx.font = 'bold 31px Georgia';
+      ctx.fillText('ЮБИЛЕЙНЫЙ ОГОНЁК • 25 ЛЕТ', 42, 105);
 
       ctx.font = '18px Georgia';
-      ctx.fillText('Гость: ' + guestName, 42, 152);
-      ctx.fillText('Сбор гостей: 19 декабря 2027 в 11:00', 42, 190);
-      ctx.fillText('День рождения: 20 декабря в 00:00', 42, 224);
-      ctx.fillText('Место: Секретный объект (VIP-допуск)', 42, 258);
-      ctx.fillText('Дресс-код: Праздничный и уютный + НГ', 42, 292);
+      ctx.fillText('Гость: ' + guestName, 42, 155);
+      ctx.fillText('Сбор гостей: 19 декабря 2026 в 11:00', 42, 193);
+      ctx.fillText('День рождения: 20 декабря 2026 в 00:00', 42, 227);
+      ctx.fillText('Место: Секретный объект (VIP-допуск)', 42, 261);
+      ctx.fillText('Дресс-код: Праздничный и уютный + НГ', 42, 295);
 
-      // Stamp
+      // Stamp (positioned cleanly on left half without touching stub line)
       ctx.save();
-      ctx.translate(390, 338);
-      ctx.rotate(-0.12);
+      ctx.translate(365, 348);
+      ctx.rotate(-0.10);
       ctx.strokeStyle = '#b82924';
       ctx.lineWidth = 3;
-      ctx.strokeRect(-95, -24, 190, 48);
+      ctx.strokeRect(-102, -22, 204, 44);
       ctx.fillStyle = '#b82924';
       ctx.font = 'bold 16px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('ОДОБРЕНО • 2027', 0, 6);
+      ctx.fillText('ОДОБРЕНО • 2026', 0, 6);
       ctx.restore();
 
-      // Right stub photo
+      // Right stub (centered inside x = 520..736, center = 628)
+      const stubCenter = 628;
+      const photoW = 150, photoH = 185;
+      const photoX = stubCenter - photoW / 2;
+      const photoY = 44;
+
       if (photoImg) {
         ctx.save();
         ctx.beginPath();
-        ctx.rect(542, 48, 138, 175);
+        ctx.rect(photoX, photoY, photoW, photoH);
         ctx.clip();
-        ctx.drawImage(photoImg, 542, 48, 138, 175);
+        // Cover crop so aspect ratio doesn't distort
+        const scale = Math.max(photoW / photoImg.width, photoH / photoImg.height);
+        const dw = photoImg.width * scale;
+        const dh = photoImg.height * scale;
+        ctx.drawImage(photoImg, photoX + (photoW - dw) / 2, photoY + (photoH - dh) / 2, dw, dh);
         ctx.restore();
-        ctx.strokeStyle = '#241914';
-        ctx.strokeRect(542, 48, 138, 175);
+      } else {
+        ctx.fillStyle = '#eadcc3';
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+        ctx.fillStyle = '#635147';
+        ctx.font = 'bold 14px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('VIP ГОСТЬ', stubCenter, photoY + photoH / 2);
       }
+      ctx.strokeStyle = '#241914';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(photoX, photoY, photoW, photoH);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#b82924';
+      ctx.font = 'bold 15px monospace';
+      ctx.fillText('КОНТРОЛЬ', stubCenter, 260);
+
       ctx.fillStyle = '#241914';
-      ctx.font = 'bold 14px monospace';
-      ctx.fillText('КОНТРОЛЬ', 565, 260);
-      ctx.font = '13px monospace';
-      ctx.fillText('РЯД: ПРАЗДНИЧНЫЙ', 540, 290);
-      ctx.fillText('ЦЕНА: УЛЫБКА', 540, 316);
-      ctx.fillText('19.12.2027', 540, 344);
+      ctx.font = 'bold 13px monospace';
+      ctx.fillText('РЯД: ПРАЗДНИЧНЫЙ', stubCenter, 290);
+      ctx.fillText('ЦЕНА: УЛЫБКА', stubCenter, 316);
+      ctx.fillText('19.12.2026', stubCenter, 344);
 
       document.getElementById('ticketResult').style.display = 'block';
     }
@@ -1126,7 +1341,6 @@
     }
 
     function enterMainApp() {
-      localStorage.setItem('bday25_ticket_issued', '1');
       goScreen('screenMain');
     }
 
@@ -1142,9 +1356,9 @@
       goScreen('screenCaptcha');
     }
 
-    // Countdown to Dec 19, 2027 11:00
+    // Countdown to Dec 19, 2026 11:00
     function updateCountdown() {
-      const target = new Date('2027-12-19T11:00:00').getTime();
+      const target = new Date('2026-12-19T11:00:00').getTime();
       const diff = Math.max(0, target - Date.now());
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
@@ -1154,6 +1368,726 @@
       document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
       document.getElementById('cdMins').textContent = String(m).padStart(2, '0');
       document.getElementById('cdSecs').textContent = String(s).padStart(2, '0');
+    }
+
+    // --- STAGE 3A: FILMSTRIP SWIPE CARDS ---
+    const SWIPE_CARDS = [
+      { text: 'Прийти 19 декабря к 11:00 с отличным настроением', mustAgree: true },
+      { text: 'В детстве именинник собирал в лесу грибы размером с голову', mustAgree: false },
+      { text: 'Обязательно поднять бокал ровно в 00:00 за 25-летие!', mustAgree: true },
+      { text: 'Именинник закончил музыкальную школу по классу аккордеона', mustAgree: false },
+      { text: 'Уйти спать в 22:00 до полуночи', mustAgree: false, forceNo: true },
+      { text: 'Надеть что-то уютное или с новогодним настроением', mustAgree: true }
+    ];
+    let swipeIdx = 0;
+
+    function renderFilmstrip() {
+      const card = SWIPE_CARDS[swipeIdx % SWIPE_CARDS.length];
+      document.getElementById('filmTag').textContent = `КАДР ${(swipeIdx % SWIPE_CARDS.length) + 1} ИЗ ${SWIPE_CARDS.length}`;
+      document.getElementById('filmText').textContent = card.text;
+    }
+
+    function swipeCard(isYes) {
+      const card = SWIPE_CARDS[swipeIdx % SWIPE_CARDS.length];
+      const fb = document.getElementById('swipeFeedback');
+      const box = document.getElementById('filmstripCard');
+
+      if (card.mustAgree && !isYes) {
+        if (navigator.vibrate) navigator.vibrate(80);
+        box.classList.remove('shake');
+        void box.offsetWidth;
+        box.classList.add('shake');
+        fb.textContent = 'Этот пункт обязательный — карточка пружинит обратно!';
+        return;
+      }
+      if (card.forceNo && isYes) {
+        if (navigator.vibrate) navigator.vibrate(80);
+        box.classList.remove('shake');
+        void box.offsetWidth;
+        box.classList.add('shake');
+        fb.textContent = 'Никакого сна до полуночи! Жми «Не согласен»!';
+        return;
+      }
+      fb.textContent = isYes ? 'Принято! Листаем дальше.' : 'Правильный выбор!';
+      swipeIdx++;
+      renderFilmstrip();
+    }
+
+    // --- STAGE 3B: PARTY SHAKER ---
+    const SHAKER_DATA = {
+      toast: [
+        'За то, чтобы в 25 лет энергии хватало на все авантюры, а утро 20 декабря было добрым!',
+        'За именинника — человека, который даже секретную вечеринку превращает в лучший праздник года!',
+        'За дружбу, проверенную годами, детскими фотографиями и сегодняшним столом!',
+        'Пусть сбываются даже те мечты, о которых мы загадывали в 7 лет!'
+      ],
+      predict: [
+        'Сегодня около 23:45 ты будешь громче всех подпевать песне, слов которой не знаешь.',
+        'Тебе достанется самый удачный кусок именинного торта!',
+        'Через час кто-то обязательно предложит сделать общее фото, и ты окажешься в центре.',
+        'Сегодня ты узнаешь как минимум одну новую историю из детства именинника.'
+      ],
+      challenge: [
+        'Сделай прямо сейчас совместное селфи с тем, кто сидит слева от тебя!',
+        'Расскажи за 15 секунд самую смешную историю, связанную с именинником.',
+        'Скажи тост, используя слова «мандарин», «25» и «секрет».',
+        'Повтори позу именинника с любой его детской фотографии!'
+      ],
+      drink: [
+        'Игристое праздничное — идеально для разминки!',
+        'Фирменный коктейль вечера со льдом и цитрусом.',
+        'Освежающий лимонад / морс — чтобы дотянуть до полуночи в тонусе!',
+        'Выбор именинника — спроси у него, что налито в его бокале прямо сейчас.'
+      ]
+    };
+    let shakerMode = 'toast';
+
+    function setShakerMode(mode, btn) {
+      shakerMode = mode;
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      triggerShake();
+    }
+
+    function triggerShake() {
+      if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
+      const list = SHAKER_DATA[shakerMode];
+      const pick = list[Math.floor(Math.random() * list.length)];
+      const box = document.getElementById('shakerResult');
+      box.classList.remove('shake');
+      void box.offsetWidth;
+      box.classList.add('shake');
+      box.textContent = pick;
+    }
+
+    function enableMotion() {
+      const btn = document.getElementById('motionBtn');
+      if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission().then(res => {
+          if (res === 'granted') {
+            bindMotion();
+            btn.textContent = 'Тряска активна ✓';
+          }
+        }).catch(() => {});
+      } else {
+        bindMotion();
+        btn.textContent = 'Тряска активна ✓';
+      }
+    }
+
+    let lastShakeTime = 0;
+    function bindMotion() {
+      window.addEventListener('devicemotion', e => {
+        const acc = e.accelerationIncludingGravity;
+        if (!acc) return;
+        const mag = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+        if (mag > 22 && Date.now() - lastShakeTime > 1200) {
+          lastShakeTime = Date.now();
+          triggerShake();
+        }
+      });
+    }
+
+    // --- STAGE 3C: QUIZ WITH SCRATCH-OFF HINTS ---
+    const QUIZ_DATA = [
+      {
+        q: 'Сколько лет исполняется имениннику 20 декабря 2026 в 00:00?',
+        opts: ['21 год', '25 лет', '30 лет', '18 лет (в душе)'],
+        ans: 1,
+        hint: 'Четверть века! Ровно столько же было свечей на торте.'
+      },
+      {
+        q: 'На каком музыкальном инструменте именинник играл в детстве?',
+        opts: ['На скрипке', 'На барабанах', 'На аккордеоне', 'На балалайке'],
+        ans: 2,
+        hint: 'С мехами и клавишами — он был на фото при попытке нажать «Не приду».'
+      },
+      {
+        q: 'Какой главный лесной трофей есть на детских фото именинника?',
+        opts: ['Огромный белый гриб', 'Шишка с арбуз', 'Корзина земляники', 'Ёжик'],
+        ans: 0,
+        hint: 'Растёт в сосновом бору и помещается в одну детскую ладонь.'
+      },
+      {
+        q: 'Во сколько начинается сбор гостей 19 декабря 2026?',
+        opts: ['В 19:00', 'В 11:00 утра', 'В 23:55', 'В 15:00'],
+        ans: 1,
+        hint: 'С самого утра! Начинаем в 11:00 и гуляем до полуночи.'
+      }
+    ];
+    let quizIdx = 0, quizScore = 0, quizAnswered = false;
+
+    function renderQuiz() {
+      const item = QUIZ_DATA[quizIdx % QUIZ_DATA.length];
+      quizAnswered = false;
+      document.getElementById('quizQText').textContent = `Вопрос ${(quizIdx % QUIZ_DATA.length) + 1}/${QUIZ_DATA.length}: ${item.q}`;
+      document.getElementById('quizHintText').textContent = 'Подсказка: ' + item.hint;
+      document.getElementById('quizScoreLine').textContent = `Верных ответов: ${quizScore}`;
+
+      const optsDiv = document.getElementById('quizOptions');
+      optsDiv.innerHTML = '';
+      item.opts.forEach((opt, idx) => {
+        const b = document.createElement('button');
+        b.className = 'quiz-opt';
+        b.textContent = opt;
+        b.onclick = () => {
+          if (quizAnswered) return;
+          quizAnswered = true;
+          if (idx === item.ans) {
+            b.classList.add('correct');
+            quizScore++;
+          } else {
+            b.classList.add('wrong');
+            optsDiv.children[item.ans].classList.add('correct');
+          }
+          document.getElementById('quizScoreLine').textContent = `Верных ответов: ${quizScore}`;
+          setTimeout(() => {
+            quizIdx++;
+            renderQuiz();
+          }, 1200);
+        };
+        optsDiv.appendChild(b);
+      });
+      setTimeout(initScratchCanvas, 50);
+    }
+
+    function initScratchCanvas() {
+      const canvas = document.getElementById('scratchCanvas');
+      if (!canvas) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width || 320;
+      canvas.height = rect.height || 74;
+      const ctx = canvas.getContext('2d');
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#b5a48b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#241914';
+      ctx.font = 'bold 13px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('ПОТРИ ПАЛЬЦЕМ ДЛЯ ПОДСКАЗКИ', canvas.width / 2, canvas.height / 2 + 5);
+
+      let scratching = false;
+      function scratchAt(clientX, clientY) {
+        const r = canvas.getBoundingClientRect();
+        const x = clientX - r.left;
+        const y = clientY - r.top;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 18, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      canvas.onpointerdown = e => { scratching = true; scratchAt(e.clientX, e.clientY); };
+      canvas.onpointermove = e => { if (scratching) scratchAt(e.clientX, e.clientY); };
+      window.onpointerup = () => { scratching = false; };
+    }
+
+    // --- STAGE 3D: PHOTOBOOTH ---
+    let selectedStickerId = 8;
+    function setSticker(id) {
+      selectedStickerId = id;
+      renderPhotobooth();
+    }
+
+    function renderPhotobooth() {
+      const canvas = document.getElementById('boothCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.fillStyle = '#142c27';
+      ctx.fillRect(0, 0, W, H);
+
+      const fileInput = document.getElementById('boothInput');
+      const drawFrameAndSticker = () => {
+        // Festive border
+        ctx.strokeStyle = '#d4a13b';
+        ctx.lineWidth = 14;
+        ctx.strokeRect(12, 12, W - 24, H - 24);
+        ctx.strokeStyle = '#b82924';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(24, 24, W - 48, H - 48);
+
+        // Top banner
+        ctx.fillStyle = '#b82924';
+        ctx.fillRect(40, 36, W - 80, 54);
+        ctx.fillStyle = '#fff8ee';
+        ctx.font = 'bold 24px Georgia';
+        ctx.textAlign = 'center';
+        ctx.fillText('ЮБИЛЕЙНЫЙ ОГОНЁК • 25 ЛЕТ', W / 2, 71);
+
+        // Bottom caption
+        ctx.fillStyle = '#f7efe0';
+        ctx.fillRect(40, H - 90, W - 80, 48);
+        ctx.fillStyle = '#241914';
+        ctx.font = 'bold 20px monospace';
+        ctx.fillText('19–20 ДЕКАБРЯ 2026', W / 2, H - 59);
+
+        // Childhood cutout badge in bottom-right corner
+        const stickerImg = new Image();
+        stickerImg.onload = () => {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(W - 115, H - 175, 78, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(stickerImg, W - 193, H - 253, 156, 156);
+          ctx.restore();
+          ctx.strokeStyle = '#ffd24d';
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.arc(W - 115, H - 175, 78, 0, Math.PI * 2);
+          ctx.stroke();
+        };
+        stickerImg.src = `assets/child/${selectedStickerId}.jpg`;
+      };
+
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const r = new FileReader();
+        r.onload = () => {
+          const im = new Image();
+          im.onload = () => {
+            const scale = Math.max(W / im.width, H / im.height);
+            const dw = im.width * scale, dh = im.height * scale;
+            ctx.drawImage(im, (W - dw) / 2, (H - dh) / 2, dw, dh);
+            drawFrameAndSticker();
+          };
+          im.src = r.result;
+        };
+        r.readAsDataURL(fileInput.files[0]);
+      } else {
+        ctx.fillStyle = '#eadcc3';
+        ctx.fillRect(36, 36, W - 72, H - 72);
+        ctx.fillStyle = '#635147';
+        ctx.font = 'bold 22px Georgia';
+        ctx.textAlign = 'center';
+        ctx.fillText('Загрузи фото сверху,', W / 2, H / 2 - 14);
+        ctx.fillText('чтобы примерить рамку!', W / 2, H / 2 + 18);
+        drawFrameAndSticker();
+      }
+    }
+
+    function downloadBooth() {
+      const link = document.createElement('a');
+      link.download = 'Fotobudka_25_let.png';
+      link.href = document.getElementById('boothCanvas').toDataURL('image/png');
+      link.click();
+    }
+
+    // --- STAGE 4 & 5: ALL 8 MINI-GAMES + LEADERBOARD ---
+    let activeGameAnim = null;
+    function stopActiveGameLoop() {
+      if (activeGameAnim) {
+        cancelAnimationFrame(activeGameAnim);
+        clearInterval(activeGameAnim);
+        activeGameAnim = null;
+      }
+    }
+
+    function closeGame() {
+      stopActiveGameLoop();
+      document.getElementById('gameStageCard').style.display = 'none';
+      document.getElementById('gamesCatalogCard').style.display = 'block';
+    }
+
+    async function saveScore(gameName, score) {
+      const player = localStorage.getItem('bday25_guest_name') || 'Гость';
+      const local = JSON.parse(localStorage.getItem('bday25_scores') || '[]');
+      local.push({ player, game: gameName, score, ts: Date.now() });
+      local.sort((a, b) => b.score - a.score);
+      localStorage.setItem('bday25_scores', JSON.stringify(local.slice(0, 15)));
+
+      if (sbClient) {
+        try {
+          await sbClient.from('leaderboard').insert([{ player_name: player, game_name: gameName, score }]);
+        } catch (e) {}
+      }
+      renderLeaderboard();
+    }
+
+    async function renderLeaderboard() {
+      const box = document.getElementById('leaderboardList');
+      if (!box) return;
+      let rows = JSON.parse(localStorage.getItem('bday25_scores') || '[]');
+      if (sbClient) {
+        try {
+          const { data } = await sbClient.from('leaderboard').select('*').order('score', { ascending: false }).limit(10);
+          if (data && data.length) {
+            rows = data.map(r => ({ player: r.player_name, game: r.game_name, score: r.score }));
+          }
+        } catch (e) {}
+      }
+      if (!rows.length) {
+        box.innerHTML = '<p class="muted">Пока рекордов нет — сыграй первым!</p>';
+        return;
+      }
+      box.innerHTML = rows.slice(0, 8).map((r, i) =>
+        `<div class="lb-row"><span>${i + 1}. <strong>${r.player}</strong> (${r.game})</span><strong>${r.score}</strong></div>`
+      ).join('');
+    }
+
+    function openGame(type) {
+      stopActiveGameLoop();
+      document.getElementById('gamesCatalogCard').style.display = 'none';
+      document.getElementById('gameStageCard').style.display = 'block';
+      const title = document.getElementById('activeGameTitle');
+      const desc = document.getElementById('activeGameDesc');
+      const hud = document.getElementById('activeGameHud');
+      const cont = document.getElementById('gameContainer');
+      cont.innerHTML = '';
+
+      const headImg = new Image();
+      headImg.src = 'assets/child/8.jpg';
+
+      // 1. CATCH CAKE
+      if (type === 'catch') {
+        title.textContent = '🎂 Поймай торт';
+        desc.textContent = 'Води пальцем по экрану: лови торты и мандарины, уворачивайся от будильников!';
+        cont.innerHTML = '<canvas id="gameCanvas" width="320" height="380"></canvas>';
+        const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
+        let px = 160, score = 0, lives = 3, items = [], frame = 0;
+        c.onpointermove = e => {
+          const r = c.getBoundingClientRect();
+          px = ((e.clientX - r.left) / r.width) * c.width;
+        };
+        function loop() {
+          frame++;
+          if (frame % 32 === 0) {
+            const bad = Math.random() < 0.28;
+            items.push({ x: 20 + Math.random() * 280, y: -20, vy: 2.6 + score * 0.08, icon: bad ? '⏰' : (Math.random() < 0.5 ? '🎂' : '🍊'), bad });
+          }
+          ctx.fillStyle = '#142c27';
+          ctx.fillRect(0, 0, 320, 380);
+          ctx.font = '32px serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🧺', px, 355);
+
+          for (let i = items.length - 1; i >= 0; i--) {
+            const it = items[i];
+            it.y += it.vy;
+            ctx.fillText(it.icon, it.x, it.y);
+            if (Math.abs(it.x - px) < 28 && Math.abs(it.y - 345) < 24) {
+              if (it.bad) lives--; else score++;
+              items.splice(i, 1);
+            } else if (it.y > 395) {
+              items.splice(i, 1);
+            }
+          }
+          hud.textContent = `Счёт: ${score} | Жизни: ${'❤️'.repeat(Math.max(0, lives))}`;
+          if (lives <= 0) {
+            saveScore('Поймай торт', score);
+            cont.innerHTML = `<p style="font-weight:700;">Игра окончена! Итоговый счёт: ${score}</p><button class="btn btn-red" onclick="openGame('catch')">Сыграть ещё</button>`;
+            return;
+          }
+          activeGameAnim = requestAnimationFrame(loop);
+        }
+        activeGameAnim = requestAnimationFrame(loop);
+      }
+
+      // 2. FLAPPY BIRTHDAY
+      else if (type === 'flappy') {
+        title.textContent = '🎈 Flappy Birthday';
+        desc.textContent = 'Тапай по экрану, чтобы пролетать между праздничными свечами!';
+        cont.innerHTML = '<canvas id="gameCanvas" width="320" height="380"></canvas>';
+        const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
+        let by = 180, vy = 0, pipes = [], score = 0, frame = 0;
+        c.onpointerdown = () => { vy = -5.2; };
+        function loop() {
+          frame++;
+          vy += 0.28;
+          by += vy;
+          if (frame % 95 === 0) {
+            const gapY = 70 + Math.random() * 170;
+            pipes.push({ x: 340, gapY, passed: false });
+          }
+          ctx.fillStyle = '#142c27';
+          ctx.fillRect(0, 0, 320, 380);
+
+          let dead = by < 10 || by > 370;
+          pipes.forEach(p => {
+            p.x -= 2.3;
+            ctx.fillStyle = '#b82924';
+            ctx.fillRect(p.x, 0, 38, p.gapY - 52);
+            ctx.fillRect(p.x, p.gapY + 52, 38, 380);
+            if (!p.passed && p.x + 38 < 70) { p.passed = true; score++; }
+            if (70 + 14 > p.x && 70 - 14 < p.x + 38 && (by - 14 < p.gapY - 52 || by + 14 > p.gapY + 52)) dead = true;
+          });
+          pipes = pipes.filter(p => p.x > -50);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(70, by, 18, 0, Math.PI * 2);
+          ctx.clip();
+          if (headImg.complete && headImg.naturalWidth) ctx.drawImage(headImg, 52, by - 18, 36, 36);
+          else { ctx.fillStyle = '#ffd24d'; ctx.fillRect(52, by - 18, 36, 36); }
+          ctx.restore();
+
+          hud.textContent = `Счёт: ${score}`;
+          if (dead) {
+            saveScore('Flappy Birthday', score);
+            cont.innerHTML = `<p style="font-weight:700;">Ой, задел свечу! Счёт: ${score}</p><button class="btn btn-red" onclick="openGame('flappy')">Ещё попытка</button>`;
+            return;
+          }
+          activeGameAnim = requestAnimationFrame(loop);
+        }
+        activeGameAnim = requestAnimationFrame(loop);
+      }
+
+      // 3. WHAC-A-BIRTHDAY
+      else if (type === 'whack') {
+        title.textContent = '🎁 Поймай именинника';
+        desc.textContent = 'Тапай по имениннику (10 очков), не трогай будильники (-5 очков)! 20 секунд.';
+        let score = 0, timeLeft = 20, activeHole = -1, isBad = false;
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:10px 0;';
+        const holes = [];
+        for (let i = 0; i < 9; i++) {
+          const h = document.createElement('div');
+          h.style.cssText = 'aspect-ratio:1/1; background:#1e4d3b; border:2px solid #241914; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:32px; overflow:hidden; cursor:pointer;';
+          h.onclick = () => {
+            if (i !== activeHole) return;
+            score += isBad ? -5 : 10;
+            activeHole = -1;
+            h.innerHTML = '';
+            hud.textContent = `Счёт: ${score} | Осталось: ${timeLeft}с`;
+          };
+          grid.appendChild(h);
+          holes.push(h);
+        }
+        cont.appendChild(grid);
+        let ticks = 0;
+        activeGameAnim = setInterval(() => {
+          ticks++;
+          if (ticks % 2 === 0) timeLeft--;
+          holes.forEach(h => h.innerHTML = '');
+          activeHole = Math.floor(Math.random() * 9);
+          isBad = Math.random() < 0.3;
+          holes[activeHole].innerHTML = isBad ? '⏰' : '<img src="assets/child/8.jpg" style="width:100%;height:100%;object-fit:cover;">';
+          hud.textContent = `Счёт: ${score} | Осталось: ${timeLeft}с`;
+          if (timeLeft <= 0) {
+            stopActiveGameLoop();
+            saveScore('Поймай именинника', Math.max(0, score));
+            cont.innerHTML = `<p style="font-weight:700;">Время вышло! Счёт: ${Math.max(0, score)}</p><button class="btn btn-red" onclick="openGame('whack')">Сыграть ещё</button>`;
+          }
+        }, 550);
+      }
+
+      // 4. CAKE TOWER
+      else if (type === 'tower') {
+        title.textContent = '🍰 Башня из торта';
+        desc.textContent = 'Тапай вовремя, чтобы ровно ставить ярусы торта друг на друга!';
+        cont.innerHTML = '<canvas id="gameCanvas" width="320" height="360"></canvas>';
+        const c = document.getElementById('gameCanvas'), ctx = c.getContext('2d');
+        let stack = [{ x: 90, w: 140 }], cur = { x: 20, w: 140, dir: 3 }, score = 0;
+        c.onpointerdown = () => {
+          const prev = stack[stack.length - 1];
+          const overlapStart = Math.max(prev.x, cur.x);
+          const overlapEnd = Math.min(prev.x + prev.w, cur.x + cur.w);
+          const newW = overlapEnd - overlapStart;
+          if (newW <= 8) {
+            stopActiveGameLoop();
+            saveScore('Башня из торта', score);
+            cont.innerHTML = `<p style="font-weight:700;">Торт рухнул! Построено ярусов: ${score}</p><button class="btn btn-red" onclick="openGame('tower')">Построить заново</button>`;
+            return;
+          }
+          score++;
+          stack.push({ x: overlapStart, w: newW });
+          if (stack.length > 9) stack.shift();
+          cur = { x: 10, w: newW, dir: (score % 2 === 0 ? 1 : -1) * (3 + score * 0.25) };
+          hud.textContent = `Ярусов: ${score}`;
+        };
+        function loop() {
+          cur.x += cur.dir;
+          if (cur.x < 0 || cur.x + cur.w > 320) cur.dir *= -1;
+          ctx.fillStyle = '#142c27';
+          ctx.fillRect(0, 0, 320, 360);
+          stack.forEach((s, idx) => {
+            ctx.fillStyle = idx % 2 === 0 ? '#d99b52' : '#b82924';
+            ctx.fillRect(s.x, 330 - idx * 30, s.w, 26);
+          });
+          ctx.fillStyle = '#fff5e4';
+          ctx.fillRect(cur.x, 330 - stack.length * 30, cur.w, 26);
+          activeGameAnim = requestAnimationFrame(loop);
+        }
+        activeGameAnim = requestAnimationFrame(loop);
+      }
+
+      // 5. CHRONOLOGY
+      else if (type === 'chrono') {
+        title.textContent = '🕰️ Собери хронологию';
+        desc.textContent = 'Нажимай на фото по порядку: от самого маленького возраста к сегодняшнему дню!';
+        const stages = [
+          { id: 1, src: 'assets/child/13.jpg', label: 'Малыш' },
+          { id: 2, src: 'assets/child/12.jpg', label: 'С телефоном' },
+          { id: 3, src: 'assets/child/9.jpg', label: 'Школьник' },
+          { id: 4, src: 'assets/ref/2.jpg', label: 'Сейчас' }
+        ];
+        const shuffled = [...stages].sort(() => Math.random() - 0.5);
+        let nextExpected = 1;
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0;';
+        shuffled.forEach(st => {
+          const card = document.createElement('div');
+          card.style.cssText = 'border:2px solid #241914; border-radius:10px; overflow:hidden; background:#eadcc3; cursor:pointer; text-align:center;';
+          card.innerHTML = `<img src="${st.src}" style="width:100%; height:130px; object-fit:cover; display:block;"><div style="padding:4px; font-size:12px; font-weight:700;">Выбрать</div>`;
+          card.onclick = () => {
+            if (st.id === nextExpected) {
+              card.style.opacity = '0.4';
+              card.style.pointerEvents = 'none';
+              card.querySelector('div').textContent = `№${nextExpected} ✓`;
+              nextExpected++;
+              hud.textContent = `Шаг: ${nextExpected - 1} из 4`;
+              if (nextExpected > 4) {
+                saveScore('Хронология', 100);
+                cont.innerHTML = `<p style="font-weight:700;">Идеально! Вся хронология собрана верно (+100 очков).</p><button class="btn btn-red" onclick="openGame('chrono')">Перемешать снова</button>`;
+              }
+            } else {
+              if (navigator.vibrate) navigator.vibrate(90);
+              hud.textContent = 'Не тот возраст! Начни с самого маленького.';
+            }
+          };
+          grid.appendChild(card);
+        });
+        cont.appendChild(grid);
+      }
+
+      // 6. MEMORY MATCH
+      else if (type === 'memory') {
+        title.textContent = '🃏 Найди пару';
+        desc.textContent = 'Открывай карточки и найди все 6 одинаковых пар!';
+        const ids = [1, 4, 7, 8, 9, 11];
+        const deck = [...ids, ...ids].sort(() => Math.random() - 0.5);
+        let flipped = [], matched = 0, moves = 0;
+        const grid = document.createElement('div');
+        grid.className = 'mem-grid';
+        deck.forEach(id => {
+          const card = document.createElement('div');
+          card.className = 'mem-card';
+          card.textContent = '?';
+          card.onclick = () => {
+            if (flipped.length >= 2 || card.dataset.open) return;
+            card.dataset.open = '1';
+            card.innerHTML = `<img src="assets/child/${id}.jpg">`;
+            flipped.push({ card, id });
+            if (flipped.length === 2) {
+              moves++;
+              hud.textContent = `Ходов: ${moves} | Найдено пар: ${matched}/6`;
+              if (flipped[0].id === flipped[1].id) {
+                matched++;
+                flipped = [];
+                if (matched === 6) {
+                  const pts = Math.max(20, 150 - moves * 5);
+                  saveScore('Найди пару', pts);
+                  cont.innerHTML = `<p style="font-weight:700;">Победа за ${moves} ходов! Очки: ${pts}</p><button class="btn btn-red" onclick="openGame('memory')">Сыграть ещё</button>`;
+                }
+              } else {
+                setTimeout(() => {
+                  flipped.forEach(f => { delete f.card.dataset.open; f.card.textContent = '?'; });
+                  flipped = [];
+                }, 650);
+              }
+            }
+          };
+          grid.appendChild(card);
+        });
+        cont.appendChild(grid);
+      }
+
+      // 7. 3x3 SLIDE PUZZLE
+      else if (type === 'puzzle') {
+        title.textContent = '🧩 Пятнашки 3×3';
+        desc.textContent = 'Нажимай на плитку рядом с пустым местом, чтобы собрать портрет!';
+        let board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        // Shuffle with valid moves
+        let empty = 8;
+        for (let k = 0; k < 40; k++) {
+          const r = Math.floor(empty / 3), col = empty % 3;
+          const nbrs = [];
+          if (r > 0) nbrs.push(empty - 3);
+          if (r < 2) nbrs.push(empty + 3);
+          if (col > 0) nbrs.push(empty - 1);
+          if (col < 2) nbrs.push(empty + 1);
+          const pick = nbrs[Math.floor(Math.random() * nbrs.length)];
+          [board[empty], board[pick]] = [board[pick], board[empty]];
+          empty = pick;
+        }
+        let moves = 0;
+        const grid = document.createElement('div');
+        grid.className = 'puzzle-grid';
+        function drawPuzzle() {
+          grid.innerHTML = '';
+          board.forEach((val, idx) => {
+            const tile = document.createElement('div');
+            tile.className = 'puz-tile';
+            if (val === 8) {
+              tile.style.background = '#142c27';
+            } else {
+              const bx = (val % 3) * 50, by = Math.floor(val / 3) * 50;
+              tile.style.backgroundImage = 'url("assets/ref/3.jpg")';
+              tile.style.backgroundPosition = `${bx}% ${by}%`;
+              tile.innerHTML = `<span>${val + 1}</span>`;
+            }
+            tile.onclick = () => {
+              const eIdx = board.indexOf(8);
+              const r1 = Math.floor(idx / 3), c1 = idx % 3;
+              const r2 = Math.floor(eIdx / 3), c2 = eIdx % 3;
+              if (Math.abs(r1 - r2) + Math.abs(c1 - c2) === 1) {
+                [board[idx], board[eIdx]] = [board[eIdx], board[idx]];
+                moves++;
+                hud.textContent = `Ходов: ${moves}`;
+                drawPuzzle();
+                if (board.every((v, i) => v === i)) {
+                  const pts = Math.max(30, 160 - moves * 2);
+                  saveScore('Пятнашки 3×3', pts);
+                  cont.innerHTML = `<p style="font-weight:700;">Портрет собран за ${moves} ходов! Очки: ${pts}</p><button class="btn btn-red" onclick="openGame('puzzle')">Собрать ещё раз</button>`;
+                }
+              }
+            };
+            grid.appendChild(tile);
+          });
+        }
+        drawPuzzle();
+        cont.appendChild(grid);
+      }
+
+      // 8. DEFUSE GIFT
+      else if (type === 'bomb') {
+        title.textContent = '💣 Разминируй подарок';
+        desc.textContent = 'Перережь правильный провод за 10 секунд, ответив на блиц-вопрос!';
+        const bombs = [
+          { q: 'В каком месяце день рождения?', wires: ['Ноябрь (Синий)', 'Декабрь (Красный)', 'Январь (Зелёный)'], ok: 1 },
+          { q: 'Какой дресс-код на вечеринке?', wires: ['Строгий смокинг (Синий)', 'Пижама (Красный)', 'Праздничный и уютный (Зелёный)'], ok: 2 },
+          { q: 'Во сколько 20 декабря наступит 25-летие?', wires: ['В 00:00 (Синий)', 'В 12:00 (Красный)', 'В 18:00 (Зелёный)'], ok: 0 }
+        ];
+        const b = bombs[Math.floor(Math.random() * bombs.length)];
+        let sec = 10;
+        hud.textContent = `Таймер: ${sec} сек!`;
+        const box = document.createElement('div');
+        box.innerHTML = `<p style="font-weight:700; margin:10px 0;">${b.q}</p>`;
+        const colors = ['#2b5b84', '#b82924', '#1e4d3b'];
+        b.wires.forEach((w, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'btn';
+          btn.style.cssText = `background:${colors[idx]}; color:#fff; margin-bottom:8px;`;
+          btn.textContent = '✂️ ' + w;
+          btn.onclick = () => {
+            stopActiveGameLoop();
+            if (idx === b.ok) {
+              saveScore('Разминируй подарок', 80);
+              cont.innerHTML = `<p style="font-weight:700; color:#1e4d3b;">🎉 Подарок разминирован! +80 очков.</p><button class="btn btn-red" onclick="openGame('bomb')">Следующая коробка</button>`;
+            } else {
+              cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 БАБАХ! Коробка взорвалась конфетти — провод был не тот!</p><button class="btn btn-red" onclick="openGame('bomb')">Попробовать снова</button>`;
+            }
+          };
+          box.appendChild(btn);
+        });
+        cont.appendChild(box);
+        activeGameAnim = setInterval(() => {
+          sec--;
+          hud.textContent = `Таймер: ${sec} сек!`;
+          if (sec <= 0) {
+            stopActiveGameLoop();
+            cont.innerHTML = `<p style="font-weight:700; color:#b82924;">💥 Время вышло! Коробка взорвалась конфетти!</p><button class="btn btn-red" onclick="openGame('bomb')">Попробовать снова</button>`;
+          }
+        }, 1000);
+      }
     }
 
     initCaptcha();
